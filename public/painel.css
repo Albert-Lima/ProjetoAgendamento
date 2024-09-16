@@ -60,7 +60,7 @@ body{
     display: flex;
     flex-direction: column;
     align-items: end;
-    padding-right: 18px;
+    padding-right: 13px;
     justify-content: start;
     width: 100%;
 }
