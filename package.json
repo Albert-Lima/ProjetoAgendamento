@@ -6,7 +6,7 @@
     "mongoose": "^8.6.2"
   },
   "scripts": {
-    "start": "node app.js",
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   }
 }
