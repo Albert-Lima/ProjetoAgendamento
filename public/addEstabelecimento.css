@@ -1,0 +1,48 @@
+/*Esse código é apenas para o painel e formulário de adionar/editar usuários*/
+:root{
+    --var-DarkGreen: #00272B;
+    --var-ColorGreen: #E0FF4F;
+    --var-BorderColorDark: rgb(182, 182, 182);
+    --var-ColorBaseGray: #D9D9D9;
+}
+
+
+/*formulário de adição*/
+.PanelAddEstabelecimento{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    width: calc(100% - 80px);
+    height: calc(100% - 80px);
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+.PanelAddEstabelecimento form{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    padding-left: 40px;
+}
+.PanelAddEstabelecimento form section:nth-child(1){
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    gap: 20px;
+}
+.barRightAddEstabelecimentos{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    gap: 30px;
+    width: 80px;
+    height: calc(100% - 20px);
+    padding-top: 20px;
+    background-color: var(--var-ColorBaseGray);
+}
+#buttonReturnEstabelecimentos img{
+    height: 40px;
+}

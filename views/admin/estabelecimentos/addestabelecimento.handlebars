@@ -1,0 +1,45 @@
+<!--Esta é a página que será carregada ao clicar no botão de estabelecimentos-->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/addEstabelecimento.css">
+    <title>Estabelecimentos</title>
+</head>
+<body>
+    <aside class="ContainerMenuLeft">
+        <div class="ContainerLogoPanel">
+            LOGO AQUI
+        </div>
+        {{>menuEstabelecimentos}}
+    </aside>
+    <main class="panel">
+        <header class="HeaderPanel">
+            <div>
+                <button class="doboutButton"><img src="" alt=""></button>
+            </div>
+        </header>
+        <section class="ConteinerInfo">
+            <section class="PanelAddEstabelecimento">
+                <form action="/addestabelecimento" method="post">
+                    <section>
+                        <input type="text" name="nameestabelecimento" id="" placeholder="Nome">
+                        <input type="tel" name="phoneestabelecimento" id="" placeholder="Contato">
+                        <input type="text" name="endestabelecimento" id="" placeholder="Endereço">
+                    </section>
+                    <select name="" id="">
+                        <option value="">Add profissionais</option>
+                        <option value="">Albert Lima</option>
+                        <option value="">Thiago Duarte</option>
+                        <option value="">Joel Souza</option>
+                    </select>
+                </form>
+            </section>
+            <nav class="barRightAddEstabelecimentos">
+                <a href="/addestabelecimento" id="buttonReturnEstabelecimentos"><img src="/images/icons8-retornar-64.png" alt="adicionar estabelecimento"></a>
+            </nav>
+        </section>
+    </main>
+</body>
+</html>
