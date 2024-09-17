@@ -17,7 +17,7 @@ const app = express()
     //Template Engine
     app.engine('handlebars', handlebars.engine({defaultLayout: 'main'}))
     app.set("view engine", "handlebars")
-    app.set('view engine',path.join(__dirname, 'views'))
+    app.set('view engine',path.join(__dirname, 'view'))
     //BodyParser
     app.use(bodyParser.urlencoded({extended: false}))
     app.use(bodyParser.json())
