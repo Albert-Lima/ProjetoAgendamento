@@ -25,15 +25,30 @@
                 <form action="/addestabelecimento" method="post">
                     <section>
                         <input type="text" name="nameestabelecimento" id="" placeholder="Nome">
-                        <input type="tel" name="phoneestabelecimento" id="" placeholder="Contato">
+                        <input type="tel" pattern="[0-9]+" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" name="phoneestabelecimento" id="" placeholder="Contato">
                         <input type="text" name="endestabelecimento" id="" placeholder="Endereço">
                     </section>
-                    <select name="" id="">
-                        <option value="">Add profissionais</option>
-                        <option value="">Albert Lima</option>
-                        <option value="">Thiago Duarte</option>
-                        <option value="">Joel Souza</option>
-                    </select>
+                    <section class="SelectProfissionais">
+                        <div id="AbaSelectProfissionais">Add Profisisonais</div>
+                        <section class="ContainerProfissionaisNames">
+                            <label for="" class="LabelCheckBoxAddProfissional"><input type="checkbox" name="profissionais" id="">this.profissional</label>
+                            <label for="" class="LabelCheckBoxAddProfissional"><input type="checkbox" name="profissionais" id="">this.profissional</label>
+                            <label for="" class="LabelCheckBoxAddProfissional"><input type="checkbox" name="profissionais" id="">this.profissional</label>
+                            <label for="" class="LabelCheckBoxAddProfissional"><input type="checkbox" name="profissionais" id="">this.profissional</label>
+                            <label for="" class="LabelCheckBoxAddProfissional"><input type="checkbox" name="profissionais" id="">this.profissional</label>
+                            <label for="" class="LabelCheckBoxAddProfissional"><input type="checkbox" name="profissionais" id="">this.profissional</label>
+                            <label for="" class="LabelCheckBoxAddProfissional"><input type="checkbox" name="profissionais" id="">this.profissional</label>
+
+                            
+                            <!--{{#if profissionais.name}}
+                                {{#each profissionai.name}}
+                                    <label for=""><input type="checkbox" name="profissionais" id="">this.profissional</label>
+                                {{/each}}
+                            {{else}}
+                                <button><img src="/images/icons8-adicionar-usuário-masculino-50.png" alt="">ir para as configurações do profissional</button>
+                            {{/if}}-->
+                        </section>
+                    </section>
                 </form>
             </section>
             <nav class="barRightAddEstabelecimentos">

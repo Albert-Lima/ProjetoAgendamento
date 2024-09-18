@@ -19,6 +19,7 @@
     padding-bottom: 40px;
 }
 .PanelAddEstabelecimento form{
+    width: 50%;
     display: flex;
     flex-direction: column;
     align-items: start;
@@ -31,6 +32,16 @@
     align-items: start;
     justify-content: start;
     gap: 20px;
+    width: 100%;
+}
+.PanelAddEstabelecimento form section:nth-child(1) input{
+    border: none;
+    border-bottom: 1px solid var(--var-ColorBaseGray);
+    width: calc(100% - 20px);
+    padding: 10px;
+    outline-color: var(--var-ColorGreen);
+    color: black;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 .barRightAddEstabelecimentos{
     display: flex;
@@ -45,4 +56,71 @@
 }
 #buttonReturnEstabelecimentos img{
     height: 40px;
+}
+
+
+.SelectProfissionais{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    border: 1px solid var(--var-DarkGreen);
+    width: 100%;
+}
+#AbaSelectProfissionais {
+    height: 40px;
+    width: 100%;
+    background-color: var(--var-DarkGreen);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.ContainerProfissionaisNames{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    width: calc(100% - 20px);
+    padding: 10px;
+    overflow-y: scroll;
+    min-height: 40px;
+    max-height: 200px;
+    gap: 5px;
+}
+.ContainerProfissionaisNames button{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: white;
+    border: 1px solid var(--var-DarkGreen);
+    cursor: pointer;
+}
+.ContainerProfissionaisNames button:hover{
+    background-color: rgb(241, 241, 241);
+}
+.ContainerProfissionaisNames button img{
+    height: 20px;
+}
+
+.LabelCheckBoxAddProfissional{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    padding: 10px;
+    gap: 20px;
+    width: calc(100% - 22px);
+    border: 1px solid var(--var-DarkGreen);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
