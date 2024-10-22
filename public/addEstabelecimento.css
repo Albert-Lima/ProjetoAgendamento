@@ -54,7 +54,7 @@
     padding-top: 20px;
     background-color: var(--var-ColorBaseGray);
 }
-#buttonReturnEstabelecimentos img{
+.barRightAddEstabelecimentos a img{
     height: 40px;
 }
 
