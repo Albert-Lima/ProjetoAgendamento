@@ -38,7 +38,7 @@ const EstabelecimentoModel = require("../models/estabelecimentos")//model de est
 
 
     router.get("/profissionais", (req, res)=>{
-        res.render("admin/profissionais")
+        res.render("admin/profissionais/profissionais")
     })
     router.get("/agendamentos", (req, res)=>{
         res.render("admin/agendamentos")

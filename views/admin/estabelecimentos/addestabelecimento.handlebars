@@ -28,9 +28,9 @@
             <section class="PanelAddEstabelecimento">
                 <form action="/addestabelecimento" method="post" id="formulario">
                     <section>
-                        <input type="text" name="nomeEstabelecimento" id="" placeholder="Nome">
-                        <input type="tel" pattern="[0-9]+" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" name="phoneEstabelecimento" id="" placeholder="Contato">
-                        <input type="text" name="endEstabelecimento" id="" placeholder="Endereço">
+                        <input type="text" name="nomeEstabelecimento" id="" placeholder="nomedoestabelecimento.this">
+                        <input type="tel" pattern="[0-9]+" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" name="phoneEstabelecimento" id="" placeholder="Contatodoestabelecimento.this">
+                        <input type="text" name="endEstabelecimento" id="" placeholder="Endereço.this">
                     </section>
                     <section class="SelectProfissionais">
                         <div id="AbaSelectProfissionais">Add Profisisonais</div>
@@ -113,12 +113,11 @@
 
             if (inicio < 0 || inicio > 23) {
                 alert('O horário de início deve estar entre 0 e 23.');
-                this.value = Math.max(0, Math.min(inicio, 23)); // Mantém o valor entre 0 e 24
+                this.value = Math.max(0, Math.min(inicio, 23)); // Mantém o valor entre 0 e 23
             }
 
             // Verifica se o início é maior que o fim
             if (fim && inicio > fim) {
-                alert('O horário de início não pode ser maior que o horário final.');
                 this.value = fim;
             }
         });
@@ -134,7 +133,6 @@
 
             // Verifica se o fim é menor que o início
             if (inicio && fim < inicio) {
-                alert('O horário final não pode ser menor que o horário de início.');
                 this.value = inicio;
             }
         });
