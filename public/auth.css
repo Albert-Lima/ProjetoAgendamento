@@ -3,7 +3,7 @@
     padding: 0px;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@300;400;500;600;700;800;900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@300;400;500;600;700;800;900&display=swap');
 :root{
     --var-DarkGreen: #00272B;
     --var-ColorGreen: #E0FF4F;
@@ -13,9 +13,15 @@
     --var-ColorGradient1: #025F4C;
     --var-ColorGradient2: #008E98;
     --var-ColorGradient3: #04C59E;
-    --var-FontInkinut: "Inknut Antiqua", snaserif;
+    --var-FontInkinut: "Inknut Antiqua", sans-serif;
     --var-FontOpenSans: "Open Sans", serif;
     --var-FontInter: "Inter", serif;
+
+    /*cores únicas da página*/
+    --var-TitleColor1: #009E7E;
+    --var-DescoColor1: #AFAFAF;
+    --var-DescColor2: #818181;
+    --var-colorTransparentGray: #F2F2F2;
 }
 
 body{
@@ -29,11 +35,11 @@ body{
     align-items: center;
     justify-content: center;
     position: absolute;
-    left: 0px;
+    right: 0px;
     top: 0px;
 }
 .msgEntrar{
-    display: flex;
+    display: none;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -46,6 +52,174 @@ body{
     justify-content: center;
     gap: 30px;
 }
-.msgEntrar h1, .msgCadastre h1{
-    font-family: var(--var-FontOpenSans);
+.msgCadastre h1, .msgEntrar h1{
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
+    font-size: 20pt;
+}
+.msgCadastre p, .msgEntrar p{
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #CBCBCB;
+    font-size: 12pt;
+    max-width: 400px;
+    text-align: center;
+}
+.buttonWelcome{
+    background: none;
+    padding: 20px 50px 20px 50px;
+    border-radius: 40px;
+    border: 1px solid white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 20pt;
+    color: white;
+    margin-top: 50px;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+}
+.buttonWelcome:hover{
+    background-color: rgba(0, 0, 0, 0.061);
+}
+
+
+
+.containerForms{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 60%;
+    background-color: white;
+    height: 100vh;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+}
+.formAuth{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+}
+.formLogin{
+    display: flex;
+}
+.formCad{
+    display: none;
+}
+.formAuth h2{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 30pt;
+    color: var(--var-TitleColor1);
+}
+.formAuth form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+}
+.containerButtonForm{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+.containerButtonForm a{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 100%;
+    border: 0.2px solid rgba(0, 0, 0, 0.437);
+}
+.containerButtonForm a img{
+    height: 20px;
+}
+.descForm{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--var-DescoColor1);
+}
+
+.containerInputForm{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+.ThisInput{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 300px;
+    height: 60px;
+    background-color: var(--var-colorTransparentGray);
+    border: none;
+    border-radius: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
+    gap: 10px;
+}
+.ThisInput div{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+}
+.ThisInput div img{
+    height: 25px;
+}
+.ThisInput input{
+    width: 100%;
+    background: none;
+    outline: none;
+    height: 100%;
+    border: none;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 12pt;
+    font-weight: 600;
+    color: var(--var-DarkGreen);
+}
+.ThisInput input::placeholder{
+    color: var(--var-DescoColor1);
+}
+.buttonForgotPassword{
+    text-decoration: none;
+    height: 30px;
+    border: 1px solid var(--var-DescColor2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 3px;
+    border-radius: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 11pt;
+    font-weight: 600;
+    color: var(--var-ColorGreenOliva);
+    margin-top: 20px;
+}
+.buttonSubmit{
+    background-color: var(--var-TitleColor1);
+    padding: 20px 0px 20px 0px;
+    width: 300px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 20pt;
+    color: white;
+    border: none;
+    border-radius: 40px;
+    outline: none;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+}
+.buttonSubmit:hover{
+    background-color: #00765e;
 }

@@ -13,54 +13,56 @@
             <p>Bem-vindo de volta! Que bom ter você novamente. Vamos continuar de onde paramos?</p>
             <button type="button">Entrar</button>
         </div>
+
         <div class="msgCadastre">
             <h1>Olá!</h1>
             <p>Insira suas informações e embarque em uma nova jornada conosco!</p>
-            <button type="button">Cadastre-se</button>
+            <button type="button" class="buttonWelcome">Cadastre-se</button>
         </div>
     </section>
     <section class="containerForms">
-        <section class="fomrLogin">
+        <section class="formLogin formAuth">
             <h2>Entrar</h2>
             <form action="post" >
-                <div>
+                <div class="containerButtonForm">
                     <a href=""><img src="/images/icons8-f-do-facebook-50.png" alt="Login com Facebook"></a>
                     <a href=""><img src="/images/icons8-google-plus-50.png" alt="Login com Google"></a>
                     <a href=""><img src="/images/icons8-linkedin-64.png" alt="Login com Linkedin"></a>
                 </div>
-                ou use sua conta de email
-                <div>
-                    <div>
-                        <input type="email">
+                <p class="descForm">ou use sua conta de email</p>
+                <div class="containerInputForm">
+                    <div class="ThisInput">
+                        <div><img src="/images/icons8-nova-mensagem-50.png" alt="campo de email"></div>
+                        <input type="email" placeholder="email">
                     </div>
-                    <div>
-                        <input type="password">
+                    <div class="ThisInput">
+                        <div><img src="/images/icons8-trancar-48.png" alt="campo de senha"></div>
+                        <input type="password" placeholder="senha">
                     </div>
-                    <a href="">esqueceu sua senha?</a>
+                    <a href="" class="buttonForgotPassword">esqueceu sua senha?</a>
                 </div>
-                <button type="submit">Entrar</button>
+                <button type="submit" class="buttonSubmit">Entrar</button>
             </form>
         </section>
 
-        <section class="formCad">
+        <section class="formCad formAuth">
             <h2>Faça parte</h2>
             <form action="post" >
-                <div>
+                <div class="containerButtonForm">
                     <a href=""><img src="/images/icons8-f-do-facebook-50.png" alt="Login com Facebook"></a>
                     <a href=""><img src="/images/icons8-google-plus-50.png" alt="Login com Google"></a>
                     <a href=""><img src="/images/icons8-linkedin-64.png" alt="Login com Linkedin"></a>
                 </div>
-                ou use sua conta de email
-                <div>
+                <p class="descForm">ou use sua conta de email</p>
+                <div class="containerInputForm">
                     <div>
                         <input type="email">
                     </div>
                     <div>
                         <input type="password">
                     </div>
-                    <a href="">esqueceu sua senha?</a>
                 </div>
-                <button type="submit">Entrar</button>
+                <button type="submit" class="buttonSubmit">Cadastre-se</button>
             </form>
         </section>
     </section>
