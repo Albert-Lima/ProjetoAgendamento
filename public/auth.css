@@ -37,7 +37,19 @@ body{
     position: absolute;
     right: 0px;
     top: 0px;
+    animation-name: none;
+    animation-duration: 1s;
+    animation-direction: normal;
 }
+@keyframes movimentoWelcome {
+    0%{
+        right: 0%;
+    }
+    100%{
+        right: 40%;
+    }
+}
+
 .msgEntrar{
     display: none;
     flex-direction: column;
@@ -59,7 +71,7 @@ body{
 }
 .msgCadastre p, .msgEntrar p{
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #CBCBCB;
+    color: white;
     font-size: 12pt;
     max-width: 400px;
     text-align: center;
@@ -91,7 +103,7 @@ body{
     background-color: white;
     height: 100vh;
     position: absolute;
-    left: 0px;
+    right: 40%;
     top: 0px;
 }
 .formAuth{

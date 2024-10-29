@@ -11,13 +11,13 @@
         <div class="msgEntrar">
             <h1>Bem vindo de volta!</h1>
             <p>Bem-vindo de volta! Que bom ter você novamente. Vamos continuar de onde paramos?</p>
-            <button type="button">Entrar</button>
+            <button type="button" class="buttonWelcome" id="bttEntrar">Entrar</button>
         </div>
 
         <div class="msgCadastre">
             <h1>Olá!</h1>
             <p>Insira suas informações e embarque em uma nova jornada conosco!</p>
-            <button type="button" class="buttonWelcome">Cadastre-se</button>
+            <button type="button" class="buttonWelcome" id="bttCad">Cadastre-se</button>
         </div>
     </section>
     <section class="containerForms">
@@ -55,10 +55,16 @@
                 </div>
                 <p class="descForm">ou use sua conta de email</p>
                 <div class="containerInputForm">
-                    <div>
+                    <div class="ThisInput">
+                        <div><img src="/images/icons8-usuário-48.png" alt="campo de nome"></div>
+                        <input type="nome">
+                    </div>
+                    <div class="ThisInput">
+                        <div><img src="/images/icons8-nova-mensagem-50.png" alt="campo de email"></div>
                         <input type="email">
                     </div>
-                    <div>
+                    <div class="ThisInput">
+                        <div><img src="/images/icons8-trancar-48.png" alt="campo de senha"></div>
                         <input type="password">
                     </div>
                 </div>
@@ -66,5 +72,46 @@
             </form>
         </section>
     </section>
+    <script>
+        var welcomeContainerAuth = document.querySelector(".welcomeContainerAuth")
+        var msgEntrar = document.querySelector(".msgEntrar")
+        var msgCadastre = document.querySelector(".msgCadastre")
+        var formLogin = document.querySelector(".formLogin")
+        var formCad = document.querySelector(".formCad")
+        var containerForms = document.querySelector(".containerForms")
+
+        var bttEntrar = document.querySelector("#bttEntrar")
+        var bttCad = document.querySelector("#bttCad")
+
+        function animeLeft(){
+            containerForms.style.transition = "1s ease-in-out"
+            containerForms.style.right = "0%"
+
+            msgCadastre.style.display = "none"
+            msgEntrar.style.display = "flex"
+
+            formLogin.style.display = "none"
+            formCad.style.display = "flex"
+
+            welcomeContainerAuth.style.transition = "1s ease-in-out"
+            welcomeContainerAuth.style.right = "60%"
+        }
+        bttCad.addEventListener("click", animeLeft)
+
+        function animeRight(){
+            containerForms.style.transition = "1s ease-in-out"
+            containerForms.style.right = "40%"
+
+            msgCadastre.style.display = "flex"
+            msgEntrar.style.display = "none"
+
+            formLogin.style.display = "flex"
+            formCad.style.display = "none"
+
+            welcomeContainerAuth.style.transition = "1s ease-in-out"
+            welcomeContainerAuth.style.right = "0%"
+        }
+        bttEntrar.addEventListener("click", animeRight)
+    </script>
 </body>
 </html>
