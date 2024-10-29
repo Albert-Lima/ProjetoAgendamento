@@ -35,6 +35,9 @@ const app = express()
     //Admin
     const adminRouter = require("./routes/admin")
     app.use("/", adminRouter)
+    //auth
+    const authRouter = require("./routes/auth")
+    app.use("/", authRouter)
 
 app.listen(8081, (err)=>{
     if(err){

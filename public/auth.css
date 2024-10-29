@@ -1,0 +1,51 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@300;400;500;600;700;800;900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+:root{
+    --var-DarkGreen: #00272B;
+    --var-ColorGreen: #E0FF4F;
+    --var-BorderColorDark: rgb(182, 182, 182);
+    --var-ColorBaseGray: #D9D9D9;
+    --var-ColorGreenOliva: #25291C;
+    --var-ColorGradient1: #025F4C;
+    --var-ColorGradient2: #008E98;
+    --var-ColorGradient3: #04C59E;
+    --var-FontInkinut: "Inknut Antiqua", snaserif;
+    --var-FontOpenSans: "Open Sans", serif;
+    --var-FontInter: "Inter", serif;
+}
+
+body{
+    background-image: linear-gradient( to right top, var(--var-ColorGradient3), var(--var-ColorGradient2), var(--var-ColorGradient1) );
+}
+.welcomeContainerAuth{
+    height: 100vh;
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+}
+.msgEntrar{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+}
+.msgCadastre{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+}
+.msgEntrar h1, .msgCadastre h1{
+    font-family: var(--var-FontOpenSans);
+}
