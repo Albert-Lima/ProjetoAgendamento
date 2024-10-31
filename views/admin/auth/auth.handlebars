@@ -47,7 +47,7 @@
 
         <section class="formCad formAuth">
             <h2>Faça parte</h2>
-            <form action="post" >
+            <form action="/auth" method="post">
                 <div class="containerButtonForm">
                     <a href=""><img src="/images/icons8-f-do-facebook-50.png" alt="Login com Facebook"></a>
                     <a href=""><img src="/images/icons8-google-plus-50.png" alt="Login com Google"></a>
@@ -57,15 +57,15 @@
                 <div class="containerInputForm">
                     <div class="ThisInput">
                         <div><img src="/images/icons8-usuário-48.png" alt="campo de nome"></div>
-                        <input type="nome">
+                        <input type="nome" name="name">
                     </div>
                     <div class="ThisInput">
                         <div><img src="/images/icons8-nova-mensagem-50.png" alt="campo de email"></div>
-                        <input type="email">
+                        <input type="email" name="email">
                     </div>
                     <div class="ThisInput">
                         <div><img src="/images/icons8-trancar-48.png" alt="campo de senha"></div>
-                        <input type="password">
+                        <input type="password" name="password">
                     </div>
                 </div>
                 <button type="submit" class="buttonSubmit">Cadastre-se</button>
