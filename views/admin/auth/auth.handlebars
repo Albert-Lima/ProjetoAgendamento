@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/auth.css">
+    <link rel="stylesheet" href="poupUp.css">
     <title>Autenticação</title>
 </head>
 <body>
+    
     <section class="welcomeContainerAuth">
         <div class="msgEntrar">
             <h1>Bem vindo de volta!</h1>
@@ -23,21 +25,34 @@
     <section class="containerForms">
         <section class="formLogin formAuth">
             <h2>Entrar</h2>
-            <form action="post" >
+            <form action="/login" method="post">
                 <div class="containerButtonForm">
-                    <a href=""><img src="/images/icons8-f-do-facebook-50.png" alt="Login com Facebook"></a>
-                    <a href=""><img src="/images/icons8-google-plus-50.png" alt="Login com Google"></a>
-                    <a href=""><img src="/images/icons8-linkedin-64.png" alt="Login com Linkedin"></a>
+                    <a href="/auth/facebook"><img src="/images/icons8-f-do-facebook-50.png" alt="Login com Facebook"></a>
+                    <a href="/auth/google"><img src="/images/icons8-google-plus-50.png" alt="Login com Google"></a>
+                    <a href="/auth/linkedin"><img src="/images/icons8-linkedin-64.png" alt="Login com Linkedin"></a>
                 </div>
                 <p class="descForm">ou use sua conta de email</p>
+        
+                {{#if erros}}
+                    {{#each erros}}
+                        <div class="container_poupUpError">{{this.texto}}</div>
+                    {{/each}}
+                {{/if}}
+
+                {{#if success_msg}}
+                    <div class="container_poupUpSuccess">{{success_msg}}</div>
+                {{/if}}
+                {{#if error_msg}}
+                    <div class="container_poupUpError">{{error_msg}}</div>
+                {{/if}}
                 <div class="containerInputForm">
                     <div class="ThisInput">
                         <div><img src="/images/icons8-nova-mensagem-50.png" alt="campo de email"></div>
-                        <input type="email" placeholder="email">
+                        <input type="email" placeholder="email" name="email">
                     </div>
                     <div class="ThisInput">
                         <div><img src="/images/icons8-trancar-48.png" alt="campo de senha"></div>
-                        <input type="password" placeholder="senha">
+                        <input type="password" placeholder="senha" name="password">
                     </div>
                     <a href="" class="buttonForgotPassword">esqueceu sua senha?</a>
                 </div>
@@ -54,6 +69,18 @@
                     <a href=""><img src="/images/icons8-linkedin-64.png" alt="Login com Linkedin"></a>
                 </div>
                 <p class="descForm">ou use sua conta de email</p>
+
+                {{#each erros}}
+                    <div class="container_poupUpError">{{this.texto}}</div>
+                {{/each}}
+
+                {{#if success_msg}}
+                    <div class="container_poupUpSuccess">{{success_msg}}</div>
+                {{/if}}
+                {{#if error_msg}}
+                    <div class="container_poupUpError">{{error_msg}}</div>
+                {{/if}}
+
                 <div class="containerInputForm">
                     <div class="ThisInput">
                         <div><img src="/images/icons8-usuário-48.png" alt="campo de nome"></div>
@@ -111,7 +138,7 @@
             welcomeContainerAuth.style.transition = "1s ease-in-out"
             welcomeContainerAuth.style.right = "0%"
         }
-        bttEntrar.addEventListener("click", animeRight)
+        bttEntrar.addEventListener("click", animeRight) 
     </script>
 </body>
 </html>

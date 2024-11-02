@@ -92,8 +92,6 @@ body{
     background-color: rgba(0, 0, 0, 0.061);
 }
 
-
-
 .containerForms{
     display: flex;
     flex-direction: column;
@@ -129,7 +127,7 @@ body{
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 40px;
+    gap: 15px;
 }
 .containerButtonForm{
     display: flex;
