@@ -1,0 +1,138 @@
+<!--Esta é a página que será carregada ao clicar no botão de estabelecimentos-->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/addEstabelecimento.css">
+    <title>Estabelecimentos</title>
+</head>
+<body>
+    <aside class="ContainerMenuLeft">
+        <div class="ContainerLogoPanel">
+            LOGO AQUI
+        </div>
+        {{>menuEstabelecimentos}}
+    </aside>
+    <main class="panel">
+        <header class="HeaderPanel">
+            <div>
+                <button class="doboutButton"><img src="/images/icons8-dúvida-100.png" alt="manual da aplicação"></button>
+            </div>
+            <div class="infoUsuario">
+                <span>nome de usuário</span>
+                <span class="userPicture"><!--<img src="/images/icons8-adicionar-usuário-masculino-90.webp" alt="imagem do usuário">--></span>
+            </div>
+        </header>
+        <section class="ConteinerInfo">
+            <section class="PanelAddEstabelecimento">
+                {{#if estabelecimento}}
+                <form action="/editestabelecimento/{{estabelecimento._id}}" method="post" id="formulario">
+                    <section>
+                        <input type="text" name="nomeEstabelecimento" id="" placeholder="{{estabelecimento.nomeEstabelecimento}}">
+                        <input type="tel" pattern="[0-9]+" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" name="phoneEstabelecimento" id="" placeholder="{{estabelecimento.phoneEstabelecimento}}">
+                        <input type="text" name="endEstabelecimento" id="" placeholder="{{estabelecimento.endereco}}">
+                    </section>
+                    <section class="SelectProfissionais">
+                        <div id="AbaSelectProfissionais">Add Profisisonais</div>
+                        <section class="ContainerProfissionaisNames">
+                            <label class="LabelCheckBoxAddProfissional">
+                                <input type="checkbox" name="profissionais" value="Profissional 1">
+                                Profissional 1
+                            </label>
+                            <label class="LabelCheckBoxAddProfissional">
+                                <input type="checkbox" name="profissionais" value="Profissional 2">
+                                Profissional 2
+                            </label>
+                            <label class="LabelCheckBoxAddProfissional">
+                                <input type="checkbox" name="profissionais"  value="Profissional 3">
+                                Profissional 3
+                            </label>
+                            <label class="LabelCheckBoxAddProfissional">
+                                <input type="checkbox" name="profissionais" value="Profissional 4">
+                                Profissional 4
+                            </label>
+                        </section>
+                    </section>
+                    <section class="rangeHours">
+                        <h2 class="titleForm">Selecione o intervalo de tempo de cada agendamento com um profissional:</h2>
+                        <input type="range" id="horarioRange" name="rangeHorario" min="0" max="24" step="1" value="0">
+                        <span id="horarioValue">0 h</span>
+                    </section>
+                    <section class="horarioDeFuncionamento">
+                        <h2 class="titleForm">Selecione o horário de funcionamento:</h2>
+                        <div>
+                            <span>
+                                <p>inicio:</p>
+                                <input type="number" name="horarioInicial" min="0" max="23" id="horarioInicial">
+                            </span>
+                            <span>
+                                <p>fim:</p>
+                                <input type="number" name="horarioFinal" min="0" max="24" id="horarioFinal">
+                            </span>
+                        </div>
+                    </section>
+                </form>
+                {{else}}
+                erro ao renderizar o formulário
+                {{/if}}
+            </section>
+            <nav class="barRightAddEstabelecimentos">
+                <a href="/estabelecimentos" id="buttonReturnEstabelecimentos"><img src="/images/icons8-retornar-64.png" alt="adicionar estabelecimento"></a>
+                <button  type="submit" form="formulario"><img src="/images/icons8-salvar-100.png" alt="salvar edição"></button>
+            </nav>
+        </section>
+    </main>
+    <script>
+        //checkboxes
+        const labels = document.querySelectorAll('.LabelCheckBoxAddProfissional');
+        labels.forEach(label => {
+            label.addEventListener('click', function() {
+                const checkbox = this.querySelector('input[type="checkbox"]');
+                checkbox.checked = !checkbox.checked;
+                this.classList.toggle('active', checkbox.checked);
+            });
+        });
+
+        //range
+        const rangeInput = document.getElementById('horarioRange');
+        const horarioValue = document.getElementById('horarioValue');
+
+        rangeInput.addEventListener('input', function() {
+            horarioValue.textContent = this.value + " h"; // Atualiza o valor mostrado
+        });
+
+
+        //controle dos inputs de horario
+        document.getElementById('horarioInicial').addEventListener('input', function() {
+            let inicio = parseInt(this.value);
+            let fim = parseInt(document.getElementById('horarioFinal').value);
+
+            if (inicio < 0 || inicio > 23) {
+                alert('O horário de início deve estar entre 0 e 23.');
+                this.value = Math.max(0, Math.min(inicio, 23)); // Mantém o valor entre 0 e 23
+            }
+
+            // Verifica se o início é maior que o fim
+            if (fim && inicio > fim) {
+                this.value = fim;
+            }
+        });
+
+        document.getElementById('horarioFinal').addEventListener('input', function() {
+            let fim = parseInt(this.value);
+            let inicio = parseInt(document.getElementById('horarioInicial').value);
+
+            if (fim < 0 || fim > 24) {
+                alert('O horário final deve estar entre 0 e 24.');
+                this.value = Math.max(0, Math.min(fim, 24)); // Mantém o valor entre 0 e 24
+            }
+
+            // Verifica se o fim é menor que o início
+            if (inicio && fim < inicio) {
+                this.value = inicio;
+            }
+        });
+    </script>
+</body>
+</html>

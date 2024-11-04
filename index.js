@@ -18,7 +18,15 @@ require("./config/passport.js")(passport)
     //Static Files
     app.use(express.static(path.join(__dirname,"public" )))
     //Template Engine(Handlebars)
-    app.engine('handlebars', handlebars.engine({defaultLayout: 'main'}))
+    app.engine('handlebars', handlebars.engine(
+        {defaultLayout: 'main',
+        runtimeOptions: {
+            allowProtoPropertiesByDefault: true,
+            allowProtoMethodsByDefault: true
+        }}
+    ))
+
+
     app.set("view engine", "handlebars")
     app.set('views',path.join(__dirname, 'views'))
     //BodyParser

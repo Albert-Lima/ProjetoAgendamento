@@ -25,31 +25,35 @@
         </header>
         <section class="ConteinerInfo">
             <section class="viewPanel">
-                <div class="testediv">
-                    <div class="descEstabelecimento">
-                        <h2>Estabelecimento nome</h2>
-                        <span>Horário de funcionamento: 8h ás 21h</span>
-                        <span>descrição do estabelecimento</span>
+                {{#each estab}}
+                    <div class="testediv">
+                        <div class="descEstabelecimento">                
+                            <h2>{{nomeEstabelecimento}}</h2>
+                            <span>Horário de funcionamento: 8h ás 21h</span>
+                            <span>descrição do estabelecimento</span>
+                        </div>
+                        <a href="/editestabelecimento/{{_id}}" class="buttonConfig"><!--deve levar para a página de editar estabelecimento-->
+                            <img src="/images/icons8-configurações-100.webp" alt="configurações do estabelecimento">
+                        </a>
                     </div>
-                    <a href="/addestabelecimento" class="buttonConfig"><!--deve levar para a página de editar estabelecimento-->
-                        <img src="/images/icons8-configurações-100.webp" alt="configurações do estabelecimento">
-                    </a>
-                </div>
-                <section class="containerDataEstab">
-                    <div><!--adicionar o gráfico aqui dentro--></div>
-                    <div class="ContainerClassificacaoProf">
-                        Profissionais com mais atendimentos
-                        <span class="containerTopProf">
-                            <a href=""><div></div>Profissional 1</a>
-                        </span>
-                        <span class="containerTopProf">
-                            <a href=""><div></div>Profissional 2</a>
-                        </span>
-                        <span class="containerTopProf">
-                            <a href=""><div></div>Profissional 3</a>
-                        </span>
+                    <section class="containerDataEstab">
+                        <div><!--adicionar o gráfico aqui dentro--></div>
+                        <div class="ContainerClassificacaoProf">
+                            Profissionais com mais atendimentos
+                            {{#each profissionais}}
+                                <span class="containerTopProf">
+                                    <a href=""><div></div>{{this}}</a>
+                                </span>
+                            {{else}}
+                                Sem profissionais selecionados
+                            {{/each}}
+                        </div>
+                    </section>
+                {{else}}
+                    <div class="buttonLink">
+                        <a href="/addestabelecimento"><img src="/images/icons8-adicionar-100.webp" alt="novoEstabelecimento"></a>
                     </div>
-                </section>
+                {{/each}}
             </section>
         </section>
     </main>

@@ -14,34 +14,34 @@
         {{>menuProfissionais}}
     </aside>
     <main class="panel">
-        <header class="HeaderPanel">
-            <div>
-                <a class="doboutButton"><img src="/images/icons8-dúvida-100.png" alt="manual da aplicação"></a>
-            </div>
-            <div class="infoUsuario">
-                <span>nome de usuário</span>
-                <span class="userPicture"><!--<img src="/images/icons8-adicionar-usuário-masculino-90.webp" alt="imagem do usuário">--></span>
-            </div>
-        </header>
-        <section class="ConteinerInfoProfissionais">
-            <section class="viewPanelProfissionais">
-                <a href="" class="containerProfissional">
-                    <div class="imgProfissional"></div>
-                    <span>Albert Lima</span>
-                </a>
-                <a href="" class="containerProfissional">
-                    <div class="imgProfissional"></div>
-                    <span>Albert Lima</span>
-                </a>
-                <a href="" class="containerProfissional">
-                    <div class="imgProfissional"></div>
-                    <span>Albert Lima</span>
-                </a>
+            <header class="HeaderPanel">
+                <div>
+                    <a class="doboutButton"><img src="/images/icons8-dúvida-100.png" alt="manual da aplicação"></a>
+                </div>
+                <div class="infoUsuario">
+                    <span></span>
+                    <span class="userPicture"><!--<img src="/images/icons8-adicionar-usuário-masculino-90.webp" alt="imagem do usuário">--></span>
+                </div>
+            </header>
+            <section class="ConteinerInfoProfissionais">
+                {{#each estab}}
+                    <section class="viewPanelProfissionais">
+                        {{#each profissionais}}
+                        <a href="" class="containerProfissional">
+                            <div class="imgProfissional"></div>
+                            <span>{{this}}</span>
+                        </a>
+                        {{else}}
+                            sem profissionais cadastrados
+                        {{/each}}
+                    </section>
+                {{else}}
+                    erro ao conectar-se com o servidor
+                {{/each}}
+                <nav class="barBottomProfissionais">
+                    <a href="/addprofissionais">Adicionar Profissional</a>
+                </nav>
             </section>
-            <nav class="barBottomProfissionais">
-                <a href="">Adicionar Profissional</a>
-            </nav>
-        </section>
     </main>
 </body>
 </html>
