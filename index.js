@@ -6,7 +6,7 @@ const path = require("path")
 const app = express()
 
 const passport = require("passport")
-require("./config/passport.js")(passport)
+require("./config/passport.js")
 
 //config
     //Banco de Dados (MongoDB/Mongoose)

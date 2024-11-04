@@ -61,6 +61,7 @@ router.get("/editestabelecimento/:id", eAdmin, async (req, res) => {
             req.flash("error_msg", "Estabelecimento não encontrado");
             return res.redirect("/estabelecimentos");
         }
+        console.log("Usuário autenticado:", req.user);
         res.render("admin/estabelecimentos/editestabelecimento", { estabelecimento });
     } catch (err) {
         console.error("Erro ao carregar estabelecimento:", err);
