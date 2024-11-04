@@ -4,9 +4,11 @@ const mongoose = require("mongoose");
 
 const EstabelecimentoModel = require("../models/estabelecimentos"); // Model de estabelecimentos
 
+const {eAdmin} = require("../helpers/eAdmin")
+
 
 // PAINEL PRINCIPAL
-router.get("/estabelecimentos", (req, res) => {
+router.get("/estabelecimentos", eAdmin, (req, res) => {
     EstabelecimentoModel.find({ userId: req.user.id }).lean().then((estab) => {
         res.render("admin/estabelecimentos/estabelecimentos", { estab });
     }).catch((err) => {
@@ -16,11 +18,11 @@ router.get("/estabelecimentos", (req, res) => {
     });
 });
 
-router.get("/addestabelecimento", (req, res) => {
+router.get("/addestabelecimento", eAdmin, (req, res) => {
     res.render("admin/estabelecimentos/addestabelecimento");
 });
 
-router.post("/addestabelecimento", async (req, res) => {
+router.post("/addestabelecimento", eAdmin, async (req, res) => {
     const { nomeEstabelecimento, phoneEstabelecimento, endEstabelecimento, profissionais, horarioInicial, horarioFinal } = req.body;
     const erros = [];
 
@@ -52,7 +54,7 @@ router.post("/addestabelecimento", async (req, res) => {
     }
 });
 
-router.get("/editestabelecimento/:id", async (req, res) => {
+router.get("/editestabelecimento/:id", eAdmin, async (req, res) => {
     try {
         const estabelecimento = await EstabelecimentoModel.findById(req.params.id).lean();
         if (!estabelecimento) {
@@ -66,7 +68,7 @@ router.get("/editestabelecimento/:id", async (req, res) => {
     }
 });
 
-router.post("/editestabelecimento/:id", async (req, res) => {
+router.post("/editestabelecimento/:id", eAdmin, async (req, res) => {
     const { nomeEstabelecimento, phoneEstabelecimento, endEstabelecimento, profissionais, horarioInicial, horarioFinal } = req.body;
     const erros = [];
 
@@ -107,7 +109,7 @@ router.post("/editestabelecimento/:id", async (req, res) => {
 
 
 
-router.get("/profissionais", (req, res) => {
+router.get("/profissionais", eAdmin, (req, res) => {
     EstabelecimentoModel.find({ userId: req.user.id }).lean().then((estab) => {
         res.render("admin/profissionais/profissionais", { estab });
     }).catch((err) => {
