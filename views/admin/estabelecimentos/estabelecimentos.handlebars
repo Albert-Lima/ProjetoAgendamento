@@ -19,8 +19,12 @@
                 <button class="doboutButton"><img src="/images/icons8-dúvida-100.png" alt="manual da aplicação"></button>
             </div>
             <div class="infoUsuario">
-                <span>nome de usuário</span>
+                {{#if user}}
+                <span>{{user.name}}</span>
                 <span class="userPicture"><!--<img src="/images/icons8-adicionar-usuário-masculino-90.webp" alt="imagem do usuário">--></span>
+                {{else}}
+                erro ao carregar os dados
+                {{/if}}
             </div>
         </header>
         <section class="ConteinerInfo">
@@ -29,8 +33,8 @@
                     <div class="testediv">
                         <div class="descEstabelecimento">                
                             <h2>{{nomeEstabelecimento}}</h2>
-                            <span>Horário de funcionamento: 8h ás 21h</span>
-                            <span>descrição do estabelecimento</span>
+                            <span>Horário de funcionamento: {{horarioInicial}}h ás {{horarioFinal}}h</span>
+                            <span>{{endereco}}</span>
                         </div>
                         <a href="/editestabelecimento/{{_id}}" class="buttonConfig"><!--deve levar para a página de editar estabelecimento-->
                             <img src="/images/icons8-configurações-100.webp" alt="configurações do estabelecimento">

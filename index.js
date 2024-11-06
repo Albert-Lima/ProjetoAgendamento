@@ -70,9 +70,31 @@ require("./config/passport.js")
     //Users
     const userRouter = require("./routes/user")
     app.use("/", userRouter)
-    //Admin
-    const adminRouter = require("./routes/admin")
-    app.use("/", adminRouter)
+    //estabelecimento
+    const estabRouter = require("./routes/estabelecimento")
+    app.use("/", estabRouter)
+    //profissionais
+    const profRouter = require("./routes/profissional")
+    app.use("/", profRouter)
+    //agendamentos
+    const agendRouter = require("./routes/agendamento")
+    app.use("/", agendRouter)
+    //historico
+    const histRouter = require("./routes/historico")
+    app.use("/", histRouter)
+    //servicos
+    const servRouter = require("./routes/servicos")
+    app.use("/", servRouter)
+    //feedbacks
+    const feedRouter = require("./routes/feedbacks")
+    app.use("/", feedRouter)
+    //configurações
+    const configRouter = require("./routes/configurar")
+    app.use("/", configRouter)
+
+
+
+
     //auth
     const authRouter = require("./routes/auth")
     app.use("/", authRouter)

@@ -29,46 +29,38 @@
                 {{#if estabelecimento}}
                 <form action="/editestabelecimento/{{estabelecimento._id}}" method="post" id="formulario">
                     <section>
-                        <input type="text" name="nomeEstabelecimento" id="" placeholder="{{estabelecimento.nomeEstabelecimento}}">
-                        <input type="tel" pattern="[0-9]+" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" name="phoneEstabelecimento" id="" placeholder="{{estabelecimento.phoneEstabelecimento}}">
-                        <input type="text" name="endEstabelecimento" id="" placeholder="{{estabelecimento.endereco}}">
+                        <input type="text" name="nomeEstabelecimento" id="" placeholder="nome" value="{{estabelecimento.nomeEstabelecimento}}">
+                        <input type="tel" pattern="[0-9]+" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" name="phoneEstabelecimento" id="" placeholder="Contato" value="{{estabelecimento.phoneEstabelecimento}}">
+                        <input type="text" name="endEstabelecimento" id="" placeholder="Endereço" value="{{estabelecimento.endereco}}">
                     </section>
                     <section class="SelectProfissionais">
                         <div id="AbaSelectProfissionais">Add Profisisonais</div>
                         <section class="ContainerProfissionaisNames">
-                            <label class="LabelCheckBoxAddProfissional">
-                                <input type="checkbox" name="profissionais" value="Profissional 1">
-                                Profissional 1
-                            </label>
-                            <label class="LabelCheckBoxAddProfissional">
-                                <input type="checkbox" name="profissionais" value="Profissional 2">
-                                Profissional 2
-                            </label>
-                            <label class="LabelCheckBoxAddProfissional">
-                                <input type="checkbox" name="profissionais"  value="Profissional 3">
-                                Profissional 3
-                            </label>
-                            <label class="LabelCheckBoxAddProfissional">
-                                <input type="checkbox" name="profissionais" value="Profissional 4">
-                                Profissional 4
-                            </label>
+                            {{#each profissionais}}
+                                <label class="LabelCheckBoxAddProfissional">
+                                    <input type="checkbox" name="profissionais" value="{{name}}">
+                                    {{name}}
+                                </label>
+                            {{else}}
+                                <a href="/addprofissionais">Cadastre profissionais</a>
+                            {{/each}}
                         </section>
                     </section>
                     <section class="rangeHours">
                         <h2 class="titleForm">Selecione o intervalo de tempo de cada agendamento com um profissional:</h2>
-                        <input type="range" id="horarioRange" name="rangeHorario" min="0" max="24" step="1" value="0">
-                        <span id="horarioValue">0 h</span>
+                        <input type="range" id="horarioRange" name="rangeHorario" min="1" max="24" step="1" value="1">
+                        <span id="horarioValue">1 h</span>
                     </section>
                     <section class="horarioDeFuncionamento">
                         <h2 class="titleForm">Selecione o horário de funcionamento:</h2>
                         <div>
                             <span>
                                 <p>inicio:</p>
-                                <input type="number" name="horarioInicial" min="0" max="23" id="horarioInicial">
+                                <input type="number" name="horarioInicial" min="0" max="23" id="horarioInicial" value="{{estabelecimento.horarioInicial}}" placeholder="{{estabelecimento.horarioInicial}}">
                             </span>
                             <span>
                                 <p>fim:</p>
-                                <input type="number" name="horarioFinal" min="0" max="24" id="horarioFinal">
+                                <input type="number" name="horarioFinal" min="0" max="24" id="horarioFinal" value="{{estabelecimento.horarioFinal}}" placeholder="{{estabelecimento.horarioFinal}}">
                             </span>
                         </div>
                     </section>

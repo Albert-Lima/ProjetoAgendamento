@@ -33,31 +33,16 @@
                         <input type="text" name="endEstabelecimento" id="" placeholder="Endereço.this">
                     </section>
                     <section class="SelectProfissionais">
-                        <div id="AbaSelectProfissionais">Add Profisisonais</div>
+                        <div id="AbaSelectProfissionais">Profisisonais</div>
                         <section class="ContainerProfissionaisNames">
-                            <label class="LabelCheckBoxAddProfissional">
-                                <input type="checkbox" name="profissionais" value="Profissional 1">
-                                Profissional 1
-                            </label>
-                            <label class="LabelCheckBoxAddProfissional">
-                                <input type="checkbox" name="profissionais" value="Profissional 2">
-                                Profissional 2
-                            </label>
-                            <label class="LabelCheckBoxAddProfissional">
-                                <input type="checkbox" name="profissionais"  value="Profissional 3">
-                                Profissional 3
-                            </label>
-                            <label class="LabelCheckBoxAddProfissional">
-                                <input type="checkbox" name="profissionais" value="Profissional 4">
-                                Profissional 4
-                            </label>
-                            <!--{{#if profissionais.name}}
-                                {{#each profissionai.name}}
-                                    <label for=""><input type="checkbox" name="profissionais" id="">this.profissional</label>
-                                {{/each}}
+                            {{#each profissionais}}
+                                <label class="LabelCheckBoxAddProfissional">
+                                    <input type="checkbox" name="profissionais" value="{{name}}">
+                                    {{name}}
+                                </label>
                             {{else}}
-                                <button><img src="/images/icons8-adicionar-usuário-masculino-50.png" alt="">ir para as configurações do profissional</button>
-                            {{/if}}-->
+                                <a href="/addprofissionais">Cadastre profissionais</a>
+                            {{/each}}
                         </section>
                     </section>
                     <section class="rangeHours">

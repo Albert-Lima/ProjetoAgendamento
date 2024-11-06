@@ -4,8 +4,8 @@ const mongoose = require('mongoose');
 const estabelecimentoSchema = new mongoose.Schema({
     nomeEstabelecimento: {type: String, required: true },
     phoneEstabelecimento: {type: String, required: true },
-    endereco: {type: String,required: true },
-    profissionais: {type: [String],default: [],},
+    endereco: {type: String, required: true },
+    profissionais: {type: [String],default: []},
     horarioInicial: {type: Number,default: 8,},
     horarioFinal: {type: Number, default: 21,},
     intervaloTempo: {type: Number,default: 1},
