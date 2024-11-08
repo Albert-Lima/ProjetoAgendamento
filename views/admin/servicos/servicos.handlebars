@@ -1,0 +1,94 @@
+<!--Esta é a página que será carregada ao clicar no botão de serviços-->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/addEstabelecimento.css">
+    <link rel="stylesheet" href="/addService.css">
+    <title>Serviços</title>
+</head>
+<body>
+    <aside class="ContainerMenuLeft">
+        <div class="ContainerLogoPanel">
+            LOGO AQUI
+        </div>
+        {{>menuServicos}}
+    </aside>
+    <main class="panel">
+        <header class="HeaderPanel">
+            <div>
+                <a class="doboutButton"><img src="/images/icons8-dúvida-100.png" alt="manual da aplicação"></a>
+            </div>
+            <div class="infoUsuario">
+                <span>nome de usuário</span>
+                <span class="userPicture"><!--<img src="/images/icons8-adicionar-usuário-masculino-90.webp" alt="imagem do usuário">--></span>
+            </div>
+        </header>
+        <section class="ConteinerInfo">
+            <section class="viewPanel">
+                <header>
+                    <button class="bttAddService">
+                        <img src="/images/icons8-adicionar-100.webp" alt="adicionar novo serviço">
+                    </button>
+                </header>
+                <section class="containerServices">
+                    {{#each service}}
+                        <div>
+                            <div>{{name}}</div>
+                        </div>
+                        <div>
+                            <div>{{description}}</div>
+                        </div>
+                        <div>
+                            <div>
+                                {{value}}R$
+                            </div>
+                        </div>
+                    {{else}}
+                        não consegui acessar seu serviços
+                    {{/each}}
+                </section>
+            </section>
+        </section>
+        <section class="aroundPoupUp">
+            <section class="ContainerFormAddServices">
+                <header>
+                    <h2 class="titleForm">Novo Serviço</h2>
+                    <button type="button" class="buttonCloseFormPoupUp">
+                        <img src="" alt="X">
+                    </button>
+                </header>
+                <form action="/addservice" method="post">
+                    <div>
+                        <h3 class="subTitleForm">serviço</h3>
+                        <input type="text" class="inputformMain" placeholder="nome" name="name">
+                        <textarea name="description" class="textArea" placeholder="descrição"></textarea>
+                    </div>
+                    <div>
+                        <h3 class="subTitleForm" style="postion: absolute;">valor</h3>
+                        <input type="number" min="0" placeholder="0,00" class="inputNumber" name="value"> 
+                    </div>
+                    <button type="submit" class="submitBttSave">salvar</button>
+                </form>
+            </section>
+        </section>
+        
+    </main>
+    <script>
+        var bttAddService = document.querySelector(".bttAddService")
+        var buttonCloseFormPoupUp =  document.querySelector(".buttonCloseFormPoupUp")
+        var aroundPoupUp = document.querySelector(".aroundPoupUp")
+
+        function openFormService(){
+            aroundPoupUp.style.display = "flex"
+        }
+        bttAddService.addEventListener("click", openFormService)
+
+        function closeFormService(){
+            aroundPoupUp.style.display = "none"
+        }
+        buttonCloseFormPoupUp.addEventListener("click", closeFormService)
+    </script>
+</body>
+</html>
