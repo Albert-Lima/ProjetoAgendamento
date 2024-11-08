@@ -34,19 +34,19 @@
                 </header>
                 <section class="containerServices">
                     {{#each service}}
-                        <div>
-                            <div>{{name}}</div>
+                    <section class="boxService">
+                        <div class="contentNameService">
+                            <p>{{name}}</p>
                         </div>
-                        <div>
-                            <div>{{description}}</div>
+                        <div class="contentDescriptionService">
+                            <p>{{description}}</p>
                         </div>
-                        <div>
-                            <div>
-                                {{value}}R$
-                            </div>
+                        <div class="containerValueService">
+                            <p>{{value}} R$</p>
                         </div>
+                    </section>   
                     {{else}}
-                        não consegui acessar seu serviços
+                        <p class="msgUI">clique em "+" para adiconar serviços</p>
                     {{/each}}
                 </section>
             </section>

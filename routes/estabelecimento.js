@@ -18,23 +18,14 @@ router.get("/estabelecimentos", eAdmin, (req, res) => {
 });
 
 router.get("/addestabelecimento", eAdmin, (req, res) => {
-    try {
-        const [estab, prof] = Promise.all([
-            EstabelecimentoModel.find({ userId: req.user.id }).lean(),
-            ProfissionaisModel.find({ userId: req.user.id }).lean()
-        ]);
-        console.log(estab)
-
-        res.render("admin/estabelecimentos/estabelecimentos", { 
-            estab: estab,
-            profissionais: prof,
-            user: req.user
-        });
-    } catch (err) {
+    ProfissionaisModel.find({userId: req.user.id}).then((profissionais)=>{
+        console.log(profissionais)
+        res.render("admin/estabelecimentos/addestabelecimento", {profissionais: profissionais})
+    }).catch((err)=>{
         console.log(err);
         req.flash("error_msg", "Houve um erro ao listar os estabelecimentos e profissionais");
-        res.redirect("/auth");
-    }
+        res.redirect("/estabelecimentos");
+    })
 });
 
 router.post("/addestabelecimento", eAdmin, async (req, res) => {
