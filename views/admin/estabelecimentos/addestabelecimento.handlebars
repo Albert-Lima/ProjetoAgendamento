@@ -30,14 +30,14 @@
                     <section>
                         <input type="text" name="nomeEstabelecimento" id="" placeholder="nomedoestabelecimento.this">
                         <input type="tel" pattern="[0-9]+" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" name="phoneEstabelecimento" id="" placeholder="Contatodoestabelecimento.this">
-                        <input type="text" name="endEstabelecimento" id="" placeholder="Endereço.this">
+                        <input type="text" name="endereco" id="" placeholder="Endereço">
                     </section>
                     <section class="SelectProfissionais">
                         <div id="AbaSelectProfissionais">Profisisonais</div>
                         <section class="ContainerProfissionaisNames">
                             {{#each profissionais}}
                                 <label class="LabelCheckBoxAddProfissional">
-                                    <input type="checkbox" name="profissionais" value="{{name}}">
+                                    <input type="checkbox" name="profissionais" value="{{_id}}">
                                     {{name}}
                                 </label>
                             {{else}}

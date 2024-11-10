@@ -8,7 +8,7 @@ const ProfissionaisModel = require("../models/profissional")
 const {eAdmin} = require("../helpers/eAdmin")
 
 router.get("/estabelecimentos", eAdmin, (req, res) => {
-    EstabelecimentoModel.find({ userId: req.user.id }).lean().then((estab) => {
+    EstabelecimentoModel.find({ userId: req.user.id }).populate("profissionais").lean().then((estab) => {
         res.render("admin/estabelecimentos/estabelecimentos", { estab, user: req.user});
     }).catch((err) => {
         console.log(err);
@@ -18,44 +18,34 @@ router.get("/estabelecimentos", eAdmin, (req, res) => {
 });
 
 router.get("/addestabelecimento", eAdmin, (req, res) => {
-    try {
-        const [estab, prof] = Promise.all([
-            EstabelecimentoModel.find({ userId: req.user.id }).lean(),
-            ProfissionaisModel.find({ userId: req.user.id }).lean()
-        ]);
-        console.log(estab)
-
-        res.render("admin/estabelecimentos/estabelecimentos", { 
-            estab: estab,
-            profissionais: prof,
-            user: req.user
-        });
-    } catch (err) {
-        console.log(err);
-        req.flash("error_msg", "Houve um erro ao listar os estabelecimentos e profissionais");
-        res.redirect("/auth");
-    }
+    ProfissionaisModel.find({userId: req.user.id}).lean().then((profissionais)=>{
+        res.render("admin/estabelecimentos/addestabelecimento", {profissionais: profissionais})
+    }).catch((err)=>{
+        console.log("houve um erro ao renderizar a página de addestabelecimentos: "+ err)
+        res.redirect("/estabelecimentos")
+    })
 });
 
 router.post("/addestabelecimento", eAdmin, async (req, res) => {
-    const { nomeEstabelecimento, phoneEstabelecimento, endEstabelecimento, profissionais, horarioInicial, horarioFinal } = req.body;
+    const { nomeEstabelecimento, phoneEstabelecimento, endereco, profissionais, horarioInicial, horarioFinal } = req.body;
     const erros = [];
 
     if (!nomeEstabelecimento) erros.push({ texto: "Nome do estabelecimento é obrigatório." });
     if (!phoneEstabelecimento) erros.push({ texto: "Telefone do estabelecimento é obrigatório." });
-    if (!endEstabelecimento) erros.push({ texto: "Endereço do estabelecimento é obrigatório." });
+    if (!endereco) erros.push({ texto: "Endereço do estabelecimento é obrigatório." });
     if (!profissionais) erros.push({ texto: "Profissionais são obrigatórios." });
     if (!horarioInicial) erros.push({ texto: "Horário inicial é obrigatório." });
     if (!horarioFinal) erros.push({ texto: "Horário final é obrigatório." });
 
     if (erros.length > 0) {
+        console.log(erros)
         return res.render("admin/estabelecimentos/addestabelecimento", { erros });
     }
     try {
         const novoEstabelecimento = new EstabelecimentoModel({
             nomeEstabelecimento,
             phoneEstabelecimento,
-            endereco: endEstabelecimento,
+            endereco,
             profissionais,
             horarioInicial,
             horarioFinal,
@@ -76,7 +66,6 @@ router.get("/editestabelecimento/:id", eAdmin, async (req, res) => {
             EstabelecimentoModel.findOne({ _id: req.params.id }).lean(),
             ProfissionaisModel.find({ userId: req.user.id }).lean()
         ]);
-        console.log(estabelecimento)
 
         res.render("admin/estabelecimentos/editestabelecimento", { 
             estabelecimento: estabelecimento,
@@ -90,12 +79,12 @@ router.get("/editestabelecimento/:id", eAdmin, async (req, res) => {
 });
 
 router.post("/editestabelecimento/:id", eAdmin, async (req, res) => {
-    const { nomeEstabelecimento, phoneEstabelecimento, endEstabelecimento, profissionais, horarioInicial, horarioFinal, endereco } = req.body;
+    const { nomeEstabelecimento, phoneEstabelecimento, endereco, profissionais, horarioInicial, horarioFinal } = req.body;
     const erros = [];
 
     if (!nomeEstabelecimento) erros.push({ texto: "Nome do estabelecimento é obrigatório." });
     if (!phoneEstabelecimento) erros.push({ texto: "Telefone do estabelecimento é obrigatório." });
-    if (!endEstabelecimento) erros.push({ texto: "Endereço do estabelecimento é obrigatório." });
+    if (!endereco) erros.push({ texto: "Endereço do estabelecimento é obrigatório." });
     if (!profissionais) erros.push({ texto: "Profissionais são obrigatórios." });
     if (!horarioInicial) erros.push({ texto: "Horário inicial é obrigatório." });
     if (!horarioFinal) erros.push({ texto: "Horário final é obrigatório." });

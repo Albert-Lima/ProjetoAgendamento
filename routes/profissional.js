@@ -8,8 +8,8 @@ const ProfissionalModel = require("../models/profissional")
 const {eAdmin} = require("../helpers/eAdmin")
 
 router.get("/profissionais", eAdmin, (req, res) => {
-    EstabelecimentoModel.find({ userId: req.user.id }).lean().then((estab) => {
-        res.render("admin/profissionais/profissionais", { estab });
+    ProfissionalModel.find({ userId: req.user.id }).lean().then((profissionais) => {
+        res.render("admin/profissionais/profissionais", { profissionais: profissionais });
     }).catch((err) => {
         console.log(err);
         req.flash("error_msg", "Houve um erro ao listar os profissionais");

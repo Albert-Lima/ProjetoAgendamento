@@ -24,23 +24,19 @@
                 </div>
             </header>
             <section class="ConteinerInfoProfissionais">
-                {{#each estab}}
                     <section class="viewPanelProfissionais">
                         {{#each profissionais}}
                             <a href="" class="containerProfissional">
                                 <div>
                                     <div class="imgProfissional"></div>
-                                    <span>{{this}}</span>
+                                    <span>{{name}}</span>
                                 </div>
                                 <a href=""></a>
                             </a>
                         {{else}}
-                            sem profissionais cadastrados
+                            cadastre profissionais
                         {{/each}}
                     </section>
-                {{else}}
-                    erro ao conectar-se com o servidor
-                {{/each}}
                 <nav class="barBottomProfissionais">
                     <a href="/addprofissionais">Adicionar Profissional</a>
                 </nav>
