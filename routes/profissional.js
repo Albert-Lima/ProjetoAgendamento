@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 
 const EstabelecimentoModel = require("../models/estabelecimentos");
 const ProfissionalModel = require("../models/profissional")
+const ServicesModel = require("../models/service")
 
 const {eAdmin} = require("../helpers/eAdmin")
 
@@ -16,8 +17,15 @@ router.get("/profissionais", eAdmin, (req, res) => {
         res.redirect("/auth");
     });
 });
+
+
 router.get("/addprofissionais", eAdmin, (req, res)=>{
-    res.render("admin/profissionais/addprofissionais")
+    ServicesModel.find({userId: req.user.id}).lean().then((services)=>{
+        res.render("admin/profissionais/addprofissionais", {services: services})
+    }).catch((err)=>{
+        console.log(err)
+        res.redirect("/addprofissionais")
+    })
 })
 router.post("/addprofissionais", eAdmin, (req, res)=>{
     const { name, phone, services } = req.body;

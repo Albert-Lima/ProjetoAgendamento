@@ -34,22 +34,14 @@
                     <section class="SelectProfissionais">
                         <div id="AbaSelectProfissionais">Serviços</div>
                         <section class="ContainerProfissionaisNames">
-                            <label class="LabelCheckBoxAddProfissional">
-                                <input type="checkbox" name="services" value="services 1">
-                                Serviço 1
-                            </label>
-                            <label class="LabelCheckBoxAddProfissional">
-                                <input type="checkbox" name="services" value="services 2">
-                                Serviço 2
-                            </label>
-                            <label class="LabelCheckBoxAddProfissional">
-                                <input type="checkbox" name="services"  value="services 3">
-                                Serviço 3
-                            </label>
-                            <label class="LabelCheckBoxAddProfissional">
-                                <input type="checkbox" name="services" value="services 4">
-                                Serviço 4
-                            </label>
+                            {{#each services}}
+                                <label class="LabelCheckBoxAddProfissional">
+                                    <input type="checkbox" name="services" value="{{_id}}">
+                                    {{name}}
+                                </label>
+                            {{else}}
+                                <a href="/addservice">adicionar serviço</a>
+                            {{/each}}
                         </section>
                     </section>
                 </form>

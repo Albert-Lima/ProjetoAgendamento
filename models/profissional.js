@@ -10,10 +10,7 @@ const Profissional = new Schema({
         type: String,
         required: true
     },
-    services: {
-        type: [String],
-        default: []
-    },
+    services: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Services', default: [] }],
     userId: { type: mongoose.Schema.Types.ObjectId, ref: "Users", required: true }
 })
 

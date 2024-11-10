@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="addEstabelecimento.css">
     <title>Serviços</title>
 </head>
 <body>
@@ -24,7 +25,9 @@
             </div>
         </header>
         <nav class="navPanelService">
-            <button class="buttonNavHeader"><img src="/images/icons8-adicionar-100.webp" alt="adicionar serviço"></button>
+            <button class="buttonNavHeader" type="button" id="openFormService">
+                <img src="/images/icons8-adicionar-100.webp" alt="adicionar serviço">
+            </button>
         </nav>
         <section class="ConteinerInfo">
             <section class="viewPanel">
@@ -33,8 +36,41 @@
         </section>
     </main>
 
-    <section class="">
-
+    <section class="poupUpForm" id="containerFormService">
+        <section class="containerForm">
+            <header>
+                <p class="titleForm">Novo Serviço</p>
+                <button type="button" class="buttonClosePoupUp" id="closeFormService"><img src="/images/icons8-excluir-50.png" alt="fechar formulário"></button>
+            </header>
+            <form action="/addservice" method="post" class="formMain">
+                <section class="partForm">
+                    <h2>serviço</h2>
+                    <input type="text" name="name" class="inputName" placeholder="nome">
+                    <textarea name="description" class="textArea" placeholder="descrição"></textarea>
+                </section>
+                <section class="partForm">
+                    <h2>valor</h2>
+                    <input type="number" min="0" name="value">
+                </section>
+                <button type="submit" class="buttonSaveSubmit">salvar</button>
+            </form>
+        </section>
     </section>
+
+    <script>
+        var openFormService = document.querySelector("#openFormService")
+        var closeFormService = document.querySelector("#closeFormService")
+        var containerFormService = document.querySelector("#containerFormService")
+
+        function openForm(){
+            containerFormService.style.display = "flex"
+        }
+        openFormService.addEventListener("click", openForm)
+
+        function closeForm(){
+            containerFormService.style.display = "none"
+        }
+        closeFormService.addEventListener("click", closeForm)
+    </script>
 </body>
 </html>
