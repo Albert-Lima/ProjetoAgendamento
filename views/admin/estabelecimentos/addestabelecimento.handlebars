@@ -63,6 +63,19 @@
                             </span>
                         </div>
                     </section>
+                    <section class="diasFuncionamento">
+                        <h2 class="titleForm">Selecione os dias de funcionamento:</h2>
+                        <section class="ContainerDiasFuncionamento">
+                            {{#each dias}}
+                                <label class="LabelCheckBoxDias">
+                                    <input type="checkbox" name="diasFuncionamento" value="{{this}}">
+                                    {{this}}
+                                </label>
+                            {{else}}
+                                erros ao listar dias de funcionamento
+                            {{/each}}
+                        </section>
+                    </section>
                 </form>
             </section>
             <nav class="barRightAddEstabelecimentos">

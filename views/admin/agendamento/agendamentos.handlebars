@@ -25,9 +25,95 @@
         </header>
         <section class="ConteinerInfo">
             <section class="viewPanel">
-                
+                <header class="headerAgendamentos">
+                    <div class="selectPeriodBox">
+                        <button id="buttonAll" class="selectPeriodBox_selected">Todos</button>
+                        <button id="buttonWeek" class="selectPeriodBox_no_selected">Semanal</button>
+                    </div>
+                    <div class="containerBttAddAgendamento">
+                        <button class="buttonAddAgendamento" type="button" id="openFormAgendamento">
+                            <img src="/images/icons8-adicionar-100.webp" alt="adicionar agendamento">
+                        </button>
+                    </div>
+                    <div class="containerSearch">
+                        <button class="buttonInputSearch" type="button" >
+                            <img src="/images/icons8-pesquisar-50.png" alt="pesquise">
+                        </button>
+                        <input type="search" autocomplete="on" class="inputContainerSearch">
+                    </div>
+                </header>
+                <section class="containerAgendamentos">
+                    {{#each agendamento}}
+                        <div></div>
+                    {{else}}
+                    {{/each}}
+                </section>
+            </section>
+        </section>
+        <section class="poupUpForm" id="containerFormAgendamento">
+            <section class="containerForm">
+                <header>
+                    <p class="titleForm">Novo Agendamento</p>
+                    <button type="button" class="buttonClosePoupUp" id="closeFormAgendamento"><img src="/images/icons8-excluir-50.png" alt="fechar formulário"></button>
+                </header>
+                <form action="/addagendamento" method="post" class="formMain">
+                    <section class="partForm">
+                        <h2>cliente</h2>
+                        <input type="text" name="nameClient" class="inputName" placeholder="nome">
+                        <input type="number" name="phoneClient" class="inputName" placeholder="whatsapp">
+                    </section>
+                    <section class="partForm">
+                        <section class="selectBox">
+                            <div class="selectBoxHeader">Serviços</div>
+                            <section class="containerOptions">
+                                {{#each services}}
+                                    <label class="LabelCheckBoxAddProfissional">
+                                        <input type="checkbox" name="profissionais" value="{{_id}}">
+                                        {{name}}
+                                    </label>
+                                {{else}}
+                                    <a href="/servicos">Cadastre Serviços</a>
+                                {{/each}}
+                            </section>
+                        </section>
+                    </section>
+                    <button type="submit" class="buttonSaveSubmit">salvar</button>
+                </form>
             </section>
         </section>
     </main>
+    <script>
+        const inputContainerSearch = document.querySelector(".inputContainerSearch")
+        const buttonInputSearch = document.querySelector(".buttonInputSearch")
+
+        function openSearch(){
+            inputContainerSearch.style.transition = "1s"
+            inputContainerSearch.style.width = "200px"
+
+            buttonInputSearch.removeEventListener("click", openSearch)
+            buttonInputSearch.addEventListener("click", closeSeach)
+            function closeSeach(){
+                inputContainerSearch.style.width = "0px"
+
+                buttonInputSearch.addEventListener("click", openSearch)
+                buttonInputSearch.removeEventListener("click", closeSeach)
+            }
+        }
+        buttonInputSearch.addEventListener("click", openSearch)
+
+        var openFormAgendamento = document.querySelector("#openFormAgendamento")
+        var closeFormAgendamento = document.querySelector("#closeFormAgendamento")
+        var containerFormAgendamento = document.querySelector("#containerFormAgendamento")
+
+        function openForm(){
+            containerFormAgendamento.style.display = "flex"
+        }
+        openFormAgendamento.addEventListener("click", openForm)
+
+        function closeForm(){
+            containerFormAgendamento.style.display = "none"
+        }
+        closeFormAgendamento.addEventListener("click", closeForm)
+    </script>
 </body>
 </html>
