@@ -409,6 +409,52 @@ body{
     align-items: center;
     justify-content: center;
 }
+.sectionServices{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    gap: 10px;
+    width: 100%;
+}
+.containerService{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    gap: 30px;
+    width: calc(100% - 60px);
+    border: 1px solid rgb(196, 196, 196);
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.103);
+    position: relative;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 12pt;
+    font-weight: 500;
+}
+.nameService{
+    width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    border-right: 1px solid black;
+}
+.descriptionService{
+    width: 50%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    border-right: 1px solid black;
+    color: rgb(119, 119, 119);
+    font-weight: 400;
+}
+.valueService{
+    position: absolute;
+    right: 10px;
+}
 
 .buttonNavHeader img{
     height: 30px;

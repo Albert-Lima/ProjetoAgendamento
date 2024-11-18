@@ -7,7 +7,13 @@ const {eAdmin} = require("../helpers/eAdmin")
 const ServicesModel = require("../models/service")
 
 router.get("/servicos", eAdmin, (req, res) => {
-    res.render("admin/services/servicos");
+    ServicesModel.find({ userId: req.user.id }).lean().then((services) => {
+        res.render("admin/services/servicos", { services: services });
+    }).catch((err) => {
+        console.log(err);
+        req.flash("error_msg", "Houve um erro ao listar os serviços");
+        res.redirect("/auth");
+    });
 });
 router.post("/addservice", eAdmin, (req, res)=>{
     const {name, description, value} = req.body
@@ -29,7 +35,7 @@ router.post("/addservice", eAdmin, (req, res)=>{
             userId: req.user.id
         });
         novoServico.save();
-        res.redirect("/profissionais");
+        res.redirect("/servicos");
     } catch (err) {
         console.error("Erro ao salvar estabelecimento:", err);
         res.status(500).send("Erro ao salvar estabelecimento.");

@@ -31,7 +31,22 @@
         </nav>
         <section class="ConteinerInfo">
             <section class="viewPanel">
-
+                <section class="sectionServices">
+                    {{#each services}}
+                    <div class="containerService">
+                        <div class="nameService">
+                            {{name}}
+                        </div>
+                        <div class="descriptionService">
+                            {{description}}
+                        </div>
+                        <div class="valueService">
+                            {{value}} R$
+                        </div>
+                    </div>
+                    {{else}}
+                    {{/each}}
+                </section>
             </section>
         </section>
     </main>
