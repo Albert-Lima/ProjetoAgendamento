@@ -43,8 +43,24 @@
                     </div>
                 </header>
                 <section class="containerAgendamentos">
-                    {{#each agendamento}}
-                        <div></div>
+                    {{#each agendamentos}}
+                        <section class="boxAgendamento">
+                            <div>
+                                <h2>Cliente</h2>
+                                <span>{{nameClient}}</span>
+                                <span>{{phoneClient}}</span>
+                            </div>
+                            <div>
+                                <h2>Serviço</h2>
+                                <span>{{service.name}}</span>
+                                <span>{{service.value}}</span>
+                            </div>
+                            <div>
+                                <h2>Profissional</h2>
+                                <span>{{profissional.name}}</span>
+                                <span>{{profissional.phone}}</span>
+                            </div>
+                        </section>
                     {{else}}
                     {{/each}}
                 </section>
@@ -67,12 +83,27 @@
                             <div class="selectBoxHeader">Serviços</div>
                             <section class="containerOptions">
                                 {{#each services}}
-                                    <label class="LabelCheckBoxAddProfissional">
-                                        <input type="checkbox" name="profissionais" value="{{_id}}">
+                                    <label class="LabelCheckBoxAddOptions">
+                                        <input type="checkbox" class="serviceCheckbox" name="service" value="{{_id}}">
                                         {{name}}
                                     </label>
                                 {{else}}
                                     <a href="/servicos">Cadastre Serviços</a>
+                                {{/each}}
+                            </section>
+                        </section>
+                    </section>
+                    <section class="partForm">
+                        <section class="selectBox">
+                            <div class="selectBoxHeader">Profissionais</div>
+                            <section class="containerOptions">
+                                {{#each profissionais}}
+                                    <label class="LabelCheckBoxAddOptions profissionalLabels" data-services="{{#each services}}{{_id}},{{/each}}">
+                                        <input type="checkbox" name="profissional" value="{{_id}}">
+                                        {{name}}
+                                    </label>
+                                {{else}}
+                                    <a href="/servicos">Cadastre Profissionais</a>
                                 {{/each}}
                             </section>
                         </section>
@@ -114,6 +145,88 @@
             containerFormAgendamento.style.display = "none"
         }
         closeFormAgendamento.addEventListener("click", closeForm)
+
+
+        //checkboxes
+        document.addEventListener('DOMContentLoaded', function () {
+            // Seleciona todos os `selectBox` na página
+            const selectBoxes = document.querySelectorAll('.selectBox');
+
+            // Itera sobre cada `selectBox`
+            selectBoxes.forEach(selectBox => {
+                const containerOptions = selectBox.querySelector('.containerOptions');
+                const labels = containerOptions.querySelectorAll('.LabelCheckBoxAddOptions');
+
+                labels.forEach(label => {
+                    label.addEventListener('click', function () {
+                        const checkbox = this.querySelector('input[type="checkbox"]');
+                        if (!checkbox) return;
+
+                        // Desmarca todos os checkboxes dentro do container atual
+                        const allCheckboxes = containerOptions.querySelectorAll('input[type="checkbox"]');
+                        allCheckboxes.forEach(cb => {
+                            cb.checked = false;
+                            cb.closest('.LabelCheckBoxAddOptions').classList.remove('active');
+                        });
+
+                        // Marca o checkbox associado à label clicada
+                        checkbox.checked = true;
+                        this.classList.add('active'); // Adiciona a classe 'active' somente ao clicado
+                    });
+                });
+            });
+
+
+
+            const serviceCheckboxes = document.querySelectorAll('.serviceCheckbox');
+            const profissionalLabels = document.querySelectorAll('.profissionalLabels');
+
+            // Função para obter os serviços selecionados
+            function getSelectedServices() {
+                const selectedServices = [];
+                serviceCheckboxes.forEach(checkbox => {
+                    if (checkbox.checked) {
+                        selectedServices.push(checkbox.value);  // Armazena o ID dos serviços selecionados
+                    }
+                });
+                return selectedServices;
+            }
+
+            // Função para filtrar profissionais com base nos serviços selecionados
+            function filterProfessionals() {
+                const selectedServices = getSelectedServices();  // Obtém os serviços selecionados
+
+                profissionalLabels.forEach(label => {
+                    const dataServices = label.getAttribute('data-services');
+                    if (!dataServices) {
+                        // Se o atributo data-services não existe, ignore este profissional
+                        label.style.display = 'none';
+                        return;
+                    }
+
+                    // Converte os IDs dos serviços do profissional em um array
+                    const profissionalServices = dataServices.split(',').map(id => id.trim());  
+
+                    // Verifica se o profissional oferece algum dos serviços selecionados
+                    const isVisible = selectedServices.length === 0 || profissionalServices.some(service => selectedServices.includes(service));
+
+                    if (isVisible) {
+                        label.style.display = 'block';  // Exibe o profissional
+                    } else {
+                        label.style.display = 'none';   // Esconde o profissional
+                    }
+                });
+            }
+
+            // Adiciona evento para filtrar os profissionais sempre que um serviço for alterado
+            serviceCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', filterProfessionals);  // Filtro ativado quando um serviço é marcado/desmarcado
+            });
+
+            // Inicializa a filtragem quando a página carrega
+            filterProfessionals()  // Inicializa a filtragem no carregamento
+        });
+ 
     </script>
 </body>
 </html>

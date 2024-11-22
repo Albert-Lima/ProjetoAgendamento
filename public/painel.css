@@ -654,7 +654,109 @@ body{
 }
 
 .selectBox{
+    width: calc(100% + 20px) ;
+    height: 200px;
+    padding: 0px;
+    border-radius: 20px;
+    border: 1px solid rgb(224, 224, 224);
+    box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.11);
+}
+.selectBoxHeader{
+    height: 30px;
     width: 100%;
+    background-color: gray;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 10pt;
+    font-weight: 500;
+    color: white;
+}
+.containerOptions{
+    height: calc(100% - 35px);
+    width: calc(100% - 20px);
+    margin: auto;
+    gap: 5px;
+    overflow-y: scroll;
+
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    gap: 5px;
+}
+
+.LabelCheckBoxAddOptions{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
     padding: 10px;
-    background-color: green;
+    gap: 20px;
+    width: calc(100% - 32px);
+    border: 1px solid var(--var-DarkGreen);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    cursor: pointer;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: inline-block;
+    margin: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.LabelCheckBoxAddOptions input[type="checkbox"] {
+    display: none;
+}
+.LabelCheckBoxAddOptions:hover {
+    background-color: #f0f0f0;
+    color: black;
+}
+
+.LabelCheckBoxAddOptions.active {
+    background-color: #4CAF50;
+    color: white;
+}
+.LabelCheckBoxAddOptions.active:hover{
+    background-color: #266e28;
+    color: white;
+}
+
+/*main panel agendamentos*/
+.containerAgendamentos{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    gap: 8px;
+    width: calc(100% - 40px);
+    height: calc(100% - 80px);
+    overflow-y: scroll;
+}
+.boxAgendamento{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    gap: 20px;
+    border: 1px solid rgb(208, 208, 208);
+    box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.044);
+    width: calc(100% - 2px);
+    height: 200px;
+    border-radius: 10px;
+}
+.boxAgendamento div{
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 30%;
+    height: 120px;
+}
+.boxAgendamento div h2{
+    text-align: center;
+    transform: translateY(10px);
 }

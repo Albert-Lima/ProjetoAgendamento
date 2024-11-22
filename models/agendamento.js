@@ -6,12 +6,20 @@ const Agendamentos = new Schema({
         type: String,
         required: true
     },
-    whatsappClient:{
+    phoneClient:{
         type: Number,
         required: true
     },
-    profissionais: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Profissional', default: [] }],
-    services: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Services', default: [] }],
+    profissional: {
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'Profissional' ,
+        required: true
+    },
+    service: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'Services' ,
+        required: true
+    },
     userId: { 
         type: mongoose.Schema.Types.ObjectId, 
         ref: "Users", 
@@ -19,4 +27,4 @@ const Agendamentos = new Schema({
     }
 })
 
-module.exports = mongoose.model("Services", Services)
+module.exports = mongoose.model("Agendamentos", Agendamentos)
