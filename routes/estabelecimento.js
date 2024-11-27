@@ -21,7 +21,7 @@ router.get("/addestabelecimento", eAdmin, (req, res) => {
     ProfissionaisModel.find({ userId: req.user.id }).lean()
         .then((profissionais) => {
             
-            const dias = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab', 'Dom'];
+            const dias = ['seg', 'ter', 'qua', 'qui', 'sex', 'sáb', 'dom'];
 
             res.render("admin/estabelecimentos/addestabelecimento", {
                 profissionais: profissionais,

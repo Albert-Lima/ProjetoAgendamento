@@ -4,6 +4,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .selected-label {
+            background-color: #28a745; /* Verde */
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+.calendar-container {
+  text-align: center;
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 400px;
+}
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.navigation button {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.navigation button:hover {
+  background: #0056b3;
+}
+
+#calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+.day, .day-header {
+  padding: 10px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.day-header {
+  font-weight: bold;
+  background: #007bff;
+  color: white;
+  border-radius: 5px;
+}
+
+.day {
+  background: #eaeaea;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.day.disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.day:hover:not(.disabled) {
+  background: #007bff;
+  color: #fff;
+}
+
+.day.selected {
+  background: #28a745;
+  color: #fff;
+}
+
+.containerHour{
+    height: 30px;
+    width: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.containerHour div{
+    font-size: 10pt;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 400;
+    color: black;
+}
+
+    </style>
     <title>Estabelecimentos</title>
 </head>
 <body>
@@ -60,6 +151,11 @@
                                 <span>{{profissional.name}}</span>
                                 <span>{{profissional.phone}}</span>
                             </div>
+                            <div>
+                                <h2>Detalhes</h2>
+                                <span>{{formatDate data}}</span>
+                                <span>{{horario}}</span>
+                            </div>
                         </section>
                     {{else}}
                     {{/each}}
@@ -108,11 +204,231 @@
                             </section>
                         </section>
                     </section>
+                    <section class="partForm">
+                        <div class="calendar-container">
+                            <h1 id="current-month">Mês Atual</h1>
+                            <div class="navigation">
+                                <button id="prev-month" type="button">&lt; Mês Anterior</button>
+                                <button id="next-month" type="button">Próximo Mês &gt;</button>
+                            </div>
+                            <div id="calendar"></div>
+                            <p id="selected-date"></p>
+                        </div>
+                    </section>
+                    <section class="partForm">
+                        <div id="data-container">
+
+                        </div>
+                        <div id="horarios-container">
+
+                        </div>
+                    </section>
+                    
                     <button type="submit" class="buttonSaveSubmit">salvar</button>
                 </form>
             </section>
         </section>
     </main>
+    <!--Script para o funcionamento do calendário-->
+    <script>
+        const calendarElement = document.getElementById("calendar");
+        const selectedDateElement = document.getElementById("selected-date");
+        const prevMonthButton = document.getElementById("prev-month");
+        const nextMonthButton = document.getElementById("next-month");
+        const currentMonthElement = document.getElementById("current-month");
+
+        // Variáveis para acompanhar o mês e ano exibidos
+        let currentDate = new Date();
+
+        // Nomes dos meses e dias da semana
+        const monthNames = [
+        "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+        "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+        ];
+        const dayNames = ["dom", "seg", "ter", "qua", "qui", "sex", "sab"];
+
+        // Função para criar o cabeçalho com os dias da semana
+        const createDayHeaders = () => {
+        dayNames.forEach(day => {
+            const dayHeader = document.createElement("div");
+            dayHeader.classList.add("day-header");
+            dayHeader.textContent = day;
+            calendarElement.appendChild(dayHeader);
+        });
+        };
+
+        // Função para criar o calendário
+        const createCalendar = () => {
+        calendarElement.innerHTML = ""; // Limpar calendário existente
+
+        // Atualizar o título com o mês e ano
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth();
+        currentMonthElement.textContent = `${monthNames[month]} ${year}`;
+
+        createDayHeaders();
+
+        const firstDayOfMonth = new Date(year, month, 1).getDay(); // Dia da semana do 1º dia do mês
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const today = new Date();
+
+        // Adicionar células vazias para os dias antes do início do mês
+        for (let i = 0; i < firstDayOfMonth; i++) {
+            const emptyCell = document.createElement("div");
+            emptyCell.classList.add("day");
+            emptyCell.style.visibility = "hidden";
+            calendarElement.appendChild(emptyCell);
+        }
+
+        // Adicionar os dias do mês
+        for (let day = 1; day <= daysInMonth; day++) {
+            const date = new Date(year, month, day);
+            const dayElement = document.createElement("div");
+            dayElement.classList.add("day");
+            dayElement.textContent = day;
+
+            // Desabilitar dias anteriores ao dia atual no mês atual
+            if (year === today.getFullYear() && month === today.getMonth() && day < today.getDate()) {
+                dayElement.classList.add("disabled");
+            } else {
+                dayElement.addEventListener("click", () => selectDate(date, dayElement));
+            }
+
+            calendarElement.appendChild(dayElement);
+        }
+        };
+
+        // Função para selecionar a data
+        const selectDate = (date, dayElement) => {
+        const previouslySelected = document.querySelector(".day.selected");
+            if (previouslySelected) {
+                previouslySelected.classList.remove("selected");
+            }
+
+            dayElement.classList.add("selected");
+
+            const formattedDate = `${date.getDate().toString().padStart(2, "0")}/${(date.getMonth() + 1).toString().padStart(2, "0")}`;
+            const dayOfWeek = dayNames[date.getDay()];
+
+            selectedDateElement.textContent = `Data selecionada: ${formattedDate}, ${dayOfWeek}`;
+
+            const dataContainer = document.getElementById('data-container')
+            dataContainer.innerHTML = ""
+            dataContainer.innerHTML = "<input type='hidden' name='data' value="+formattedDate+">"
+
+            var infoDay = {
+                diaMes: formattedDate,
+                diaSemana: dayOfWeek
+            }
+
+            // Enviar dados para o servidor
+            fetch('http://localhost:8081/agendamentos/verifyDays', {
+                method: 'POST', 
+                headers: {
+                    'Content-Type': 'application/json' 
+                },
+                body: JSON.stringify(infoDay) 
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Erro na requisição: ${response.statusText}`);
+                    }
+                    return response.json(); // Converte a resposta em JSON
+                })
+                .then(data => {
+                    console.log('Resposta do servidor:', data); // Exibe a resposta completa do servidor
+
+                    // Verifica se a resposta contém horários disponíveis
+                    if (data.status === 'sucesso' && data.horariosDisponiveis) {
+                        renderAvailableTimes(data.horariosDisponiveis); // Passa os horários disponíveis para exibir no front-end
+                    } else {
+                        console.log('Nenhum horário disponível foi retornado.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao enviar os dados para o servidor:', error);
+                });
+        };
+        const enableSingleSelection = () => {
+            const horariosContainer = document.getElementById('horarios-container');
+            
+            horariosContainer.addEventListener('change', (event) => {
+                if (event.target.type === 'checkbox' && event.target.name === 'horario') {
+                    // Desmarcar todos os outros checkboxes e remover a classe verde das labels
+                    const checkboxes = horariosContainer.querySelectorAll("input[type='checkbox'][name='horario']");
+                    checkboxes.forEach(checkbox => {
+                        const label = checkbox.closest('label');
+                        if (label) {
+                            label.classList.remove('selected-label');
+                        }
+                        if (checkbox !== event.target) {
+                            checkbox.checked = false;
+                        }
+                    });
+
+                    // Adicionar classe verde à label do checkbox selecionado
+                    if (event.target.checked) {
+                        const selectedLabel = event.target.closest('label');
+                        if (selectedLabel) {
+                            selectedLabel.classList.add('selected-label');
+                        }
+                    }
+                }
+            });
+        };
+
+        // rederizar os horários
+        const renderAvailableTimes = (horarios) => {
+        const horariosContainer = document.getElementById('horarios-container');
+        
+
+        // Limpa os horários anteriores
+        horariosContainer.innerHTML = '';
+
+        if (horarios.length > 0) {
+            horariosContainer.innerHTML = `<h3>Horários disponíveis:</h3>`;
+            const list = document.createElement('ul');
+            horarios.forEach(horario => {
+                const listItem = document.createElement('div');
+                listItem.classList.toggle('containerHour')
+                listItem.innerHTML = "<label class='LabelCheckBoxAddOptions'><input type='checkbox' name='horario' value="+horario+">"+horario+"h</label>"
+                list.appendChild(listItem);
+
+            });
+            horariosContainer.appendChild(list);
+
+
+            enableSingleSelection()
+        } else {
+            horariosContainer.innerHTML = `<p>Não há horários disponíveis para esta data.</p>`;
+        }
+    };
+
+        // Função para alterar o mês
+        const changeMonth = (direction) => {
+            currentDate.setMonth(currentDate.getMonth() + direction);
+            createCalendar();
+        };
+
+        // Adicionar eventos aos botões de navegação
+        prevMonthButton.addEventListener("click", () => {
+            const today = new Date();
+            if (
+                currentDate.getFullYear() > today.getFullYear() ||
+                (currentDate.getFullYear() === today.getFullYear() && currentDate.getMonth() > today.getMonth())
+            ) {
+                changeMonth(-1);
+            }
+        });
+
+        nextMonthButton.addEventListener("click", () => {
+            changeMonth(1);
+        });
+
+        // Inicializar o calendário
+        createCalendar();
+
+    </script>
     <script>
         const inputContainerSearch = document.querySelector(".inputContainerSearch")
         const buttonInputSearch = document.querySelector(".buttonInputSearch")

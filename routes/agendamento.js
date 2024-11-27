@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
+const moment = require("moment")
 
 const {eAdmin} = require("../helpers/eAdmin")
 const EstabelecimentoModel = require("../models/estabelecimentos")
@@ -8,31 +9,109 @@ const ProfissionalModel = require("../models/profissional")
 const AgendamentoModel = require("../models/agendamento")
 const ServicesModel = require("../models/service")
 
-router.get("/agendamentos", eAdmin, (req, res) => {
-    const servicesPromise = ServicesModel.find({ userId: req.user.id });
-    const profissionaisPromise = ProfissionalModel.find({ userId: req.user.id });
-    const agendamentosPromise = AgendamentoModel.find({userId: req.user.id}).populate('service profissional')
+router.post("/agendamentos/verifyDays", eAdmin, async (req,res)=>{
+    try {
+        const receivedData = req.body;
+        let selectedDate = receivedData.diaMes; // Formato esperado: "DD/MM"
 
-    Promise.all([servicesPromise, profissionaisPromise, agendamentosPromise])
-        .then(([services, profissionais, agendamentos]) => {
-            res.render("admin/agendamento/agendamentos", {
-                services: services,
-                profissionais: profissionais,
-                agendamentos: agendamentos
+        // Garantir que o momento use o formato correto
+        const currentYear = new Date().getFullYear(); // Ano atual
+        selectedDate = moment(`${selectedDate}/${currentYear}`, "DD/MM/YYYY", true); // Formato explícito
+
+        if (!selectedDate.isValid()) {
+            return res.status(400).json({
+                status: 'erro',
+                message: 'Data inválida. Por favor, envie no formato DD/MM.',
             });
-        })
-        .catch((err) => {
-            console.log("Erro ao buscar serviços ou profissionais: " + err);
-            res.redirect("/estabelecimentos");
+        }
+
+        // Obter o dia da semana em português
+        moment.locale('pt-br');
+        const dayOfWeek = selectedDate.format('ddd').toLowerCase(); // Dia da semana em minúsculas
+
+        // Buscar o estabelecimento
+        const estabelecimento = await EstabelecimentoModel.findOne({ userId: req.user.id });
+        if (!estabelecimento) {
+            return res.status(404).json({ status: 'erro', message: 'Estabelecimento não encontrado' });
+        }
+
+        // Verificar se o dia selecionado é um dia de funcionamento
+        if (!estabelecimento.diasFuncionamento.includes(dayOfWeek)) {
+            return res.status(400).json({
+                status: 'erro',
+                message: `${dayOfWeek} não é um dia de funcionamento do estabelecimento.`,
+            });
+        }
+
+        // Configurações de horários do estabelecimento
+        const { horarioInicial, horarioFinal, intervaloTempo } = estabelecimento;
+
+        // Gerar todos os horários possíveis
+        const horariosPossiveis = [];
+        let horarioAtual = horarioInicial;
+
+        while (horarioAtual < horarioFinal) {
+            horariosPossiveis.push(horarioAtual);
+            horarioAtual += intervaloTempo;
+        }
+
+        // Buscar agendamentos já existentes para o dia selecionado
+        const agendamentos = await AgendamentoModel.find({
+            userId: req.user.id,
+            data: {
+                $gte: selectedDate.startOf('day').toDate(),
+                $lte: selectedDate.endOf('day').toDate(),
+            },
         });
+
+        // Identificar horários ocupados
+        const horariosOcupados = agendamentos.map(a => a.horario);
+
+        // Filtrar horários disponíveis
+        const horariosDisponiveis = horariosPossiveis.filter(horario => !horariosOcupados.includes(Number(horario)));
+
+        // Responder com os horários disponíveis
+        res.json({
+            status: 'sucesso',
+            horariosDisponiveis,
+        });
+    } catch (err) {
+        console.error('Erro ao verificar dias/horários:', err);
+        res.status(500).json({ status: 'erro', message: 'Erro interno no servidor' });
+    }
+})
+
+router.get("/agendamentos", eAdmin, async (req, res) => {
+    try {
+        const servicesPromise = ServicesModel.find({ userId: req.user.id });
+        const profissionaisPromise = ProfissionalModel.find({ userId: req.user.id });
+        const agendamentosPromise = AgendamentoModel.find({ userId: req.user.id }).populate('service profissional'); 
+
+        const [services, profissionais, agendamentos] = await Promise.all([
+            servicesPromise,
+            profissionaisPromise,
+            agendamentosPromise,
+        ]);
+
+        res.render("admin/agendamento/agendamentos", {
+            services,
+            profissionais,
+            agendamentos
+        });
+    } catch (err) {
+        console.error("Erro ao listar agendamentos:", err);
+        res.redirect("/estabelecimentos");
+    }
 });
 
-router.post("/addagendamento", eAdmin, async (req, res)=>{
+router.post("/addagendamento", eAdmin, async (req, res) => {
     const { 
         nameClient, 
         phoneClient, 
         service, 
         profissional,
+        horario,
+        data // String no formato "dd mm"
     } = req.body;
 
     const erros = [];
@@ -41,6 +120,8 @@ router.post("/addagendamento", eAdmin, async (req, res)=>{
     if (!phoneClient) erros.push({ texto: "Telefone do cliente é obrigatório." });
     if (!service) erros.push({ texto: "Selecione um serviço" });
     if (!profissional || profissional.length === 0) erros.push({ texto: "Profissionais são obrigatórios." });
+    if (!horario) erros.push({ texto: "Selecione um horário" });
+    if (!data) erros.push({ texto: "Data não recebida" });
 
     if (erros.length > 0) {
         console.log(erros);
@@ -48,11 +129,27 @@ router.post("/addagendamento", eAdmin, async (req, res)=>{
     }
 
     try {
+        // Obter o ano atual
+        const currentYear = new Date().getFullYear();
+
+        // Transformar a string de data em um objeto Date
+        const [day, month] = data.split("/").map(Number); // Divide a string e converte os valores
+        const formattedDate = new Date(currentYear, month - 1, day); // Cria o objeto Date (mês começa em 0)
+
+        // Validação extra: Verificar se a data é válida
+        if (isNaN(formattedDate.getTime())) {
+            erros.push({ texto: "Data inválida." });
+            return res.render("admin/agendamento/agendamentos", { erros });
+        }
+
+        // Criação do agendamento
         const novoAgendamento = new AgendamentoModel({
             nameClient, 
             phoneClient, 
             service, 
             profissional,
+            horario,
+            data: formattedDate, // Salva a data transformada
             userId: req.user.id
         });
 
@@ -62,7 +159,7 @@ router.post("/addagendamento", eAdmin, async (req, res)=>{
         console.error("Erro ao salvar agendamento:", err);
         res.status(500).send("Erro ao salvar agendamento.");
     }
-})
+});
 
 
 module.exports = router

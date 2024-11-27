@@ -4,6 +4,7 @@ const bodyParser = require("body-parser")
 const mongoose = require("mongoose")
 const path = require("path")
 const app = express()
+const moment = require("moment")
 
 const passport = require("passport")
 require("./config/passport.js")
@@ -19,7 +20,13 @@ require("./config/passport.js")
     app.use(express.static(path.join(__dirname,"public" )))
     //Template Engine(Handlebars)
     app.engine('handlebars', handlebars.engine(
-        {defaultLayout: 'main',
+        {
+        helpers: {
+            formatDate: (date) => {
+                return moment(date).format('DD/MM');
+            },
+        },
+        defaultLayout: 'main',
         runtimeOptions: {
             allowProtoPropertiesByDefault: true,
             allowProtoMethodsByDefault: true

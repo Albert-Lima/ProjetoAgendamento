@@ -20,6 +20,14 @@ const Agendamentos = new Schema({
         ref: 'Services' ,
         required: true
     },
+    data: {
+        type: Date,
+        required: true
+    },
+    horario: {
+        type: Number,
+        required: true
+    },
     userId: { 
         type: mongoose.Schema.Types.ObjectId, 
         ref: "Users", 
