@@ -38,8 +38,8 @@ router.post("/agendamentos/verifyDays", eAdmin, async (req,res)=>{
         // Verificar se o dia selecionado é um dia de funcionamento
         if (!estabelecimento.diasFuncionamento.includes(dayOfWeek)) {
             return res.status(400).json({
-                status: 'erro',
-                message: `${dayOfWeek} não é um dia de funcionamento do estabelecimento.`,
+                status: 'sucesso',
+                message: "não é um dia de funcionamento"
             });
         }
 
@@ -68,8 +68,11 @@ router.post("/agendamentos/verifyDays", eAdmin, async (req,res)=>{
         const horariosOcupados = agendamentos.map(a => a.horario);
 
         // Filtrar horários disponíveis
-        const horariosDisponiveis = horariosPossiveis.filter(horario => !horariosOcupados.includes(Number(horario)));
-
+        if(!estabelecimento.diasFuncionamento.includes(dayOfWeek)){
+            horariosDisponiveis = ["não há horários disponíveis"]
+        }else{
+            horariosDisponiveis = horariosPossiveis.filter(horario => !horariosOcupados.includes(Number(horario)));
+        }
         // Responder com os horários disponíveis
         res.json({
             status: 'sucesso',

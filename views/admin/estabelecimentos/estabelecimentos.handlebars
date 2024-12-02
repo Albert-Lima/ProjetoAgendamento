@@ -20,10 +20,10 @@
             </div>
             <div class="infoUsuario">
                 {{#if user}}
-                <span>{{user.name}}</span>
-                <span class="userPicture"><!--<img src="/images/icons8-adicionar-usuário-masculino-90.webp" alt="imagem do usuário">--></span>
+                    <span>{{user.name}}</span>
+                    <span class="userPicture"><!--<img src="/images/perfilGendaiTeste.png" alt="imagem do usuário">--></span>
                 {{else}}
-                erro ao carregar os dados
+                    erro ao carregar os dados
                 {{/if}}
             </div>
         </header>
@@ -41,7 +41,10 @@
                         </a>
                     </div>
                     <section class="containerDataEstab">
-                        <div><!--adicionar o gráfico aqui dentro--></div>
+                        <div class="sectionGraphic">
+                            <header>Agendamentos no mês</header>
+                            <canvas class="containerGraphic" id="myChart"></canvas>
+                        </div>
                         <div class="ContainerClassificacaoProf">
                             Profissionais com mais atendimentos
                             {{#each profissionais}}
@@ -49,7 +52,9 @@
                                     <a href=""><div></div>{{this.name}}</a>
                                 </span>
                             {{else}}
-                                Sem profissionais selecionados
+                                <span class="containerTopProfLinkAdd">
+                                    <a href="">ainda não há profissionais</a>
+                                </span>
                             {{/each}}
                         </div>
                     </section>
@@ -61,5 +66,51 @@
             </section>
         </section>
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script><!--Buscando o ChartJS-->
+
+    <!--Script para buscar os dados do Gráfico-->
+    <script>
+
+  // Faz a requisição para buscar os dados
+  document.addEventListener('DOMContentLoaded', () => {
+  fetch('/agendamentospordias')
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Erro na requisição');
+      }
+      return response.json();
+    })
+    .then((data) => {
+      const ctx = document.getElementById('myChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: data.labels, // Datas no eixo X
+          datasets: [{
+            label: 'Agendamentos',
+            data: data.data, // Quantidade no eixo Y
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1,
+          }],
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                stepSize: 1, // Define incrementos de 1
+                callback: function (value) {
+                  return Number.isInteger(value) ? value : ''; // Mostra apenas inteiros
+                },
+              }
+            },
+          },
+        },
+      });
+    })
+    .catch((error) => console.error('Erro ao buscar dados:', error));
+});
+    </script>
 </body>
 </html>

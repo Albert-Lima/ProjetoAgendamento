@@ -4,8 +4,61 @@ const mongoose = require("mongoose");
 
 const EstabelecimentoModel = require("../models/estabelecimentos");
 const ProfissionaisModel = require("../models/profissional")
-
+const AgendamentosModel = require("../models/agendamento")
 const {eAdmin} = require("../helpers/eAdmin")
+
+//api para renderizar os dados no gráfico
+router.get('/agendamentospordias', async (req, res) => {
+    try {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // Zerando o horário para comparar apenas datas
+      const startDate = new Date();
+      startDate.setDate(today.getDate() - 29); // Últimos 30 dias
+      startDate.setHours(0, 0, 0, 0); // Zerando o horário também
+  
+      // Buscar agendamentos dentro do intervalo
+      const agendamentos = await AgendamentosModel.find({
+        data: {
+          $gte: startDate,
+          $lte: today,
+        },
+      });
+  
+      // Geração da lista de dias (YYYY-MM-DD) para os últimos 30 dias
+      const dias = Array.from({ length: 30 }, (_, i) => {
+        const date = new Date(startDate);
+        date.setDate(startDate.getDate() + i);
+        return date.toISOString().split('T')[0]; // Formato YYYY-MM-DD
+      });
+  
+      // Inicializar array de contagem de agendamentos
+      const agendamentosPorDia = Array(30).fill(0);
+  
+      // Processar os agendamentos e preencher a contagem
+      agendamentos.forEach((agendamento) => {
+        const diaAgendamento = new Date(agendamento.data).toISOString().split('T')[0];
+        const index = dias.indexOf(diaAgendamento); // Localizar o índice no array `dias`
+        if (index !== -1) {
+          agendamentosPorDia[index]++; // Incrementar a contagem no dia correspondente
+        }
+      });
+  
+      // Retornar os dados formatados
+      res.json({
+        labels: dias, // Lista de dias no eixo X
+        data: agendamentosPorDia, // Contagem no eixo Y
+      });
+    } catch (error) {
+      console.error('Erro na rota /agendamentospordias:', error);
+      res.status(500).json({ message: 'Erro ao buscar agendamentos.' });
+    }
+  });
+  
+
+
+
+
+
 
 router.get("/estabelecimentos", eAdmin, (req, res) => {
     EstabelecimentoModel.find({ userId: req.user.id }).populate("profissionais").lean().then((estab) => {
