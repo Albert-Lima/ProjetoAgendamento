@@ -35,14 +35,6 @@ router.post("/agendamentos/verifyDays", eAdmin, async (req,res)=>{
             return res.status(404).json({ status: 'erro', message: 'Estabelecimento não encontrado' });
         }
 
-        // Verificar se o dia selecionado é um dia de funcionamento
-        if (!estabelecimento.diasFuncionamento.includes(dayOfWeek)) {
-            return res.status(400).json({
-                status: 'sucesso',
-                message: "não é um dia de funcionamento"
-            });
-        }
-
         // Configurações de horários do estabelecimento
         const { horarioInicial, horarioFinal, intervaloTempo } = estabelecimento;
 
@@ -69,15 +61,21 @@ router.post("/agendamentos/verifyDays", eAdmin, async (req,res)=>{
 
         // Filtrar horários disponíveis
         if(!estabelecimento.diasFuncionamento.includes(dayOfWeek)){
-            horariosDisponiveis = ["não há horários disponíveis"]
+            var horariosDisponiveis = ["o estabelecimento está fechado nesse dia!"]
+            // Responder com os horários disponíveis
+            res.json({
+                status: 'error',
+                horariosDisponiveis,
+            });
         }else{
-            horariosDisponiveis = horariosPossiveis.filter(horario => !horariosOcupados.includes(Number(horario)));
+            var horariosDisponiveis = horariosPossiveis.filter(horario => !horariosOcupados.includes(Number(horario)));
+            // Responder com os horários disponíveis
+            res.json({
+                status: 'sucesso',
+                horariosDisponiveis,
+            });
         }
-        // Responder com os horários disponíveis
-        res.json({
-            status: 'sucesso',
-            horariosDisponiveis,
-        });
+        
     } catch (err) {
         console.error('Erro ao verificar dias/horários:', err);
         res.status(500).json({ status: 'erro', message: 'Erro interno no servidor' });

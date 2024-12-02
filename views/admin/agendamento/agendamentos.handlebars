@@ -330,6 +330,7 @@
             })
                 .then(response => {
                     if (!response.ok) {
+                        console.log(response.json())
                         throw new Error(`Erro na requisição: ${response.statusText}`);
                     }
                     return response.json(); // Converte a resposta em JSON
@@ -341,7 +342,7 @@
                     if (data.status === 'sucesso' && data.horariosDisponiveis) {
                         renderAvailableTimes(data.horariosDisponiveis); // Passa os horários disponíveis para exibir no front-end
                     } else {
-                        console.log('Nenhum horário disponível foi retornado.');
+                        renderAvailableTimes(data.horariosDisponiveis)
                     }
                 })
                 .catch(error => {
@@ -378,30 +379,29 @@
 
         // rederizar os horários
         const renderAvailableTimes = (horarios) => {
-        const horariosContainer = document.getElementById('horarios-container');
-        
+            const horariosContainer = document.getElementById('horarios-container');
+            
+            horariosContainer.innerHTML = '';
+            if (horarios[0] === "o estabelecimento está fechado nesse dia!"){ //o valor deve ser exatamente a mensagem passada na api
+                horariosContainer.innerHTML = "<h3>"+horarios[0]+"</h3>";
+            } else if (horarios.length > 0) {
+                horariosContainer.innerHTML = `<h3>Horários disponíveis:</h3>`;
+                const list = document.createElement('ul');
+                horarios.forEach(horario => {
+                    const listItem = document.createElement('div');
+                    listItem.classList.toggle('containerHour')
+                    listItem.innerHTML = "<label class='LabelCheckBoxAddOptions'><input type='checkbox' name='horario' value="+horario+">"+horario+"h</label>"
+                    list.appendChild(listItem);
 
-        // Limpa os horários anteriores
-        horariosContainer.innerHTML = '';
-
-        if (horarios.length > 0) {
-            horariosContainer.innerHTML = `<h3>Horários disponíveis:</h3>`;
-            const list = document.createElement('ul');
-            horarios.forEach(horario => {
-                const listItem = document.createElement('div');
-                listItem.classList.toggle('containerHour')
-                listItem.innerHTML = "<label class='LabelCheckBoxAddOptions'><input type='checkbox' name='horario' value="+horario+">"+horario+"h</label>"
-                list.appendChild(listItem);
-
-            });
-            horariosContainer.appendChild(list);
+                });
+                horariosContainer.appendChild(list);
 
 
-            enableSingleSelection()
-        } else {
-            horariosContainer.innerHTML = `<p>Não há horários disponíveis para esta data.</p>`;
-        }
-    };
+                enableSingleSelection()
+            } else {
+                horariosContainer.innerHTML = `<p>Não há horários disponíveis para esta data.</p>`;
+            }
+        };
 
         // Função para alterar o mês
         const changeMonth = (direction) => {
