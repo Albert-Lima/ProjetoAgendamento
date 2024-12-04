@@ -28,6 +28,10 @@ const Agendamentos = new Schema({
         type: Number,
         required: true
     },
+    isDeleted: {
+        type: Boolean,
+        required: true
+    },
     userId: { 
         type: mongoose.Schema.Types.ObjectId, 
         ref: "Users", 

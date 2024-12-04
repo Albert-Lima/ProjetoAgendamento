@@ -9,6 +9,42 @@ const ProfissionalModel = require("../models/profissional")
 const AgendamentoModel = require("../models/agendamento")
 const ServicesModel = require("../models/service")
 
+
+
+
+
+// Rodar todos os dias à meia-noite
+const cron = require("node-cron")
+cron.schedule('0 0 * * *', async () => {
+    console.log('Executando cron job de teste...');
+    try {
+        const today = new Date(); // Data atual
+        const twoDaysAgo = new Date();
+        today.setDate(today.getDate() - 1)
+        twoDaysAgo.setDate(today.getDate() - 30); // Data de dois dias atrás
+
+        // Remover agendamentos com isDeleted: true e data <= dois dias atrás
+        const deletedAgendamentos = await AgendamentoModel.deleteMany({
+            isDeleted: true,
+            data: { $lte: twoDaysAgo }
+        });
+
+        // Remover agendamentos com isDeleted: false e data < hoje
+        const expiredAgendamentos = await AgendamentoModel.deleteMany({
+            isDeleted: false,
+            data: { $lt: today }
+        });
+
+        console.log(`Agendamentos removidos (isDeleted: true): ${deletedAgendamentos.deletedCount}`);
+        console.log(`Agendamentos removidos (isDeleted: false): ${expiredAgendamentos.deletedCount}`);
+    } catch (err) {
+        console.error('Erro ao remover agendamentos:', err);
+    }
+});
+
+
+
+
 router.post("/agendamentos/verifyDays", eAdmin, async (req,res)=>{
     try {
         const receivedData = req.body;
@@ -53,7 +89,7 @@ router.post("/agendamentos/verifyDays", eAdmin, async (req,res)=>{
             data: {
                 $gte: selectedDate.startOf('day').toDate(),
                 $lte: selectedDate.endOf('day').toDate(),
-            },
+            }
         });
 
         // Identificar horários ocupados
@@ -105,7 +141,7 @@ router.get("/agendamentos", eAdmin, async (req, res) => {
     }
 });
 
-router.post("/addagendamento", eAdmin, async (req, res) => {
+router.post("/addagendamentodirect", eAdmin, async (req, res) => {
     const { 
         nameClient, 
         phoneClient, 
@@ -150,6 +186,7 @@ router.post("/addagendamento", eAdmin, async (req, res) => {
             service, 
             profissional,
             horario,
+            isDeleted: true,
             data: formattedDate, // Salva a data transformada
             userId: req.user.id
         });

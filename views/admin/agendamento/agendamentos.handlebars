@@ -141,20 +141,44 @@
                                 <span>{{nameClient}}</span>
                                 <span>{{phoneClient}}</span>
                             </div>
+                            <span class="line"></span>
                             <div class="boxInfoAgendamento">
                                 <h2>Serviço</h2>
                                 <span>{{service.name}}</span>
                                 <span>{{service.value}} R$</span>
                             </div>
+                            <span class="line"></span>
                             <div class="boxInfoAgendamento">
                                 <h2>Profissional</h2>
                                 <span>{{profissional.name}}</span>
                                 <span>{{profissional.phone}}</span>
                             </div>
+                            <span class="line"></span>
                             <div class="detalhesAgendamento">
-                                <h2>{{formatDate data}}</h2>
-                                <button class="buttonOpitionsAgendamentos">Opções</button>
+                                <h2>{{formatDate data}}, {{horario}}h</h2>
+                                <button class="buttonOpitionsAgendamentos" type="button">Opções</button>
                             </div>
+
+                            {{#if isDeleted}}
+                                <section class="containerPoupUpOptions">
+                                    <div class="poupUpOptions">
+                                        <button class="buttonClosePoupUpDeleteAgendamento">
+                                            <img src="/images/icons8-excluir-50.png" alt="fechar popup">
+                                        </button>
+                                        <a href="#" class="sendWhatsappRemember">enviar lembrete <img src="/images/icons8-whatsapp-48.png" alt="enviar lembrete por whatsapp"></a>
+                                        <button class="openPoupUpDeleteAgendamento">cancelar agendamento</button>
+
+                                        <section class="popupConfirmCancelAgendamento">
+                                            <h2>Tem certeza?</h2>
+                                            <p>o agendamento será cancelado</p>
+                                        </section>
+                                    </div>
+                                </section>
+                                <span class="statusAgendamento" style="background-color: green;"></span>
+                            {{else}}
+                                <span class="statusAgendamento" style="background-color: red;"></span>
+                            {{/if}}
+
                         </section>
                     {{else}}
                     {{/each}}
@@ -167,7 +191,7 @@
                     <p class="titleForm">Novo Agendamento</p>
                     <button type="button" class="buttonClosePoupUp" id="closeFormAgendamento"><img src="/images/icons8-excluir-50.png" alt="fechar formulário"></button>
                 </header>
-                <form action="/addagendamento" method="post" class="formMain">
+                <form action="/addagendamentodirect" method="post" class="formMain">
                     <section class="partForm">
                         <h2>cliente</h2>
                         <input type="text" name="nameClient" class="inputName" placeholder="nome">

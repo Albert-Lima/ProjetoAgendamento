@@ -18,6 +18,8 @@ router.get('/agendamentospordias', async (req, res) => {
   
       // Buscar agendamentos dentro do intervalo
       const agendamentos = await AgendamentosModel.find({
+        userId: req.user.id,
+        isDeleted: true,
         data: {
           $gte: startDate,
           $lte: today,
@@ -53,21 +55,19 @@ router.get('/agendamentospordias', async (req, res) => {
       res.status(500).json({ message: 'Erro ao buscar agendamentos.' });
     }
   });
-  
 
 
 
+router.get("/estabelecimentos", eAdmin, async (req, res) => {
+    try {
+        const estab = await EstabelecimentoModel.find({ userId: req.user.id }).populate("profissionais").lean();
 
-
-
-router.get("/estabelecimentos", eAdmin, (req, res) => {
-    EstabelecimentoModel.find({ userId: req.user.id }).populate("profissionais").lean().then((estab) => {
-        res.render("admin/estabelecimentos/estabelecimentos", { estab, user: req.user});
-    }).catch((err) => {
-        console.log(err);
+        res.render("admin/estabelecimentos/estabelecimentos", { estab, user: req.user });
+    } catch (err) {
+        console.error("Erro ao listar os estabelecimentos:", err);
         req.flash("error_msg", "Houve um erro ao listar os estabelecimentos");
         res.redirect("/auth");
-    });
+    }
 });
 
 router.get("/addestabelecimento", eAdmin, (req, res) => { 

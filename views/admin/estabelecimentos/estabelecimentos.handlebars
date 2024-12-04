@@ -47,15 +47,15 @@
                         </div>
                         <div class="ContainerClassificacaoProf">
                             Profissionais com mais atendimentos
-                            {{#each profissionais}}
-                                <span class="containerTopProf">
-                                    <a href=""><div></div>{{this.name}}</a>
-                                </span>
-                            {{else}}
-                                <span class="containerTopProfLinkAdd">
-                                    <a href="">ainda não há profissionais</a>
-                                </span>
-                            {{/each}}
+                                {{#each profissionais}}
+                                    <span class="containerTopProf">
+                                        <a href=""><div></div>{{this.name}}</a>
+                                    </span>
+                                {{else}}
+                                    <span class="containerTopProfLinkAdd">
+                                        <a href="/profissionais">ainda não há profissionais</a>
+                                    </span>
+                                {{/each}}
                         </div>
                     </section>
                 {{else}}

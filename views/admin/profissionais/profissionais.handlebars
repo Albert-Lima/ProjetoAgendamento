@@ -23,24 +23,220 @@
                     <span class="userPicture"><!--<img src="/images/icons8-adicionar-usuário-masculino-90.webp" alt="imagem do usuário">--></span>
                 </div>
             </header>
+            <section class="containerButtonAddProfissional">
+                <button class="buttonAddProfissional" id="openFormProfissional">
+                    <img src="/images/icons8-adicionar-100.webp" alt="adicionar usuários">
+                </button>
+            </section>
             <section class="ConteinerInfoProfissionais">
                     <section class="viewPanelProfissionais">
-                        {{#each profissionais}}
-                            <a href="" class="containerProfissional">
-                                <div>
-                                    <div class="imgProfissional"></div>
-                                    <span>{{name}}</span>
+                        {{#each profissional}}
+                            <div class="containerProfissional">
+                                <div class="profissionalIMG">
+                                    <img src="" alt="foto do profissional">
                                 </div>
-                                <a href=""></a>
-                            </a>
+                                <div class="boxInfoProf">
+                                    <span>
+                                        <h2>{{name}}</h2>
+                                        <p>{{phone}}</p>
+                                    </span>
+                                    <span>
+                                        <h2>Serviços</h2>
+                                        <div>
+                                            {{#each services}}
+                                                <p>{{this.name}}</p>
+                                            {{else}}
+                                                <p>não há serviços</p>
+                                            {{/each}}
+                                        </div>
+                                    </span>
+                                </div>
+                                <div class="controlProf">
+                                    <button id="bttConfigProf" class="bttControlProf"><img src="/images/icons8-configurações-100.webp" alt="configurar profissional"></button>
+                                    <button id="bttDeleteProf" class="bttControlProf"><img src="/images/icons8-lixeira-48.png" alt="deletar profissional"></button>
+                                </div>
+
+                                <section class="poupUpForm containerEditProfissinal" id="containerFormEditProfissional" style="z-index: 20000;">
+                                    <section class="containerForm">
+                                        <header>
+                                            <p class="titleForm">Editar Profissional</p>
+                                            <button type="button" class="buttonClosePoupUp" id="closeFormProfissional"><img src="/images/icons8-excluir-50.png" alt="fechar formulário"></button>
+                                        </header>
+                                        <form action="/addprofissionais" method="post" class="formMain">
+                                            <section class="partForm">
+                                                <h2>Profissional</h2>
+                                                <input type="text" name="name" class="inputName" placeholder="nome">
+                                                <input type="number" name="phone" class="inputName" placeholder="whatsapp">
+                                            </section>
+                                            <section class="partForm">
+                                                <section class="selectBox">
+                                                    <div class="selectBoxHeader">Serviços</div>
+                                                    <section class="containerOptions">
+                                                        {{#each services}}
+                                                            <label class="LabelCheckBoxAddOptions">
+                                                                <input type="checkbox" class="serviceCheckbox" name="services" value="{{_id}}">
+                                                                {{name}}
+                                                            </label>
+                                                        {{else}}
+                                                            <a href="/servicos">Cadastre Serviços</a>
+                                                        {{/each}}
+                                                    </section>
+                                                </section>
+                                            </section>
+                                            
+                                            <button type="submit">salvar</button>
+                                        </form>
+                                    </section>
+                                </section>
+                                
+                                <section class="containerpoupUpDeleteProfissional">
+                                    <section class="poupUpDeleteProfissional">
+                                        <h2>Tem certeza que deseja deletar o profissional?</h2>
+                                        <p>
+                                            Ao deletar o profissional voce desmarcará <br>
+                                            os agendamentos relacionados
+                                        </p>
+                                        <div class="containerClosePoupUpDeleteProfissional">
+                                            <button class="closePoupUpDeleteProfissional">cancelar</button>
+                                            <a href="/deleteprofissional/{{_id}}" class="confirmeDeleteProfissional">confirmar</a>
+                                        </div>
+                                    </section>
+                                </section>
+                                
+                            </div>
                         {{else}}
                             cadastre profissionais
                         {{/each}}
                     </section>
-                <nav class="barBottomProfissionais">
-                    <a href="/addprofissionais">Adicionar Profissional</a>
-                </nav>
+            </section>
+            <section class="poupUpForm" id="containerFormProfissional">
+                <section class="containerForm">
+                    <header>
+                        <p class="titleForm">Novo Profissional</p>
+                        <button type="button" class="buttonClosePoupUp" id="closeFormAddProfissional"><img src="/images/icons8-excluir-50.png" alt="fechar formulário"></button>
+                    </header>
+                    <form action="/addprofissionais" method="post" class="formMain">
+                        <section class="partForm">
+                            <h2>Profissional</h2>
+                            <input type="text" name="name" class="inputName" placeholder="nome">
+                            <input type="number" name="phone" class="inputName" placeholder="whatsapp">
+                        </section>
+                        <section class="partForm">
+                            <section class="selectBox">
+                                <div class="selectBoxHeader">Serviços</div>
+                                <section class="containerOptions">
+                                    {{#each services}}
+                                        <label class="LabelCheckBoxAddOptions">
+                                            <input type="checkbox" class="serviceCheckbox" name="services" value="{{_id}}">
+                                            {{name}}
+                                        </label>
+                                    {{else}}
+                                        <a href="/servicos">Cadastre Serviços</a>
+                                    {{/each}}
+                                </section>
+                            </section>
+                        </section>
+                        
+                        <button type="submit">salvar</button>
+                    </form>
+                </section>
             </section>
     </main>
+    <script>
+        var openFormProfissional = document.querySelector("#openFormProfissional")
+        var closeFormAddProfissional = document.querySelector("#closeFormAddProfissional")
+        var containerFormProfissional = document.querySelector("#containerFormProfissional")
+
+        function openForm(){
+            containerFormProfissional.style.display = "flex"
+        }
+        openFormProfissional.addEventListener("click", openForm)
+
+        function closeForm(){
+            containerFormProfissional.style.display = "none"
+        }
+        closeFormAddProfissional.addEventListener("click", closeForm)
+
+        //checkboxes
+        const labels = document.querySelectorAll('.LabelCheckBoxAddOptions');
+        labels.forEach(label => {
+            label.addEventListener('click', function() {
+                const checkbox = this.querySelector('input[type="checkbox"]');
+                checkbox.checked = !checkbox.checked;
+                this.classList.toggle('active', checkbox.checked);
+            });
+        });
+    </script>
+    <!--painel de controle de profissionais-->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Seleciona todos os botões de deletar profissionais
+            const deleteButtons = document.querySelectorAll("#bttDeleteProf");
+
+            deleteButtons.forEach(button => {
+                button.addEventListener("click", () => {
+                    // Encontra o container pai do botão
+                    const containerProfissional = button.closest(".containerProfissional");
+
+                    if (containerProfissional) {
+                        // Seleciona o popup dentro do mesmo container
+                        const poupup = containerProfissional.querySelector(".containerpoupUpDeleteProfissional")
+                        
+
+                        if (poupup) {
+                            // Define o display como flex para exibir o popup
+                            poupup.style.display = "flex";
+                        }
+                    }
+                });
+            });
+
+            // Adiciona funcionalidade para fechar o popup ao clicar no botão de cancelar
+            const closeButtons = document.querySelectorAll(".closePoupUpDeleteProfissional");
+            closeButtons.forEach(button => {
+                button.addEventListener("click", () => {
+                    // Encontra o popup mais próximo e o oculta
+                    const popup = button.closest(".containerpoupUpDeleteProfissional");
+                    if (popup) {
+                        popup.style.display = "none";
+                    }
+                });
+            });
+
+            //botões de confguração do profissional
+            const configButtonProf = document.querySelectorAll("#bttConfigProf")
+            
+            configButtonProf.forEach(button =>{
+                button.addEventListener("click", ()=>{
+                    //Encontra o container pai do botão
+                    const containerProfissional = button.closest(".containerProfissional");
+
+                    if (containerProfissional) {
+                        //Seleciona o PoupUp dentro do mesmo container
+                        const popup = containerProfissional.querySelector(".containerEditProfissinal")
+
+                        if (popup) {
+                            //define o display come flex para exibir o poupup
+                            popup.style.display = "flex"
+                        }
+                    }
+                })
+            })
+            // Adiciona funcionalidade para fechar o popup ao clicar no botão de fechar
+            const closePoupUpConfigProf = document.querySelectorAll(".buttonClosePoupUp");
+            closePoupUpConfigProf.forEach(button => {
+                button.addEventListener("click", () => {
+                    // Encontra o popup mais próximo e o oculta
+                    const popup = button.closest(".containerEditProfissinal");
+
+                    if (popup) {
+                        popup.style.display = "none";
+                    }
+                });
+            });
+
+
+        });
+    </script>
 </body>
 </html>
