@@ -42,7 +42,7 @@ cron.schedule('0 0 * * *', async () => {
     }
 });
 
-router.post("/agendamentos/verifyDays", eAdmin, async (req,res)=>{
+router.post("https://projetoagendamento-67dz.onrender.com//agendamentos/verifyDays", eAdmin, async (req,res)=>{
     try {
         const receivedData = req.body;
         let selectedDate = receivedData.diaMes; // Formato esperado: "DD/MM"
