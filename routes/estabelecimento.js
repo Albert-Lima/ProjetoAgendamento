@@ -57,7 +57,6 @@ router.get('/agendamentospordias', async (req, res) => {
   });
 
 
-
 router.get("/estabelecimentos", eAdmin, async (req, res) => {
     try {
         const estab = await EstabelecimentoModel.find({ userId: req.user.id }).populate("profissionais").lean();

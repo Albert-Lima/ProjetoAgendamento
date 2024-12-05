@@ -6,93 +6,82 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         .selected-label {
-            background-color: #28a745; /* Verde */
+            background-color: #28a745;
             color: white;
             padding: 5px 10px;
             border-radius: 5px;
         }
-.calendar-container {
-  text-align: center;
-  background: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 400px;
-}
-
-.navigation {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
-
-.navigation button {
-  background: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.navigation button:hover {
-  background: #0056b3;
-}
-
-#calendar {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 5px;
-}
-
-.day, .day-header {
-  padding: 10px;
-  text-align: center;
-  font-size: 14px;
-}
-
-.day-header {
-  font-weight: bold;
-  background: #007bff;
-  color: white;
-  border-radius: 5px;
-}
-
-.day {
-  background: #eaeaea;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.day.disabled {
-  background: #ccc;
-  cursor: not-allowed;
-}
-
-.day:hover:not(.disabled) {
-  background: #007bff;
-  color: #fff;
-}
-
-.day.selected {
-  background: #28a745;
-  color: #fff;
-}
-
-.containerHour{
-    height: 30px;
-    width: 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-.containerHour div{
-    font-size: 10pt;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-weight: 400;
-    color: black;
-}
+        .calendar-container {
+            text-align: center;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .navigation button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .navigation button:hover {
+            background: #0056b3;
+        }
+        #calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+        .day, .day-header {
+            padding: 10px;
+            text-align: center;
+            font-size: 14px;
+        }
+        .day-header {
+            font-weight: bold;
+            background: #007bff;
+            color: white;
+            border-radius: 5px;
+        }
+        .day {
+            background: #eaeaea;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .day.disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .day:hover:not(.disabled) {
+            background: #007bff;
+            color: #fff;
+        }
+        .day.selected {
+            background: #28a745;
+            color: #fff;
+        }
+        .containerHour{
+            height: 30px;
+            width: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .containerHour div{
+            font-size: 10pt;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-weight: 400;
+            color: black;
+        }
 
     </style>
     <title>Estabelecimentos</title>
@@ -110,8 +99,11 @@
                 <a class="doboutButton"><img src="/images/icons8-dúvida-100.png" alt="manual da aplicação"></a>
             </div>
             <div class="infoUsuario">
-                <span>nome de usuário</span>
-                <span class="userPicture"><img src="/images/perfilGendaiTeste.png" alt="imagem do usuário"></span>
+                {{#if user}}
+                    <span>{{user.name}}</span>
+                    <span class="userPicture"><img src="/images/perfilGendaiTeste.png" alt="imagem do usuário"></span>
+                {{else}}
+                {{/if}}
             </div>
         </header>
         <section class="ConteinerInfo">
@@ -168,15 +160,43 @@
                                         <a href="#" class="sendWhatsappRemember">enviar lembrete <img src="/images/icons8-whatsapp-48.png" alt="enviar lembrete por whatsapp"></a>
                                         <button class="openPoupUpDeleteAgendamento">cancelar agendamento</button>
 
-                                        <section class="popupConfirmCancelAgendamento">
+                                        <section class="popUpDeleteAgendamento">
                                             <h2>Tem certeza?</h2>
-                                            <p>o agendamento será cancelado</p>
+                                            <p>
+                                                o agendamento será deletado <br>
+                                                e seu cliente será notificado
+                                            </p>
+                                            <form action="/deleteagendamento/{{_id}}" method="get" class="FormCancelAgendamento" id="FormCancelAgendamento">
+                                                <button class="buttonPopUpDeleteAgendamento" type="button" id="bttCancelPopUpDeleteAgendamento">cancelar</button>
+                                                <button class="buttonPopUpDeleteAgendamento" type="subimit" id="bttConfirmPopUpDeleteAgendamento">confirmar</button>
+                                            </form>
                                         </section>
                                     </div>
                                 </section>
-                                <span class="statusAgendamento" style="background-color: green;"></span>
+                                <span class="statusAgendamento" style="background-color: #25D366;"></span>
                             {{else}}
-                                <span class="statusAgendamento" style="background-color: red;"></span>
+                                <section class="containerPoupUpOptions">
+                                    <div class="poupUpOptions">
+                                        <button class="buttonClosePoupUpDeleteAgendamento">
+                                            <img src="/images/icons8-excluir-50.png" alt="fechar popup">
+                                        </button>
+                                        <a href="#" class="sendWhatsappRemember">enviar lembrete de confirmação<img src="/images/icons8-whatsapp-48.png" alt="enviar lembrete de confirmação por whatsapp"></a>
+                                        <button class="openPoupUpDeleteAgendamento">cancelar agendamento</button>
+
+                                        <section class="popUpDeleteAgendamento">
+                                            <h2>Tem certeza?</h2>
+                                            <p>
+                                                o agendamento será deletado <br>
+                                                e seu cliente será notificado
+                                            </p>
+                                            <form action="/deleteagendamento/{{_id}}" method="get" class="FormCancelAgendamento" id="FormCancelAgendamento">
+                                                <button class="buttonPopUpDeleteAgendamento" type="button" id="bttCancelPopUpDeleteAgendamento">cancelar</button>
+                                                <button class="buttonPopUpDeleteAgendamento" type="subimit" id="bttConfirmPopUpDeleteAgendamento">confirmar</button>
+                                            </form>
+                                        </section>
+                                    </div>
+                                </section>
+                                <span class="statusAgendamento" style="background-color: #FFFF00;"></span>
                             {{/if}}
 
                         </section>
@@ -191,7 +211,7 @@
                     <p class="titleForm">Novo Agendamento</p>
                     <button type="button" class="buttonClosePoupUp" id="closeFormAgendamento"><img src="/images/icons8-excluir-50.png" alt="fechar formulário"></button>
                 </header>
-                <form action="/addagendamentodirect" method="post" class="formMain">
+                <form action="" method="post" class="formMain">
                     <section class="partForm">
                         <h2>cliente</h2>
                         <input type="text" name="nameClient" class="inputName" placeholder="nome">
@@ -246,9 +266,29 @@
 
                         </div>
                     </section>
-                    
-                    <button type="submit" class="buttonSaveSubmit">salvar</button>
+
+                    <section class="partFormButtons">
+                        <button type="submit" class="buttonSaveSubmit">confirmar e salvar</button>
+                        <button type="submit" class="buttonSaveAgendamentoByWhatsapp">
+                            enviar pedido de confirmação 
+                            <img src="/images/icons8-whatsapp-48.png" alt="enviar pedido de confirmação pelo whatsapp">
+                        </button>
+                    </section>
+
                 </form>
+                <!--SCRIPT PARA ENVIAR OS DADOS DO FORM EM ROTAS DIFERENTES-->
+                <script>
+                    const form = document.querySelector(".formMain");
+                    const buttonSaveSubmit = document.querySelector(".buttonSaveSubmit");
+                    const buttonSaveByWhatsapp = document.querySelector(".buttonSaveAgendamentoByWhatsapp");
+
+                    buttonSaveSubmit.addEventListener("click", () => {
+                        form.action = "/addagendamentodirect";
+                    });
+                    buttonSaveByWhatsapp.addEventListener("click", () => {
+                        form.action = "/addagendamentobywhatsapp";
+                    });
+                </script>
             </section>
         </section>
     </main>
@@ -586,6 +626,71 @@
                         agendamento.style.display = 'none'; // Esconde o agendamento
                     }
                 });
+            });
+        });
+    </script>
+    <!--Script para o poupUp de opções do agendamento-->
+    <script>
+        
+        //abrir pouUp de opções
+        const optionButtons = document.querySelectorAll(".buttonOpitionsAgendamentos");
+
+        optionButtons.forEach(button => {
+            button.addEventListener("click", () => {
+                // Encontra o container correspondente ao botão clicado
+                const agendamento = button.closest(".boxAgendamento");
+                const popupContainer = agendamento.querySelector(".containerPoupUpOptions");
+
+                if (popupContainer) {
+                    
+                    popupContainer.style.display = "flex";
+                }
+            });
+        });
+
+
+        //fechar poupUp de opções
+        const closeButtons = document.querySelectorAll(".buttonClosePoupUpDeleteAgendamento");
+
+        closeButtons.forEach(button => {
+            button.addEventListener("click", () => {
+                // Encontra o container correspondente ao botão clicado
+                const agendamento = button.closest(".boxAgendamento");
+                const popupContainer = agendamento.querySelector(".containerPoupUpOptions");
+
+                if (popupContainer) {
+                    popupContainer.style.display = "none"
+                }
+            });
+        });
+
+
+
+        //botão de abrir o confirmDelete
+        const deleteButtons = document.querySelectorAll(".openPoupUpDeleteAgendamento");
+
+        deleteButtons.forEach(button => {
+            button.addEventListener("click", () => {
+                const poupUpOptions= button.closest(".poupUpOptions");
+                const cancelForm = poupUpOptions.querySelector(".popUpDeleteAgendamento");
+
+                if (cancelForm) {
+                    cancelForm.style.display = "flex";
+                }
+            });
+        });
+
+        //botão para fechar o confirmDelete
+        const closeConfirmButtons = document.querySelectorAll("#bttCancelPopUpDeleteAgendamento");
+
+        closeConfirmButtons.forEach(button => {
+            button.addEventListener("click", () => {
+                const poupUpOptions= button.closest(".poupUpOptions");
+                const cancelForm = poupUpOptions.querySelector(".popUpDeleteAgendamento");
+
+                if (cancelForm) {
+                    cancelForm.style.display = "none";
+                }
             });
         });
     </script>

@@ -12,11 +12,10 @@ const ServicesModel = require("../models/service")
 
 
 
-
 // Rodar todos os dias à meia-noite
 const cron = require("node-cron")
 cron.schedule('0 0 * * *', async () => {
-    console.log('Executando cron job de teste...');
+    
     try {
         const today = new Date(); // Data atual
         const twoDaysAgo = new Date();
@@ -35,15 +34,13 @@ cron.schedule('0 0 * * *', async () => {
             data: { $lt: today }
         });
 
-        console.log(`Agendamentos removidos (isDeleted: true): ${deletedAgendamentos.deletedCount}`);
-        console.log(`Agendamentos removidos (isDeleted: false): ${expiredAgendamentos.deletedCount}`);
+
+        //console.log(`Agendamentos removidos (isDeleted: true): ${deletedAgendamentos.deletedCount}`);
+        //console.log(`Agendamentos removidos (isDeleted: false): ${expiredAgendamentos.deletedCount}`);
     } catch (err) {
         console.error('Erro ao remover agendamentos:', err);
     }
 });
-
-
-
 
 router.post("/agendamentos/verifyDays", eAdmin, async (req,res)=>{
     try {
@@ -127,12 +124,13 @@ router.get("/agendamentos", eAdmin, async (req, res) => {
         const [services, profissionais, agendamentos] = await Promise.all([
             servicesPromise,
             profissionaisPromise,
-            agendamentosPromise,
+            agendamentosPromise
         ]);
 
         res.render("admin/agendamento/agendamentos", {
             services,
             profissionais,
+            user: req.user,
             agendamentos
         });
     } catch (err) {
@@ -141,6 +139,8 @@ router.get("/agendamentos", eAdmin, async (req, res) => {
     }
 });
 
+
+//salva os agendamentos diretamente sem precisar da confirmação via whatsapp
 router.post("/addagendamentodirect", eAdmin, async (req, res) => {
     const { 
         nameClient, 
@@ -198,6 +198,81 @@ router.post("/addagendamentodirect", eAdmin, async (req, res) => {
         res.status(500).send("Erro ao salvar agendamento.");
     }
 });
+//adiciona o agendamento por intermeio do whatsapp
+router.post("/addagendamentobywhatsapp", eAdmin, async (req, res)=>{
+    const { 
+        nameClient, 
+        phoneClient, 
+        service, 
+        profissional,
+        horario,
+        data // String no formato "dd mm"
+    } = req.body;
+
+    const erros = [];
+
+    if (!nameClient) erros.push({ texto: "Nome do cliente é obrigatório." });
+    if (!phoneClient) erros.push({ texto: "Telefone do cliente é obrigatório." });
+    if (!service) erros.push({ texto: "Selecione um serviço" });
+    if (!profissional || profissional.length === 0) erros.push({ texto: "Profissionais são obrigatórios." });
+    if (!horario) erros.push({ texto: "Selecione um horário" });
+    if (!data) erros.push({ texto: "Data não recebida" });
+
+    if (erros.length > 0) {
+        console.log(erros);
+        return res.render("admin/agendamento/agendamentos", { erros });
+    }
+
+    try {
+        // Obter o ano atual
+        const currentYear = new Date().getFullYear();
+
+        // Transformar a string de data em um objeto Date
+        const [day, month] = data.split("/").map(Number); // Divide a string e converte os valores
+        const formattedDate = new Date(currentYear, month - 1, day); // Cria o objeto Date (mês começa em 0)
+
+        // Validação extra: Verificar se a data é válida
+        if (isNaN(formattedDate.getTime())) {
+            erros.push({ texto: "Data inválida." });
+            return res.render("admin/agendamento/agendamentos", { erros });
+        }
+
+        // Criação do agendamento
+        const novoAgendamento = new AgendamentoModel({
+            nameClient, 
+            phoneClient, 
+            service, 
+            profissional,
+            horario,
+            isDeleted: false,
+            data: formattedDate, // Salva a data transformada
+            userId: req.user.id
+        });
+
+        await novoAgendamento.save();
+        res.redirect("/agendamentos");
+    } catch (err) {
+        console.error("Erro ao salvar agendamento:", err);
+        res.status(500).send("Erro ao salvar agendamento.");
+    }
+})
+
+
+
+
+router.get("/deleteagendamento/:id", eAdmin, async (req, res)=>{
+    try{
+        const agendamentoId = req.params.id
+        const agendamentoPromise = await AgendamentoModel.findByIdAndDelete(agendamentoId)
+
+        console.log(agendamentoId)
+
+        res.redirect("/agendamentos")
+    } catch {
+        console.log("houve um erro ao deletar o agendamento")
+        res.redirect("/agendamentos")
+    }
+})
 
 
 module.exports = router
