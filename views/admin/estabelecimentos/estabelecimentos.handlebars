@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/estabelecimentos.css">
     <title>Estabelecimentos</title>
 </head>
 <body>
@@ -42,20 +43,26 @@
                     </div>
                     <section class="containerDataEstab">
                         <div class="sectionGraphic">
-                            <header>Agendamentos no mês</header>
-                            <canvas class="containerGraphic" id="myChart"></canvas>
+                            <header>
+                                Agendamentos nos últimos 30 dias
+                            </header>
+                            <canvas class="containerGraphic" id="myChart" style="width: 100%; height: 250px;"></canvas>
                         </div>
                         <div class="ContainerClassificacaoProf">
-                            Profissionais com mais atendimentos
+                            <header>
+                                Profissionais com mais atendimentos
+                            </header>
+                            <div class="ContainerProf">
                                 {{#each profissionais}}
-                                    <span class="containerTopProf">
-                                        <a href=""><div></div>{{this.name}}</a>
+                                    <span class="BoxProf">
+                                        <a href="#"><div></div>{{this.name}}</a>
                                     </span>
                                 {{else}}
-                                    <span class="containerTopProfLinkAdd">
+                                    <span class="BoxProfLink">
                                         <a href="/profissionais">ainda não há profissionais</a>
                                     </span>
                                 {{/each}}
+                            </div>
                         </div>
                     </section>
                 {{else}}
@@ -70,47 +77,66 @@
 
     <!--Script para buscar os dados do Gráfico-->
     <script>
+    // Faz a requisição para buscar os dados
+    document.addEventListener('DOMContentLoaded', () => {
+        fetch('/agendamentospordias')
+            .then((response) => {
+            if (!response.ok) {
+                throw new Error('Erro na requisição');
+            }
+            return response.json();
+            })
+            .then((data) => {
+                const ctx = document.getElementById('myChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                    labels: data.labels, // Datas no eixo X
+                    datasets: [{
+                        data: data.data, // Quantidade no eixo Y
+                        backgroundColor: '#00272B',
+                        borderColor: '#00272B',
+                        borderWidth: 0,
+                    }],
+                    },
+                    options: {
+                        responsive: false,
+                        maintainAspectRatio: false,
 
-  // Faz a requisição para buscar os dados
-  document.addEventListener('DOMContentLoaded', () => {
-  fetch('/agendamentospordias')
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('Erro na requisição');
-      }
-      return response.json();
-    })
-    .then((data) => {
-      const ctx = document.getElementById('myChart').getContext('2d');
-      new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: data.labels, // Datas no eixo X
-          datasets: [{
-            label: 'Agendamentos',
-            data: data.data, // Quantidade no eixo Y
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            borderColor: 'rgba(75, 192, 192, 1)',
-            borderWidth: 1,
-          }],
-        },
-        options: {
-          scales: {
-            y: {
-              beginAtZero: true,
-              ticks: {
-                stepSize: 1, // Define incrementos de 1
-                callback: function (value) {
-                  return Number.isInteger(value) ? value : ''; // Mostra apenas inteiros
-                },
-              }
-            },
-          },
-        },
-      });
-    })
-    .catch((error) => console.error('Erro ao buscar dados:', error));
-});
+                        plugins: {
+                            legend: {
+                                display: false // Desativa a exibição da legenda
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: {
+                                    drawBorder: true, // Mostra a linha do eixo Y
+                                    display: false // Remove as linhas da grade horizontal
+                                },
+                                ticks: {
+                                    display: true, // Mantém os ticks no eixo Y
+                                    stepSize: 1,
+                                    callback: function (value) {
+                                        return Number.isInteger(value) ? value : ''; // Mostra apenas inteiros
+                                    },
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    display: false
+                                }
+                            }
+                        },
+                    },
+                });
+            })
+            .catch((error) => console.error('Erro ao buscar dados:', error));
+        });
     </script>
 </body>
 </html>

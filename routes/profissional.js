@@ -19,7 +19,8 @@ router.get("/profissionais", eAdmin, async (req, res) => {
         ]);
         res.render("admin/profissionais/profissionais", { 
                 profissional,
-                services
+                services,
+                user: req.user
         })
     } catch (err) {
         console.log(err);
@@ -61,6 +62,22 @@ router.post("/addprofissionais", eAdmin, (req, res)=>{
     } catch (err) {
         console.error("Erro ao salvar estabelecimento:", err);
         res.status(500).send("Erro ao salvar estabelecimento.");
+    }
+})
+
+router.post("/editprofissionais/:id", eAdmin, async (req, res)=>{
+    try{
+        const {name, phone, services} = req.body
+        const profissionalId = req.params.id
+        await ProfissionalModel.findByIdAndUpdate(profissionalId, {
+            name,
+            phone,
+            services
+        })
+        res.redirect("/profissionais")
+    } catch {
+        console.log("houve um erro ao salvar a edição do profissional")
+        res.redirect("/profissionais")
     }
 })
 

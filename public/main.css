@@ -1,0 +1,478 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+:root{
+    --var-DarkGreen: #00272B;
+    --var-ColorGreen: #E0FF4F;
+    --var-BorderColorDark: rgb(182, 182, 182);
+    --var-ColorBaseGray: #D9D9D9;
+    --var-ColorGreenOliva: #25291C;
+    --var-ColorGreenWhatsapp: #25D366;
+    --var-ColorRedCancel: #ED5E68;
+}
+body{
+    background-color: var(--var-DarkGreen);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100%;
+}
+.line{
+    height: 80%;
+    width: 1px;
+    background-color: var(--var-ColorGreenOliva);
+    display: block;
+}
+.ContainerMenuLeft{
+    width: 300px;
+    height: 90%;
+    position: absolute;
+    left: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    gap: 10px;
+}
+.ContainerLogoPanel{
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--var-ColorGreen);
+    font-size: 20pt;
+    padding-bottom: 20px;
+}
+.panel{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    width: calc(100% - 300px);
+    height: 98vh;
+    position: absolute;
+    right: 1vh;
+    top: 1vh;
+    background-color: rgb(255, 255, 255);
+    border-radius: 15px;
+}
+.HeaderPanel{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: calc(100% - 50px);
+    height: 50px;
+    margin-top: 15px;
+    box-shadow: 0px 0px 15px 2px rgba(0, 0, 0, 0.116);
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 20px;
+}
+.doboutButton{
+    height: 50px;
+    width: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+.doboutButton img{
+    width: 30px;
+    height: 30px;
+}
+
+.infoUsuario{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 12pt;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.712);
+}
+.userPicture{
+    width: 40px;
+    height: 40px;
+    background-color: black;
+    border-radius: 100%;
+    display: block;
+}
+.userPicture img{
+    width: 40px;
+    height: 40px;
+}
+/*Partial MenuLeft*/
+.ContainerButtons{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-right: 13px;
+    justify-content: start;
+    width: 100%;
+}
+.boxButtons{
+    height: 50px;
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    padding-left: 20px;
+    gap: 10px;
+    background-color: var(--var-DarkGreen);
+    border-radius: 80px;
+    text-decoration: none;
+    color: white;
+    font-size: 12pt;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight:600;
+}
+.boxButtonsLine{
+    height: 50px;
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+.selectedMenuLeft{
+    height: 50px;
+    background-color: white;
+    color: black;
+    position: relative;
+    border-radius: 30px;
+}
+.ContainerIconMenuLeft{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+}
+.ContainerIconMenuLeft img{
+    height: 100%;
+}
+.lineMenuLeft{
+    width: 90%;
+    height: 1px;
+    display: block;
+    background-color: var(--var-ColorGreen);
+}
+#LogOut{
+    color: var(--var-ColorGreen);
+    font-size: 12pt;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+/*formulário principal*/
+.poupUpForm{
+    display: none;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.788);
+    backdrop-filter: blur(5px);
+    height: 100vh;
+    width: 100vw;
+}
+.containerForm{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    padding-top: 20px;
+    height: 95%;
+    background-color: white;
+    width: 50%;
+    box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.185);
+    border-radius: 20px;
+}
+.containerForm header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    position: relative;
+}
+.buttonClosePoupUp{
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    right: 20px;
+}
+.buttonClosePoupUp img{
+    height: 30px;
+}
+
+.formMain{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    gap: 20px;
+    width: 85%;
+    height: 100%;
+    margin-top: 50px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-bottom: 20px;
+}
+.partForm{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    width: 100%;
+    gap: 8px;
+}
+.partForm h2{
+    margin-left: 10px;
+    font-size: 12pt;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 500;
+    color: #808080;
+}
+.partForm input, .partForm textarea{
+    border-radius: 10px;
+    border: 1px solid rgb(197, 197, 197);
+    background-color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 11pt;
+    color: rgb(102, 102, 102);
+    box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.11);
+    width: 100%;
+    padding: 10px;
+    outline: none;
+}
+.partForm textarea{
+    height: 100px;
+    resize: none;
+}
+.partFormButtons{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+.buttonSaveSubmit{
+    width: 45%;
+    height: 40px;
+    background-color: #808080;
+    text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.74);
+    font-size: 10pt;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 500;
+    color: white;
+    border: none;
+    box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.096);
+    cursor: pointer;
+    border-radius: 5px;
+}
+.buttonSaveAgendamentoByWhatsapp{
+    width: 45%;
+    height: 40px;
+    border-radius: 5px;
+    background-color: var(--var-ColorGreenWhatsapp);
+    text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.74);
+    font-size: 10pt;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 500;
+    color: white;
+    border: none;
+    box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.096);
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px
+}
+.buttonSaveAgendamentoByWhatsapp img{
+    height: 25px;
+    filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.74));
+}
+
+
+
+/*página de agendamentos-------------------------------------------------------------------------------------------*/
+.headerAgendamentos{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: calc(100% - 40px);
+}
+.selectPeriodBox{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 35px;
+}
+.selectPeriodBox button{
+    border: none;
+    height: 100%;
+    width: 80px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 10pt;
+    color: white;
+    cursor: pointer;
+}
+#buttonAll{
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+#buttonWeek{
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+.selectPeriodBox_selected{
+    background-color: #053034;
+}
+.selectPeriodBox_no_selected{
+    background-color: #1F5055;
+}
+
+.containerBttAddAgendamento{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+.buttonAddAgendamento{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    border-radius: 10px;
+    border: none;
+    background: none;
+    box-shadow: 0px 0px 4px 1px rgb(194, 194, 194);
+    cursor: pointer;
+}
+.buttonAddAgendamento img{
+    height: 30px;
+    width: 30px;
+}
+
+.containerSearch{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    box-shadow: 0px 0px 4px 1px rgb(206, 206, 206);
+    border-radius: 10px;
+}
+.buttonInputSearch{
+    height: 30px;
+    width: 30px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+.buttonInputSearch img{
+    height: 100%;
+}
+.containerSearch input{
+    width: 0px;
+    padding: 5px;
+    border: none;
+    outline: none;
+    font-size: 11pt;
+    font-weight: 500;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: rgb(75, 75, 75);
+}
+
+.selectBox{
+    width: calc(100% + 20px) ;
+    height: 200px;
+    padding: 0px;
+    border-radius: 20px;
+    border: 1px solid rgb(224, 224, 224);
+    box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.11);
+}
+.selectBoxHeader{
+    height: 30px;
+    width: 100%;
+    background-color: gray;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 10pt;
+    font-weight: 500;
+    color: white;
+}
+.containerOptions{
+    height: calc(100% - 35px);
+    width: calc(100% - 20px);
+    margin: auto;
+    gap: 5px;
+    overflow-y: scroll;
+
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    gap: 5px;
+}
+
+.LabelCheckBoxAddOptions{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    padding: 10px;
+    gap: 20px;
+    width: calc(100% - 32px);
+    border: 1px solid var(--var-DarkGreen);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    cursor: pointer;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: inline-block;
+    margin: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.LabelCheckBoxAddOptions input[type="checkbox"] {
+    display: none;
+}
+.LabelCheckBoxAddOptions:hover {
+    background-color: #f0f0f0;
+    color: black;
+}
+
+.LabelCheckBoxAddOptions.active {
+    background-color: #4CAF50;
+    color: white;
+}
+.LabelCheckBoxAddOptions.active:hover{
+    background-color: #266e28;
+    color: white;
+}

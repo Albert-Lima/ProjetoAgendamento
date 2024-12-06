@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/agendamentos.css">
     <style>
         .selected-label {
             background-color: #28a745;
@@ -385,7 +386,11 @@
             }
 
             // Enviar dados para o servidor
-            fetch('https://projetoagendamento-67dz.onrender.com/agendamentos/verifyDays', {
+            const API_URL = window.location.hostname === "localhost"
+                ? "http://localhost:8081" // Substitua pela URL local da API
+                : "https://projetoagendamento-67dz.onrender.com";
+
+            fetch(`${API_URL}/agendamentos/verifyDays`, {
                 method: 'POST', 
                 headers: {
                     'Content-Type': 'application/json' 

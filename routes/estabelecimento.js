@@ -19,18 +19,22 @@ router.get('/agendamentospordias', async (req, res) => {
       // Buscar agendamentos dentro do intervalo
       const agendamentos = await AgendamentosModel.find({
         userId: req.user.id,
-        isDeleted: true,
+        isDeleted: true, // Supondo que agendamentos ativos têm `isDeleted: false`
         data: {
           $gte: startDate,
           $lte: today,
         },
       });
   
-      // Geração da lista de dias (YYYY-MM-DD) para os últimos 30 dias
+      // Geração da lista de dias (DD-MM) para os últimos 30 dias
       const dias = Array.from({ length: 30 }, (_, i) => {
         const date = new Date(startDate);
         date.setDate(startDate.getDate() + i);
-        return date.toISOString().split('T')[0]; // Formato YYYY-MM-DD
+  
+        // Formata a data no formato DD-MM
+        const dia = String(date.getDate()).padStart(2, '0'); // Adiciona zero à esquerda, se necessário
+        const mes = String(date.getMonth() + 1).padStart(2, '0'); // Os meses começam do 0, então soma 1
+        return `${dia}/${mes}`;
       });
   
       // Inicializar array de contagem de agendamentos
@@ -38,7 +42,11 @@ router.get('/agendamentospordias', async (req, res) => {
   
       // Processar os agendamentos e preencher a contagem
       agendamentos.forEach((agendamento) => {
-        const diaAgendamento = new Date(agendamento.data).toISOString().split('T')[0];
+        const dataAgendamento = new Date(agendamento.data);
+        const dia = String(dataAgendamento.getDate()).padStart(2, '0');
+        const mes = String(dataAgendamento.getMonth() + 1).padStart(2, '0');
+        const diaAgendamento = `${dia}/${mes}`; // Formata para DD-MM
+  
         const index = dias.indexOf(diaAgendamento); // Localizar o índice no array `dias`
         if (index !== -1) {
           agendamentosPorDia[index]++; // Incrementar a contagem no dia correspondente
@@ -54,7 +62,7 @@ router.get('/agendamentospordias', async (req, res) => {
       console.error('Erro na rota /agendamentospordias:', error);
       res.status(500).json({ message: 'Erro ao buscar agendamentos.' });
     }
-  });
+});
 
 
 router.get("/estabelecimentos", eAdmin, async (req, res) => {

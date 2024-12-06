@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="addEstabelecimento.css">
+    <link rel="stylesheet" href="/services.css">
     <title>Serviços</title>
 </head>
 <body>
@@ -37,11 +38,18 @@
                         <div class="nameService">
                             {{name}}
                         </div>
+                        <span class="line"></span>
                         <div class="descriptionService">
                             {{description}}
                         </div>
+                        <span class="line"></span>
                         <div class="valueService">
                             {{value}} R$
+                        </div>
+                        <div class="navRightService">
+                            <a href="/deleteservice/{{_id}}">
+                                <img src="/images/icons8-lixeira-48.png" alt="deletar serviço">
+                            </a>
                         </div>
                     </div>
                     {{else}}

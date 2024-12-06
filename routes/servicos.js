@@ -40,8 +40,19 @@ router.post("/addservice", eAdmin, (req, res)=>{
         console.error("Erro ao salvar estabelecimento:", err);
         res.status(500).send("Erro ao salvar estabelecimento.");
     }
+})
 
+router.get("/deleteservice/:id", eAdmin, async (req, res)=>{
+    try{
+        const serviceId = req.params.id
 
+        await ServicesModel.findByIdAndDelete(serviceId)
+    
+        res.redirect("/servicos")
+    } catch {
+        
+        res.redirect("/servicos")
+    }
 })
 
 module.exports = router

@@ -1,0 +1,266 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+:root{
+    --var-DarkGreen: #00272B;
+    --var-ColorGreen: #E0FF4F;
+    --var-BorderColorDark: rgb(182, 182, 182);
+    --var-ColorBaseGray: #D9D9D9;
+    --var-ColorGreenOliva: #25291C;
+    --var-ColorGreenWhatsapp: #25D366;
+    --var-ColorRedCancel: #ED5E68;
+}
+
+/*página 1 de estabelecimentos*/
+.ConteinerInfo{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height: calc(100% - 51px);
+    width: 100%;
+    border-radius: 15px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    overflow: hidden;
+}
+.viewPanel{
+    margin: auto;
+    padding-top: 20px;
+    width: 100%;
+    height: calc(100% - 30px);
+    overflow-y: scroll;
+    gap: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+}
+.buttonLink{
+    height: 50px;
+    width: max-content;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding-top: 20px;
+}
+.buttonLink::after{
+    color: var(--var-ColorGreenOliva);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 12pt;
+    font-weight: 400;
+    content: "adicionar um estabelecimento";
+    display: none;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: max-content;
+    width: max-content;
+    padding: 20px;
+    border: 1px solid rgb(177, 177, 177);
+    border-radius: 5px;
+    position: absolute;
+    transform: translateY(60px);
+    background-color: white;
+    box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.178);
+}
+.buttonLink:hover::after{
+    display: flex;
+}
+
+.buttonLink a{
+    height: 50px;
+    width: 50px;
+    box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.123);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    text-decoration: none;
+    text-align: center;
+}
+
+.buttonLink a img{
+    height: 40px;
+}
+
+.testediv{
+    width: calc(100% - 30px);
+    border-radius: 20px;
+    height: 200px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0px 0px 15px 2px rgba(0, 0, 0, 0.149);
+    position: relative;
+}
+.descEstabelecimento{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    gap: 30px;
+    padding: 30px;
+    height: calc(100% - 60px);
+    width: 100%;
+}
+.descEstabelecimento h2{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 15pt;
+    font-weight: 500;
+}
+.descEstabelecimento span{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 11pt;
+    font-weight: 400;
+}
+.buttonConfig{
+    height: 40px;
+    width: 40px;
+    background-color: var(--var-ColorGreenOliva);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+.buttonConfig img{
+    height: 25px;
+    width: 25px;
+}
+
+
+.containerDataEstab{
+    width: calc(100% - 90px);
+    height: auto;
+    padding: 30px;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    justify-content: space-between;
+    border-radius: 20px;
+    box-shadow: 0px 0px 15px 2px rgba(0, 0, 0, 0.149);
+    position: relative;
+}
+
+
+.sectionGraphic{
+    height: auto;
+    width: calc(100% - 380px);
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    position: relative;
+    gap: 20px;
+}
+.sectionGraphic header{
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 12pt;
+    font-weight: 500;
+    color: var(--var-ColorGreenOliva);
+    height: 30px;
+}
+
+
+.ContainerClassificacaoProf{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    gap: 20px;
+    height: auto;
+    width: 350px;
+}
+.ContainerClassificacaoProf header{
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 12pt;
+    font-weight: 500;
+    color: var(--var-ColorGreenOliva);
+    height: 30px;
+}
+.ContainerProf{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    gap: 10px;
+}
+.BoxProf{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    width: calc(100% - 30px);
+    height: 50px;
+    box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.071);
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 10px;
+}
+.BoxProf a{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 400;
+    font-size: 11pt;
+    color: rgb(116, 116, 116);
+    text-decoration: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    gap: 15px;
+    transition: 0.2s;
+}
+.BoxProf a div{
+    height: 40px;
+    width: 40px;
+    border-radius: 100%;
+    background-color: black;
+}
+.BoxProfLink{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: calc(100% - 30px);
+    height: 50px;
+    box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.071);
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 10px;
+}
+.containerTopProfLinkAdd a{
+    color: black;
+    text-decoration: none;
+}
+
+.barRightEstabelecimentos{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    gap: 30px;
+    width: 60px;
+    height: calc(100% - 20px);
+    padding-top: 20px;
+    border-radius: 0px;
+    background-color: var(--var-ColorBaseGray);
+}
+#buttonAddEstabelecimentos img{
+    height: 40px;
+}

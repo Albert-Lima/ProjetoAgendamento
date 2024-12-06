@@ -1,0 +1,135 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+:root{
+    --var-DarkGreen: #00272B;
+    --var-ColorGreen: #E0FF4F;
+    --var-BorderColorDark: rgb(182, 182, 182);
+    --var-ColorBaseGray: #D9D9D9;
+    --var-ColorGreenOliva: #25291C;
+    --var-ColorGreenWhatsapp: #25D366;
+    --var-ColorRedCancel: #ED5E68;
+}
+
+/*página de serviços*/
+.ConteinerInfo{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height: calc(100% - 51px);
+    width: 100%;
+    border-radius: 15px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    overflow: hidden;
+}
+.viewPanel{
+    margin: auto;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    width: 100%;
+    height: calc(100% - 30px);
+    overflow-y: scroll;
+    gap: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+}
+
+.navPanelService{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.062);
+    border: 1px solid #eeeeee;
+    border-radius: 20px;
+    padding: 10px;
+    margin-top: 20px;
+}
+.buttonNavHeader{
+    background: none;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+.sectionServices{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    gap: 10px;
+    width: 100%;
+}
+.containerService{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    gap: 30px;
+    width: calc(100% - 60px);
+    height: 90px;
+    border: 1px solid rgb(196, 196, 196);
+    border-radius: 0px;
+    padding: 10px;
+    box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.103);
+    position: relative;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 10pt;
+    font-weight: 500;
+}
+.nameService{
+    width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    text-align: center;
+}
+.descriptionService{
+    width: 50%;
+    height: 70px;
+    overflow-y: scroll;
+    display: inline-block;
+    color: rgb(119, 119, 119);
+    font-weight: 400;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.valueService{
+    text-align: center;
+    display: block;
+    width: calc(50% - 202px);
+    font-size: 12pt;
+}
+.buttonNavHeader img{
+    height: 30px;
+}
+
+.navRightService{
+    position: absolute;
+    right: 0px;
+    height: calc(100% - 10px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: var(--var-ColorGreenOliva);
+}
+.navRightService img{
+    width: 20px;
+}

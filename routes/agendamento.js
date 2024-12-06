@@ -20,7 +20,7 @@ cron.schedule('0 0 * * *', async () => {
         const today = new Date(); // Data atual
         const twoDaysAgo = new Date();
         today.setDate(today.getDate() - 1)
-        twoDaysAgo.setDate(today.getDate() - 30); // Data de dois dias atrás
+        twoDaysAgo.setDate(today.getDate() - 30); // Data de 30 dias atrás
 
         // Remover agendamentos com isDeleted: true e data <= dois dias atrás
         const deletedAgendamentos = await AgendamentoModel.deleteMany({
