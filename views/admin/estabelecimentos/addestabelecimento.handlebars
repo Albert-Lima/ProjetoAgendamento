@@ -28,8 +28,8 @@
             <section class="PanelAddEstabelecimento">
                 <form action="/addestabelecimento" method="post" id="formulario">
                     <section>
-                        <input type="text" name="nomeEstabelecimento" id="" placeholder="nomedoestabelecimento.this">
-                        <input type="tel" pattern="[0-9]+" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" name="phoneEstabelecimento" id="" placeholder="Contatodoestabelecimento.this">
+                        <input type="text" name="nomeEstabelecimento" id="" placeholder="nome do estabelecimento">
+                        <input type="tel" pattern="[0-9]+" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" name="phoneEstabelecimento" id="" placeholder="Whatsapp do estabelecimento">
                         <input type="text" name="endereco" id="" placeholder="Endereço">
                     </section>
                     <section class="SelectProfissionais">
@@ -76,12 +76,12 @@
                             {{/each}}
                         </section>
                     </section>
+                    <nav class="barRightAddEstabelecimentos">
+                        <a href="/estabelecimentos" id="buttonReturnEstabelecimentos">cancelar</a>
+                        <button  type="submit" form="formulario">salvar</button>
+                    </nav>
                 </form>
             </section>
-            <nav class="barRightAddEstabelecimentos">
-                <a href="/estabelecimentos" id="buttonReturnEstabelecimentos"><img src="/images/icons8-retornar-64.png" alt="adicionar estabelecimento"></a>
-                <button  type="submit" form="formulario"><img src="/images/icons8-salvar-100.png" alt="salvar novo estabelecimento"></button>
-            </nav>
         </section>
     </main>
     <script>
