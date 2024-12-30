@@ -8,8 +8,10 @@
     --var-BorderColorDark: rgb(182, 182, 182);
     --var-ColorBaseGray: #D9D9D9;
     --var-ColorGreenOliva: #25291C;
+    --var-WhatsappDark: #1F5055;
     --var-ColorGreenWhatsapp: #25D366;
     --var-ColorRedCancel: #ED5E68;
+    --var-BoxShadowContainer: 0px 0px 4px 1px rgba(0, 0, 0, 0.192);
 }
 body{
     background-color: var(--var-DarkGreen);
@@ -61,28 +63,40 @@ body{
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    width: calc(100% - 50px);
+    width: calc(100% - 60px);
     height: 50px;
     margin-top: 15px;
-    box-shadow: 0px 0px 15px 2px rgba(0, 0, 0, 0.116);
+    box-shadow: var(--var-BoxShadowContainer);
     padding-left: 10px;
-    padding-right: 10px;
-    border-radius: 20px;
+    padding-right: 20px;
+    border-radius: 10px;
 }
 .doboutButton{
-    height: 50px;
-    width: 50px;
+    background-color: var(--var-WhatsappDark);
+    height: 30px;
+    width: 100px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    background: none;
     border: none;
+    border-radius: 10px;
+    font-size: 10pt;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    gap: 10px;
+}
+.doboutButton p{
+    transform: translateY(-2px);
 }
 .doboutButton img{
-    width: 30px;
-    height: 30px;
+    width: 20px;
+    height: 20px;
 }
 
 .infoUsuario{
@@ -96,17 +110,7 @@ body{
     font-weight: 600;
     color: rgba(0, 0, 0, 0.712);
 }
-.userPicture{
-    width: 40px;
-    height: 40px;
-    background-color: black;
-    border-radius: 100%;
-    display: block;
-}
-.userPicture img{
-    width: 40px;
-    height: 40px;
-}
+
 /*Partial MenuLeft*/
 .ContainerButtons{
     position: relative;
@@ -475,4 +479,88 @@ body{
 .LabelCheckBoxAddOptions.active:hover{
     background-color: #266e28;
     color: white;
+}
+
+
+/*Responsividade menu e painel principal*/
+@media (max-width: 700px) {
+    .ContainerMenuLeft{
+        background-color: var(--var-WhatsappDark);
+        width: calc(94% - 20px);
+        height: 50px;
+        position: fixed;
+        z-index: 100000;
+        bottom: 10px;
+        left: 3%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: start;
+        gap: 10px;
+        padding: 10px;
+        border-radius: 10px;
+    }
+    .ContainerLogoPanel{
+        display: none;
+    }
+    .ContainerButtons{
+        position: relative;
+        flex-direction: row;
+        padding-right: 0px;
+        justify-content: start;
+        gap: 10px;
+    }
+    .boxButtons{
+        height: 40px;
+        width: 40px;
+        display: flex;
+        justify-content: center;
+        padding-left: 0px;
+        gap: 0px;
+        background: transparent;
+        border-radius: 10px;
+    }
+    .boxButtons p{
+        display: none;
+    }
+    .boxButtonsLine{
+        display: none;
+    }
+    .selectedMenuLeft{
+        height: 40px;
+        width: 40px;
+        background-color: white;
+        border-radius: 10px;
+    }
+    .ContainerIconMenuLeft{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 30px;
+    }
+    .ContainerIconMenuLeft img{
+        height: 100%;
+        width: auto;
+    }
+    .lineMenuLeft{
+        display: none;
+    }
+    .panel{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: start;
+        width: 100%;
+        height: 100vh;
+        position: absolute;
+        right: 0vh;
+        top: 0vh;
+        background-color: rgb(255, 255, 255);
+        border-radius: 0px;
+    }
+    #LogOut{
+        position: absolute;
+        right: 0px;
+    }
 }

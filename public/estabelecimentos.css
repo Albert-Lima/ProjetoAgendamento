@@ -8,8 +8,10 @@
     --var-BorderColorDark: rgb(182, 182, 182);
     --var-ColorBaseGray: #D9D9D9;
     --var-ColorGreenOliva: #25291C;
+    --var-WhatsappDark: #1F5055;
     --var-ColorGreenWhatsapp: #25D366;
     --var-ColorRedCancel: #ED5E68;
+    --var-BoxShadowContainer: 0px 0px 4px 1px rgba(0, 0, 0, 0.192);
 }
 
 /*página 1 de estabelecimentos*/
@@ -87,15 +89,15 @@
     height: 40px;
 }
 
-.testediv{
+.containerRelatorio{
     width: calc(100% - 30px);
-    border-radius: 20px;
+    border-radius: 10px;
     height: 200px;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    box-shadow: 0px 0px 15px 2px rgba(0, 0, 0, 0.149);
+    box-shadow: var(--var-BoxShadowContainer);
     position: relative;
 }
 .descEstabelecimento{
@@ -121,12 +123,12 @@
 .buttonConfig{
     height: 40px;
     width: 40px;
-    background-color: var(--var-ColorGreenOliva);
+    background-color: var(--var-WhatsappDark);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border-radius: 20px;
+    border-radius: 10px;
     position: absolute;
     top: 5px;
     right: 5px;
@@ -138,29 +140,28 @@
 
 
 .containerDataEstab{
-    width: calc(100% - 90px);
+    width: calc(100% - 30px);
     height: auto;
-    padding: 30px;
     margin-bottom: 15px;
     display: flex;
     flex-direction: row;
-    align-items: start;
+    align-items: center;
     justify-content: space-between;
-    border-radius: 20px;
-    box-shadow: 0px 0px 15px 2px rgba(0, 0, 0, 0.149);
     position: relative;
 }
 
-
 .sectionGraphic{
-    height: auto;
-    width: calc(100% - 380px);
+    height: 350px;
+    width: calc(50% - 65px);
     display: flex;
     flex-direction: column;
     align-items: start;
-    justify-content: start;
+    justify-content: space-between;
     position: relative;
+    padding: 30px;
     gap: 20px;
+    border-radius: 10px;
+    box-shadow: var(--var-BoxShadowContainer);
 }
 .sectionGraphic header{
     text-align: center;
@@ -172,16 +173,23 @@
 }
 
 
-.ContainerClassificacaoProf{
+.ContainerClassificacao{
     display: flex;
     flex-direction: column;
     align-items: start;
     justify-content: start;
     gap: 20px;
-    height: auto;
-    width: 350px;
+    height: 350px;
+    padding: 30px;
+    width: calc(50% - 65px);
+    border-radius: 10px;
+    box-shadow: var(--var-BoxShadowContainer);
 }
-.ContainerClassificacaoProf header{
+.ContainerDataMain{
+    display: flex;
+    flex-direction: column;
+}
+.ContainerDataMain h2{
     text-align: center;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 12pt;
@@ -189,14 +197,37 @@
     color: var(--var-ColorGreenOliva);
     height: 30px;
 }
-.ContainerProf{
-    width: 100%;
+.ContainerDataMain span{
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 15pt;
+    font-weight: 600;
+    color: var(--var-ColorGreenOliva)
+}
+.ContainerDataMain div{
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: start;
     justify-content: start;
     gap: 10px;
 }
+.ContainerDataMain div span{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    gap: 10px;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 12pt;
+    font-weight: 500;
+    color: gray;
+}
+.ContainerDataMain div span img{
+    height: 20px;
+    width: auto;
+    filter: drop-shadow(0px 0px 3px rgba(0, 0, 0, 0.19));
+}
+
+/*add estabelecimento-------------------------------------------------------------------------------------*/
 .BoxProf{
     display: flex;
     flex-direction: row;
@@ -263,4 +294,26 @@
 }
 #buttonAddEstabelecimentos img{
     height: 40px;
+}
+
+
+
+
+/*Estabelecimentos main responsividade----------------------------------------------------------------------------------*/
+@media (max-width: 900px) {
+    .containerDataEstab{
+        margin-bottom: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: start;
+        gap: 10px;
+    }
+    .sectionGraphic{
+        height: 350px;
+        width: calc(100% - 60px);
+        flex-direction: column;
+    }
+    .ContainerClassificacao{
+        width: calc(100% - 60px);
+    }
 }
