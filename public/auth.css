@@ -233,3 +233,43 @@ body{
 .buttonSubmit:hover{
     background-color: #00765e;
 }
+
+@media (max-width: 1080px) {
+    .msgCadastre h1, .msgEntrar h1{
+        text-align: center;
+        max-width: 60%;
+        font-size: 20pt;
+    }
+    .msgCadastre p, .msgEntrar p{
+        max-width: 80%;
+    }
+}
+@media (max-width: 800px) {
+    .buttonWelcome{
+        padding: 10px 35px 10px 35px;
+        font-size: 12pt;
+    }
+}
+@media (max-width: 560px) {
+    .welcomeContainerAuth{
+        height: 50px;
+        width: max-content;
+        padding: 10px;
+        z-index: +1;
+        background-color: var(--var-TitleColor1);
+    }
+    .msgCadastre h1, .msgEntrar h1{
+        display: none;
+    }
+    .msgCadastre p, .msgEntrar p{
+        display: none;
+    }
+    .buttonWelcome{
+        margin-top: 0px;
+    }
+
+    .containerForms{
+        width: 100%;
+        right: 0%;
+    }
+}

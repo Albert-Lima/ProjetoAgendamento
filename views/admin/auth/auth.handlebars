@@ -26,14 +26,7 @@
         <section class="formLogin formAuth">
             <h2>Entrar</h2>
             <form action="/login" method="post">
-            <!--
-                <div class="containerButtonForm">
-                    <a href="/auth/facebook"><img src="/images/icons8-f-do-facebook-50.png" alt="Login com Facebook"></a>
-                    <a href="/auth/google"><img src="/images/icons8-google-plus-50.png" alt="Login com Google"></a>
-                    <a href="/auth/linkedin"><img src="/images/icons8-linkedin-64.png" alt="Login com Linkedin"></a>
-                </div>
-            -->
-                <p class="descForm">ou use sua conta de email</p>
+                <p class="descForm">use sua conta de email</p>
         
                 {{#if erros}}
                     {{#each erros}}
@@ -65,12 +58,8 @@
         <section class="formCad formAuth">
             <h2>Faça parte</h2>
             <form action="/auth" method="post">
-                <div class="containerButtonForm">
-                    <a href=""><img src="/images/icons8-f-do-facebook-50.png" alt="Login com Facebook"></a>
-                    <a href=""><img src="/images/icons8-google-plus-50.png" alt="Login com Google"></a>
-                    <a href=""><img src="/images/icons8-linkedin-64.png" alt="Login com Linkedin"></a>
-                </div>
-                <p class="descForm">ou use sua conta de email</p>
+
+                <p class="descForm">use sua conta de email</p>
 
                 {{#each erros}}
                     <div class="container_poupUpError">{{this.texto}}</div>
@@ -113,32 +102,61 @@
         var bttCad = document.querySelector("#bttCad")
 
         function animeLeft(){
-            containerForms.style.transition = "1s ease-in-out"
-            containerForms.style.right = "0%"
 
-            msgCadastre.style.display = "none"
-            msgEntrar.style.display = "flex"
+            const larguraJanela = window.innerWidth
 
-            formLogin.style.display = "none"
-            formCad.style.display = "flex"
+            if(larguraJanela >= 560){
+                containerForms.style.transition = "1s ease-in-out"
+                containerForms.style.right = "0%"
 
-            welcomeContainerAuth.style.transition = "1s ease-in-out"
-            welcomeContainerAuth.style.right = "60%"
+                msgCadastre.style.display = "none"
+                msgEntrar.style.display = "flex"
+
+                formLogin.style.display = "none"
+                formCad.style.display = "flex"
+
+                welcomeContainerAuth.style.transition = "1s ease-in-out"
+                welcomeContainerAuth.style.right = "60%"
+            } else {
+
+                msgCadastre.style.display = "none"
+                msgEntrar.style.display = "flex"
+
+                formLogin.style.display = "none"
+                formCad.style.display = "flex"
+
+                welcomeContainerAuth.style.transition = "0.5s ease-in-out"
+                welcomeContainerAuth.style.right = "calc(100% - 134px)"
+            }
         }
         bttCad.addEventListener("click", animeLeft)
 
         function animeRight(){
-            containerForms.style.transition = "1s ease-in-out"
-            containerForms.style.right = "40%"
 
-            msgCadastre.style.display = "flex"
-            msgEntrar.style.display = "none"
+            const larguraJanela = window.innerWidth
 
-            formLogin.style.display = "flex"
-            formCad.style.display = "none"
+            if(larguraJanela >= 560){
+                containerForms.style.transition = "1s ease-in-out"
+                containerForms.style.right = "40%"
 
-            welcomeContainerAuth.style.transition = "1s ease-in-out"
-            welcomeContainerAuth.style.right = "0%"
+                msgCadastre.style.display = "flex"
+                msgEntrar.style.display = "none"
+
+                formLogin.style.display = "flex"
+                formCad.style.display = "none"
+
+                welcomeContainerAuth.style.transition = "1s ease-in-out"
+                welcomeContainerAuth.style.right = "0%"
+            } else{
+                msgCadastre.style.display = "flex"
+                msgEntrar.style.display = "none"
+
+                formLogin.style.display = "flex"
+                formCad.style.display = "none"
+
+                welcomeContainerAuth.style.transition = "0.5s ease-in-out"
+                welcomeContainerAuth.style.right = "0%"
+            }
         }
         bttEntrar.addEventListener("click", animeRight) 
     </script>
