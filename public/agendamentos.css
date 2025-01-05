@@ -26,18 +26,47 @@
 }
 .viewPanel{
     margin: auto;
-    padding-top: 20px;
     width: 100%;
     height: calc(100% - 30px);
     overflow-y: scroll;
     gap: 30px;
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
+    align-items: start;
     justify-content: start;
 }
+/*ToolBarAgenda------------------------------------------------------------------------------------------------------------------------------*/
+.toolBarAgenda{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    width: 240px;
+    height: 100%;
+    padding: 10px;
+    gap: 10px;
+    background-color: white;
+}
+.buttonAddAgendamento{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    border-radius: 5px;
+    gap: 5px;
+    border: none;
+    background: #1F5055;
+    box-shadow: 0px 0px 4px 1px rgb(194, 194, 194);
+    cursor: pointer;
+    color: white;
+}
+.buttonAddAgendamento img{
+    height: 25px;
+    width: 25px;
+}
 
-/*main panel agendamentos*/
+/*main panel agendamentos---------------------------------------------------------------------------------------------------------------------*/
 .containerAgendamentos{
     display: flex;
     flex-direction: column;

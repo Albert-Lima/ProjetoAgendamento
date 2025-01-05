@@ -86,43 +86,53 @@
 
         /*calendáio para ver agendamentos---------------------------*/
         #calendarSelet {
-            max-width: 300px;
+            max-width: 200px;
             text-align: center;
-            margin: 20px auto;
-            border: 1px solid #ddd;
-            border-radius: 10px;
+            box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.278);
+            border-radius: 5px;
             padding: 20px;
-            background-color: #f9f9f9;
+            background-color: white;
         }
 
         #calendar-header-selet {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            font-size: 7pt;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-weight: 600;
         }
 
         #days-of-week-selet {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
             font-weight: bold;
-            margin: 10px 0;
+            margin: 10px 0px;
+            width: 100%;
+            font-size: 8pt;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-weight: 500;
+            text-align: center;
         }
 
         #calendar-days-selet {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 5px;
+            gap: 4px;
         }
 
         .daySelet {
-            width: 40px;
-            height: 40px;
-            line-height: 40px;
+            width: 25px;
+            height: 25px;
+            line-height: 25px;
             text-align: center;
             cursor: pointer;
             border-radius: 5px;
             background-color: #f1f1f1;
             transition: background-color 0.3s;
+            font-size: 7pt;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-weight: 600;
         }
 
         .daySelet:hover {
@@ -163,7 +173,7 @@
         <section class="ConteinerInfo">
             <!--Container de todas as informções -->
             <section class="viewPanel">
-               <aside>
+               <aside class="toolBarAgenda">
                     <div id="calendarSelet">
                         <div id="calendar-header-selet">
                             <button id="prev-month-selet">←</button>
@@ -175,7 +185,49 @@
                         </div>
                         <div id="calendar-days-selet"></div>
                     </div>
+                    <button class="buttonAddAgendamento" id="openFormAgendamento">
+                        <img src="/images/icons8-soma-30.png" alt="adicionar usuários">
+                        <p>
+                            Agendar
+                        </p>
+                    </button>
                </aside>
+            </section>
+            <section class="poupUpForm" id="containerFormProfissional">
+                <section class="containerForm">
+                    <header>
+                        <p class="titleForm">Novo Profissional</p>
+                        <button type="button" class="buttonClosePoupUp" id="closeFormAddProfissional"><img src="/images/icons8-excluir-50.png" alt="fechar formulário"></button>
+                    </header>
+                    <form action="/addprofissionais" method="post" class="formMain" enctype="multipart/form-data">
+                        <section class="partForm">
+                            <h2>Profissional</h2>
+                            <input type="text" name="name" class="inputName" placeholder="nome">
+                            <input type="number" name="phone" class="inputName" placeholder="whatsapp">
+                        </section>
+                        <section class="partForm">
+                            <section class="selectBox">
+                                <div class="selectBoxHeader">Serviços</div>
+                                <section class="containerOptions">
+                                    {{#each services}}
+                                        <label class="LabelCheckBoxAddOptions">
+                                            <input type="checkbox" class="serviceCheckbox" name="services" value="{{_id}}">
+                                            {{name}}
+                                        </label>
+                                    {{else}}
+                                        <a href="/servicos">Cadastre Serviços</a>
+                                    {{/each}}
+                                </section>
+                            </section>
+                        </section>
+                        <section class="partForm">
+                            <label for="photo">adicione a foto do profissional</label>
+                            <input type="file" id="photo" name="photo" accept="image/*">
+                        </section>
+                        
+                        <button type="submit">salvar</button>
+                    </form>
+                </section>
             </section>
         </section>
 
@@ -270,82 +322,87 @@
     </main>
     <!--Calendário para ver agendamentos-->
     <script>
-        // script.js
-        const calendarDays = document.getElementById('calendar-days-selet');
-        const monthName = document.getElementById('month-name-selet');
-        const selectedDateSpan = document.getElementById('selected-date-selet');
-        const appointmentsList = document.getElementById('appointmentsSelet');
+        // script.js adaptado
+        const calendarDaysSelet = document.getElementById('calendar-days-selet');
+        const monthNameSelet = document.getElementById('month-name-selet');
 
-        let currentMonth = new Date().getMonth();
-        let currentYear = new Date().getFullYear();
+        let currentMonthSelet = new Date().getMonth();
+        let currentYearSelet = new Date().getFullYear();
 
-        const appointments = {
+        const appointmentsSelet = {
             '2025-01-05': ['Corte de cabelo - 10h', 'Reunião - 14h'],
             '2025-01-07': ['Dentista - 9h', 'Treinamento - 16h'],
         };
 
-        function renderCalendar() {
-            const firstDay = new Date(currentYear, currentMonth, 1);
-            const lastDay = new Date(currentYear, currentMonth + 1, 0);
+        function renderCalendarSelet() {
+            const firstDay = new Date(currentYearSelet, currentMonthSelet, 1);
+            const lastDay = new Date(currentYearSelet, currentMonthSelet + 1, 0);
             const daysInMonth = lastDay.getDate();
+            const firstDayIndex = firstDay.getDay(); // Dia da semana (0 = Domingo, 6 = Sábado)
 
-            calendarDays.innerHTML = '';
-            monthName.textContent = firstDay.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+            calendarDaysSelet.innerHTML = '';
+            monthNameSelet.textContent = firstDay.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
 
+            // Preencher com espaços em branco até o primeiro dia do mês
+            for (let i = 0; i < firstDayIndex; i++) {
+                const emptySlot = document.createElement('div');
+                emptySlot.classList.add('daySelet');
+                emptySlot.style.visibility = 'hidden'; // Deixa o espaço vazio
+                calendarDaysSelet.appendChild(emptySlot);
+            }
+
+            // Preencher os dias do mês
             for (let i = 1; i <= daysInMonth; i++) {
                 const day = document.createElement('div');
                 day.classList.add('daySelet');
                 day.textContent = i;
-                const date = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+
+                const date = `${currentYearSelet}-${String(currentMonthSelet + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
                 day.dataset.date = date;
 
                 day.addEventListener('click', () => {
                     document.querySelectorAll('.daySelet').forEach(el => el.classList.remove('active'));
                     day.classList.add('active');
-                    loadAppointments(date);
+                    loadAppointmentsSelet(date);
                 });
 
-                calendarDays.appendChild(day);
+                calendarDaysSelet.appendChild(day);
             }
         }
 
-        function loadAppointments(date) {
-            selectedDateSpan.textContent = date;
-            const dailyAppointments = appointments[date] || [];
-            appointmentsList.innerHTML = '';
-
+        function loadAppointmentsSelet(date) {
+            console.log(`Agendamentos para ${date}:`);
+            const dailyAppointments = appointmentsSelet[date] || [];
             if (dailyAppointments.length === 0) {
-                appointmentsList.innerHTML = '<li>Sem agendamentos</li>';
+                console.log('Sem agendamentos');
                 return;
             }
 
             dailyAppointments.forEach(appointment => {
-                const li = document.createElement('li');
-                li.textContent = appointment;
-                appointmentsList.appendChild(li);
+                console.log(appointment);
             });
         }
 
         document.getElementById('prev-month-selet').addEventListener('click', () => {
-            currentMonth -= 1;
-            if (currentMonth < 0) {
-                currentMonth = 11;
-                currentYear -= 1;
+            currentMonthSelet -= 1;
+            if (currentMonthSelet < 0) {
+                currentMonthSelet = 11;
+                currentYearSelet -= 1;
             }
-            renderCalendar();
+            renderCalendarSelet();
         });
 
         document.getElementById('next-month-selet').addEventListener('click', () => {
-            currentMonth += 1;
-            if (currentMonth > 11) {
-                currentMonth = 0;
-                currentYear += 1;
+            currentMonthSelet += 1;
+            if (currentMonthSelet > 11) {
+                currentMonthSelet = 0;
+                currentYearSelet += 1;
             }
-            renderCalendar();
+            renderCalendarSelet();
         });
 
         // Render inicial
-        renderCalendar();
+        renderCalendarSelet();
     </script>
     <!--Script para o funcionamento do calendário de adicionar agendamento-->
     <script>

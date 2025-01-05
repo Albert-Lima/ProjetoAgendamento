@@ -361,22 +361,7 @@ body{
     align-items: center;
     justify-content: center;
 }
-.buttonAddAgendamento{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    padding: 5px;
-    border-radius: 10px;
-    border: none;
-    background: none;
-    box-shadow: 0px 0px 4px 1px rgb(194, 194, 194);
-    cursor: pointer;
-}
-.buttonAddAgendamento img{
-    height: 30px;
-    width: 30px;
-}
+
 
 .containerSearch{
     display: flex;
