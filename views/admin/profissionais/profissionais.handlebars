@@ -17,7 +17,12 @@
     <main class="panel">
             <header class="HeaderPanel">
                 <div>
-                    <a class="doboutButton"><img src="/images/icons8-dúvida-100.png" alt="manual da aplicação"></a>
+                    <button class="doboutButton">
+                        <p>
+                            Ajuda
+                        </p>
+                        <img src="/images/icons8-ajuda-32.png" alt="manual da aplicação">
+                    </button>
                 </div>
                 {{#if user}}
                     <div class="infoUsuario">
@@ -30,7 +35,10 @@
             </header>
             <section class="containerButtonAddProfissional">
                 <button class="buttonAddProfissional" id="openFormProfissional">
-                    <img src="/images/icons8-adicionar-100.webp" alt="adicionar usuários">
+                    <img src="/images/icons8-soma-30.png" alt="adicionar usuários">
+                    <p>
+                        novo
+                    </p>
                 </button>
             </section>
             <section class="ConteinerInfoProfissionais">
@@ -38,7 +46,7 @@
                         {{#each profissional}}
                             <div class="containerProfissional">
                                 <div class="profissionalIMG">
-                                    <img src="" alt="foto do profissional">
+                                    <img src="{{photoUrl}}" alt="foto do profissional">
                                 </div>
                                 <div class="boxInfoProf">
                                     <span>
@@ -120,7 +128,7 @@
                         <p class="titleForm">Novo Profissional</p>
                         <button type="button" class="buttonClosePoupUp" id="closeFormAddProfissional"><img src="/images/icons8-excluir-50.png" alt="fechar formulário"></button>
                     </header>
-                    <form action="/addprofissionais" method="post" class="formMain">
+                    <form action="/addprofissionais" method="post" class="formMain" enctype="multipart/form-data">
                         <section class="partForm">
                             <h2>Profissional</h2>
                             <input type="text" name="name" class="inputName" placeholder="nome">
@@ -140,6 +148,10 @@
                                     {{/each}}
                                 </section>
                             </section>
+                        </section>
+                        <section class="partForm">
+                            <label for="photo">adicione a foto do profissional</label>
+                            <input type="file" id="photo" name="photo" accept="image/*">
                         </section>
                         
                         <button type="submit">salvar</button>

@@ -1,12 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
+const cloudinary = require("cloudinary").v2
 
 const EstabelecimentoModel = require("../models/estabelecimentos");
 const ProfissionalModel = require("../models/profissional")
 const ServicesModel = require("../models/service")
 
 const {eAdmin} = require("../helpers/eAdmin")
+
+const { upload } = require('../config/cloudinary');
 
 router.get("/profissionais", eAdmin, async (req, res) => {
     try {
@@ -39,7 +42,7 @@ router.get("/addprofissionais", eAdmin, (req, res)=>{
     })
 })
 
-router.post("/addprofissionais", eAdmin, (req, res)=>{
+router.post("/addprofissionais", eAdmin, upload.single('photo'), async (req, res) => {
     const { name, phone, services } = req.body;
     const erros = [];
 
@@ -50,20 +53,26 @@ router.post("/addprofissionais", eAdmin, (req, res)=>{
     if (erros.length > 0) {
         return res.render("admin/estabelecimentos/profissionais", { erros });
     }
+
     try {
+        // Log do arquivo enviado
+        console.log('Arquivo enviado:', req.file);
+        // Salvar os dados do profissional
         const novoProfissional = new ProfissionalModel({
             name,
             phone,
             services,
-            userId: req.user.id
+            userId: req.user.id,
+            photoUrl: req.file?.path // URL da imagem salva no Cloudinary
         });
-        novoProfissional.save();
+
+        await novoProfissional.save();
         res.redirect("/profissionais");
     } catch (err) {
-        console.error("Erro ao salvar estabelecimento:", err);
-        res.status(500).send("Erro ao salvar estabelecimento.");
+        console.error("Erro ao salvar profissional:", err);
+        res.status(500).send("Erro ao salvar profissional.");
     }
-})
+});
 
 router.post("/editprofissionais/:id", eAdmin, async (req, res)=>{
     try{
@@ -84,14 +93,30 @@ router.post("/editprofissionais/:id", eAdmin, async (req, res)=>{
 
 //rota para deletar profissional
 router.get("/deleteprofissional/:id", eAdmin, async (req, res)=>{
-    try{
-        const profissionalId = req.params.id
+    try {
+        const profissionalId = req.params.id;
 
-        const deletedProfissional = await ProfissionalModel.findByIdAndDelete(profissionalId);
+        // Encontre o profissional para obter o photoUrl
+        const profissional = await ProfissionalModel.findById(profissionalId);
 
-        res.redirect("/profissionais")
-    } catch {
-        console.log('Erro ao deletar profissional:', error);
+        if (!profissional) {
+            console.log('Profissional não encontrado.');
+            return res.redirect("/profissionais");
+        }
+
+        // Extrai o public_id do Cloudinary a partir da URL da imagem
+        const photoUrl = profissional.photoUrl;
+        if (photoUrl) {
+            const publicId = photoUrl.split('/').pop().split('.')[0]; // Extrai o ID único da imagem
+            await cloudinary.uploader.destroy(`profissionais/${publicId}`);
+        }
+
+        // Deleta o profissional do banco de dados
+        await ProfissionalModel.findByIdAndDelete(profissionalId);
+
+        res.redirect("/profissionais");
+    } catch (error) {
+        console.error('Erro ao deletar profissional:', error);
         res.redirect("/profissionais");
     }
 })

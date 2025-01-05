@@ -11,7 +11,8 @@ const Profissional = new Schema({
         required: true
     },
     services: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Services', default: [] }],
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: "Users", required: true }
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "Users", required: true },
+    photoUrl: { type: String } // URL da imagem no Cloudinary
 })
 
 module.exports = mongoose.model('Profissional', Profissional)
