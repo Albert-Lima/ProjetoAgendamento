@@ -84,6 +84,56 @@
             color: black;
         }
 
+        /*calendáio para ver agendamentos---------------------------*/
+        #calendarSelet {
+            max-width: 300px;
+            text-align: center;
+            margin: 20px auto;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        #calendar-header-selet {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #days-of-week-selet {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        #calendar-days-selet {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+
+        .daySelet {
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 5px;
+            background-color: #f1f1f1;
+            transition: background-color 0.3s;
+        }
+
+        .daySelet:hover {
+            background-color: #ddd;
+        }
+
+        .daySelet.active {
+            background-color: #4285f4;
+            color: white;
+        }
+
     </style>
     <title>Estabelecimentos</title>
 </head>
@@ -97,115 +147,40 @@
     <main class="panel">
         <header class="HeaderPanel">
             <div>
-                <a class="doboutButton"><img src="/images/icons8-dúvida-100.png" alt="manual da aplicação"></a>
+                <button class="doboutButton">
+                    <p>Ajuda</p>
+                    <img src="/images/icons8-ajuda-32.png" alt="manual da aplicação">
+                </button>
             </div>
             <div class="infoUsuario">
                 {{#if user}}
                     <span>{{user.name}}</span>
-                    <span class="userPicture"><img src="/images/perfilGendaiTeste.png" alt="imagem do usuário"></span>
                 {{else}}
                 {{/if}}
             </div>
         </header>
+
         <section class="ConteinerInfo">
+            <!--Container de todas as informções -->
             <section class="viewPanel">
-                <header class="headerAgendamentos">
-                    <div class="selectPeriodBox">
-                        <button id="buttonAll" class="selectPeriodBox_selected">Todos</button>
-                        <button id="buttonWeek" class="selectPeriodBox_no_selected">Semanal</button>
+               <aside>
+                    <div id="calendarSelet">
+                        <div id="calendar-header-selet">
+                            <button id="prev-month-selet">←</button>
+                            <h2 id="month-name-selet"></h2>
+                            <button id="next-month-selet">→</button>
+                        </div>
+                        <div id="days-of-week-selet">
+                            <span>Dom</span><span>Seg</span><span>Ter</span><span>Qua</span><span>Qui</span><span>Sex</span><span>Sáb</span>
+                        </div>
+                        <div id="calendar-days-selet"></div>
                     </div>
-                    <div class="containerBttAddAgendamento">
-                        <button class="buttonAddAgendamento" type="button" id="openFormAgendamento">
-                            <img src="/images/icons8-adicionar-100.webp" alt="adicionar agendamento">
-                        </button>
-                    </div>
-                    <div class="containerSearch">
-                        <button class="buttonInputSearch" type="button" >
-                            <img src="/images/icons8-pesquisar-50.png" alt="abrir barra de pesquisa">
-                        </button>
-                        <input type="search" autocomplete="on" class="inputContainerSearch" placeholder="procurar cliente">
-                    </div>
-                </header>
-                <section class="containerAgendamentos">
-                    {{#each agendamentos}}
-                        <section class="boxAgendamento" data-client-name="{{nameClient}}" data-client-phone="{{phoneClient}}">
-                            <div class="boxInfoAgendamento">
-                                <h2>Cliente</h2>
-                                <span>{{nameClient}}</span>
-                                <span>{{phoneClient}}</span>
-                            </div>
-                            <span class="line"></span>
-                            <div class="boxInfoAgendamento">
-                                <h2>Serviço</h2>
-                                <span>{{service.name}}</span>
-                                <span>{{service.value}} R$</span>
-                            </div>
-                            <span class="line"></span>
-                            <div class="boxInfoAgendamento">
-                                <h2>Profissional</h2>
-                                <span>{{profissional.name}}</span>
-                                <span>{{profissional.phone}}</span>
-                            </div>
-                            <span class="line"></span>
-                            <div class="detalhesAgendamento">
-                                <h2>{{formatDate data}}, {{horario}}h</h2>
-                                <button class="buttonOpitionsAgendamentos" type="button">Opções</button>
-                            </div>
-
-                            {{#if isDeleted}}
-                                <section class="containerPoupUpOptions">
-                                    <div class="poupUpOptions">
-                                        <button class="buttonClosePoupUpDeleteAgendamento">
-                                            <img src="/images/icons8-excluir-50.png" alt="fechar popup">
-                                        </button>
-                                        <a href="#" class="sendWhatsappRemember">enviar lembrete <img src="/images/icons8-whatsapp-48.png" alt="enviar lembrete por whatsapp"></a>
-                                        <button class="openPoupUpDeleteAgendamento">cancelar agendamento</button>
-
-                                        <section class="popUpDeleteAgendamento">
-                                            <h2>Tem certeza?</h2>
-                                            <p>
-                                                o agendamento será deletado <br>
-                                                e seu cliente será notificado
-                                            </p>
-                                            <form action="/deleteagendamento/{{_id}}" method="get" class="FormCancelAgendamento" id="FormCancelAgendamento">
-                                                <button class="buttonPopUpDeleteAgendamento" type="button" id="bttCancelPopUpDeleteAgendamento">cancelar</button>
-                                                <button class="buttonPopUpDeleteAgendamento" type="subimit" id="bttConfirmPopUpDeleteAgendamento">confirmar</button>
-                                            </form>
-                                        </section>
-                                    </div>
-                                </section>
-                                <span class="statusAgendamento" style="background-color: #25D366;"></span>
-                            {{else}}
-                                <section class="containerPoupUpOptions">
-                                    <div class="poupUpOptions">
-                                        <button class="buttonClosePoupUpDeleteAgendamento">
-                                            <img src="/images/icons8-excluir-50.png" alt="fechar popup">
-                                        </button>
-                                        <a href="#" class="sendWhatsappRemember">enviar lembrete de confirmação<img src="/images/icons8-whatsapp-48.png" alt="enviar lembrete de confirmação por whatsapp"></a>
-                                        <button class="openPoupUpDeleteAgendamento">cancelar agendamento</button>
-
-                                        <section class="popUpDeleteAgendamento">
-                                            <h2>Tem certeza?</h2>
-                                            <p>
-                                                o agendamento será deletado <br>
-                                                e seu cliente será notificado
-                                            </p>
-                                            <form action="/deleteagendamento/{{_id}}" method="get" class="FormCancelAgendamento" id="FormCancelAgendamento">
-                                                <button class="buttonPopUpDeleteAgendamento" type="button" id="bttCancelPopUpDeleteAgendamento">cancelar</button>
-                                                <button class="buttonPopUpDeleteAgendamento" type="subimit" id="bttConfirmPopUpDeleteAgendamento">confirmar</button>
-                                            </form>
-                                        </section>
-                                    </div>
-                                </section>
-                                <span class="statusAgendamento" style="background-color: #FFFF00;"></span>
-                            {{/if}}
-
-                        </section>
-                    {{else}}
-                    {{/each}}
-                </section>
+               </aside>
             </section>
         </section>
+
+
+        <!--Formulário para fazer um novo agendamento-->
         <section class="poupUpForm" id="containerFormAgendamento">
             <section class="containerForm">
                 <header>
@@ -293,7 +268,86 @@
             </section>
         </section>
     </main>
-    <!--Script para o funcionamento do calendário-->
+    <!--Calendário para ver agendamentos-->
+    <script>
+        // script.js
+        const calendarDays = document.getElementById('calendar-days-selet');
+        const monthName = document.getElementById('month-name-selet');
+        const selectedDateSpan = document.getElementById('selected-date-selet');
+        const appointmentsList = document.getElementById('appointmentsSelet');
+
+        let currentMonth = new Date().getMonth();
+        let currentYear = new Date().getFullYear();
+
+        const appointments = {
+            '2025-01-05': ['Corte de cabelo - 10h', 'Reunião - 14h'],
+            '2025-01-07': ['Dentista - 9h', 'Treinamento - 16h'],
+        };
+
+        function renderCalendar() {
+            const firstDay = new Date(currentYear, currentMonth, 1);
+            const lastDay = new Date(currentYear, currentMonth + 1, 0);
+            const daysInMonth = lastDay.getDate();
+
+            calendarDays.innerHTML = '';
+            monthName.textContent = firstDay.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+
+            for (let i = 1; i <= daysInMonth; i++) {
+                const day = document.createElement('div');
+                day.classList.add('daySelet');
+                day.textContent = i;
+                const date = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+                day.dataset.date = date;
+
+                day.addEventListener('click', () => {
+                    document.querySelectorAll('.daySelet').forEach(el => el.classList.remove('active'));
+                    day.classList.add('active');
+                    loadAppointments(date);
+                });
+
+                calendarDays.appendChild(day);
+            }
+        }
+
+        function loadAppointments(date) {
+            selectedDateSpan.textContent = date;
+            const dailyAppointments = appointments[date] || [];
+            appointmentsList.innerHTML = '';
+
+            if (dailyAppointments.length === 0) {
+                appointmentsList.innerHTML = '<li>Sem agendamentos</li>';
+                return;
+            }
+
+            dailyAppointments.forEach(appointment => {
+                const li = document.createElement('li');
+                li.textContent = appointment;
+                appointmentsList.appendChild(li);
+            });
+        }
+
+        document.getElementById('prev-month-selet').addEventListener('click', () => {
+            currentMonth -= 1;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear -= 1;
+            }
+            renderCalendar();
+        });
+
+        document.getElementById('next-month-selet').addEventListener('click', () => {
+            currentMonth += 1;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear += 1;
+            }
+            renderCalendar();
+        });
+
+        // Render inicial
+        renderCalendar();
+    </script>
+    <!--Script para o funcionamento do calendário de adicionar agendamento-->
     <script>
         const calendarElement = document.getElementById("calendar");
         const selectedDateElement = document.getElementById("selected-date");
@@ -498,23 +552,6 @@
 
     </script>
     <script>
-        const inputContainerSearch = document.querySelector(".inputContainerSearch")
-        const buttonInputSearch = document.querySelector(".buttonInputSearch")
-
-        function openSearch(){
-            inputContainerSearch.style.transition = "1s"
-            inputContainerSearch.style.width = "200px"
-
-            buttonInputSearch.removeEventListener("click", openSearch)
-            buttonInputSearch.addEventListener("click", closeSeach)
-            function closeSeach(){
-                inputContainerSearch.style.width = "0px"
-
-                buttonInputSearch.addEventListener("click", openSearch)
-                buttonInputSearch.removeEventListener("click", closeSeach)
-            }
-        }
-        buttonInputSearch.addEventListener("click", openSearch)
 
         var openFormAgendamento = document.querySelector("#openFormAgendamento")
         var closeFormAgendamento = document.querySelector("#closeFormAgendamento")
@@ -609,29 +646,6 @@
 
             // Inicializa a filtragem quando a página carrega
             filterProfessionals()  // Inicializa a filtragem no carregamento
-        });
- 
-
-        //Input Search(Funçõs para pesquisar agendamentos através de clientes)
-        document.addEventListener('DOMContentLoaded', () => {
-            const searchInput = document.querySelector('.inputContainerSearch');
-            const agendamentosContainer = document.querySelector('.containerAgendamentos');
-            const agendamentos = Array.from(agendamentosContainer.querySelectorAll('.boxAgendamento'));
-
-            searchInput.addEventListener('input', () => {
-                const searchTerm = searchInput.value.toLowerCase().trim();
-
-                agendamentos.forEach(agendamento => {
-                    const clientName = agendamento.dataset.clientName.toLowerCase();
-                    const clientPhone = agendamento.dataset.clientPhone.toLowerCase()
-
-                    if (clientName.includes(searchTerm) || clientPhone.includes(searchTerm)) {
-                        agendamento.style.display = ''; // Mostra o agendamento
-                    } else {
-                        agendamento.style.display = 'none'; // Esconde o agendamento
-                    }
-                });
-            });
         });
     </script>
     <!--Script para o poupUp de opções do agendamento-->
