@@ -192,6 +192,7 @@ router.post("/addagendamentodirect", eAdmin, async (req, res) => {
         });
 
         await novoAgendamento.save();
+        console.log("Agendamento realizado")
         res.redirect("/agendamentos");
     } catch (err) {
         console.error("Erro ao salvar agendamento:", err);
