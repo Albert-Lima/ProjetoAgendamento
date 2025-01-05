@@ -80,7 +80,7 @@ router.post("/auth", async (req, res) => {
 
         const verificationLink = `http://localhost:8081/auth/verify?token=${verificationToken}`;
         await transporter.sendMail({
-            from: '"Meu App" albertsousalima@gmail.com',
+            from: '"Gendal" albertsousalima@gmail.com',
             to: req.body.email,
             subject: "Verifique seu e-mail",
             html: `
@@ -91,7 +91,7 @@ router.post("/auth", async (req, res) => {
         });
 
         req.flash("success_msg", "Cadastro realizado! Verifique seu e-mail para ativar sua conta.");
-        res.redirect("/auth");
+        res.redirect("/auth/verify");
     } catch (error) {
         req.flash("error_msg", "Houve um erro ao se cadastrar");
         console.log("Erro ao salvar o usuário:", error);
@@ -102,11 +102,16 @@ router.post("/auth", async (req, res) => {
 router.post("/login", (req, res, next) => {
     passport.authenticate("local", async (err, user, info) => {
         if (err) return next(err);
-        if (!user) return res.redirect("/auth");
+
+        if (!user) {
+            req.flash("error_msg", "Usuário não encontrado ou senha inválida.");
+            return res.redirect("/auth");
+        }
 
         if (!user.isVerified) {
+            console.log("Usuário não verificado"); // Para debug no terminal
             req.flash("error_msg", "Por favor, verifique seu e-mail antes de fazer login.");
-            return res.redirect("/auth");
+            return res.redirect("/auth"); // Adicionado o `return` aqui
         }
 
         req.logIn(user, (err) => {
