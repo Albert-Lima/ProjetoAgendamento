@@ -115,23 +115,84 @@ router.post("/agendamentos/verifyDays", eAdmin, async (req,res)=>{
     }
 })
 
+router.get("/agendamentos/:date", eAdmin, async (req, res) => {
+    try {
+        const { date } = req.params;
+
+        // Obtem os profissionais
+        const profissionais = await ProfissionalModel.find({ userId: req.user.id });
+
+        // Obtem os agendamentos do dia
+        const agendamentos = await AgendamentoModel.find({
+            userId: req.user.id,
+            data: new Date(date), // Filtra os agendamentos pela data
+            isDeleted: false
+        }).populate('service profissional');
+
+        // Monta a estrutura de agendamentos agrupados por profissional e horário
+        const agendamentosOrganizados = {};
+        profissionais.forEach(profissional => {
+            agendamentosOrganizados[profissional._id] = {}; // Inicializa o objeto para o profissional
+        });
+
+        agendamentos.forEach(agendamento => {
+            const profId = agendamento.profissional._id.toString();
+            const horario = agendamento.horario;
+
+            if (!agendamentosOrganizados[profId][horario]) {
+                agendamentosOrganizados[profId][horario] = [];
+            }
+
+            agendamentosOrganizados[profId][horario].push({
+                service: agendamento.service.name,
+                clientName: agendamento.nameClient,
+                phoneClient: agendamento.phoneClient
+            });
+        });
+
+        res.json({
+            profissionais,
+            agendamentosOrganizados
+        });
+    } catch (err) {
+        console.error("Erro ao buscar agendamentos:", err);
+        res.status(500).json({ error: "Erro ao buscar agendamentos" });
+    }
+});
+
 router.get("/agendamentos", eAdmin, async (req, res) => {
     try {
         const servicesPromise = ServicesModel.find({ userId: req.user.id });
         const profissionaisPromise = ProfissionalModel.find({ userId: req.user.id });
-        const agendamentosPromise = AgendamentoModel.find({ userId: req.user.id }).populate('service profissional'); 
-
+        const agendamentosPromise = AgendamentoModel.find({ userId: req.user.id }).populate('service profissional');
+        
         const [services, profissionais, agendamentos] = await Promise.all([
             servicesPromise,
             profissionaisPromise,
             agendamentosPromise
         ]);
 
+        // Horários do estabelecimento (você pode ajustar conforme sua modelagem de dados)
+        const estabelecimento = await EstabelecimentoModel.findOne({ userId: req.user.id });
+        const { horarioInicial, horarioFinal, intervaloTempo } = estabelecimento;
+
+        // Função para gerar os horários
+        const horarios = [];
+        let currentTime = horarioInicial; // Horário inicial (ex: 8h)
+        horarios.push(`${currentTime}h`)
+
+        for( i = 0; currentTime < horarioFinal - intervaloTempo ; i++){
+            currentTime += intervaloTempo; // Incrementa de acordo com o intervalo (em horas)
+            const hour = Math.floor(currentTime); // Pega a hora inteira
+            horarios.push(`${hour}h`);
+        }
+        // Renderiza a página passando os dados
         res.render("admin/agendamento/agendamentos", {
             services,
             profissionais,
             user: req.user,
-            agendamentos
+            agendamentos,
+            horarios
         });
     } catch (err) {
         console.error("Erro ao listar agendamentos:", err);

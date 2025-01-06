@@ -183,7 +183,8 @@
                         <div id="days-of-week-selet">
                             <span>Dom</span><span>Seg</span><span>Ter</span><span>Qua</span><span>Qui</span><span>Sex</span><span>Sáb</span>
                         </div>
-                        <div id="calendar-days-selet"></div>
+                        <div id="calendar-days-selet">
+                        </div>
                     </div>
                     <button class="buttonAddAgendamento" id="openFormAgendamento">
                         <img src="/images/icons8-soma-30.png" alt="adicionar usuários">
@@ -194,7 +195,7 @@
                </aside>
                <!--Container Planilha de agendamento -->
                <section>
-
+                    {{>schedule}}
                </section>
             </section>
         </section>
@@ -288,89 +289,87 @@
             </section>
         </section>
     </main>
-    <!--Calendário para ver agendamentos-->
     <script>
-        // script.js adaptado
-        const calendarDaysSelet = document.getElementById('calendar-days-selet');
-        const monthNameSelet = document.getElementById('month-name-selet');
+        document.addEventListener("DOMContentLoaded", () => {
+    const calendarDaysSelet = document.getElementById('calendar-days-selet');
+    const monthNameSelet = document.getElementById('month-name-selet');
+    const scheduleContainer = document.querySelector("#schedule");
 
-        let currentMonthSelet = new Date().getMonth();
-        let currentYearSelet = new Date().getFullYear();
+    let currentMonthSelet = new Date().getMonth();
+    let currentYearSelet = new Date().getFullYear();
 
-        const appointmentsSelet = {
-            '2025-01-05': ['Corte de cabelo - 10h', 'Reunião - 14h'],
-            '2025-01-07': ['Dentista - 9h', 'Treinamento - 16h'],
-        };
+    // Renderiza o calendário
+    function renderCalendarSelet() {
+        const firstDay = new Date(currentYearSelet, currentMonthSelet, 1);
+        const lastDay = new Date(currentYearSelet, currentMonthSelet + 1, 0);
+        const daysInMonth = lastDay.getDate();
+        const firstDayIndex = firstDay.getDay();
 
-        function renderCalendarSelet() {
-            const firstDay = new Date(currentYearSelet, currentMonthSelet, 1);
-            const lastDay = new Date(currentYearSelet, currentMonthSelet + 1, 0);
-            const daysInMonth = lastDay.getDate();
-            const firstDayIndex = firstDay.getDay(); // Dia da semana (0 = Domingo, 6 = Sábado)
+        calendarDaysSelet.innerHTML = '';
+        monthNameSelet.textContent = firstDay.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
 
-            calendarDaysSelet.innerHTML = '';
-            monthNameSelet.textContent = firstDay.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
-
-            // Preencher com espaços em branco até o primeiro dia do mês
-            for (let i = 0; i < firstDayIndex; i++) {
-                const emptySlot = document.createElement('div');
-                emptySlot.classList.add('daySelet');
-                emptySlot.style.visibility = 'hidden'; // Deixa o espaço vazio
-                calendarDaysSelet.appendChild(emptySlot);
-            }
-
-            // Preencher os dias do mês
-            for (let i = 1; i <= daysInMonth; i++) {
-                const day = document.createElement('div');
-                day.classList.add('daySelet');
-                day.textContent = i;
-
-                const date = `${currentYearSelet}-${String(currentMonthSelet + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
-                day.dataset.date = date;
-
-                day.addEventListener('click', () => {
-                    document.querySelectorAll('.daySelet').forEach(el => el.classList.remove('active'));
-                    day.classList.add('active');
-                    loadAppointmentsSelet(date);
-                });
-
-                calendarDaysSelet.appendChild(day);
-            }
+        // Preenche os espaços vazios
+        for (let i = 0; i < firstDayIndex; i++) {
+            const emptySlot = document.createElement('div');
+            emptySlot.classList.add('daySelet');
+            emptySlot.style.visibility = 'hidden';
+            calendarDaysSelet.appendChild(emptySlot);
         }
 
-        function loadAppointmentsSelet(date) {
-            console.log(`Agendamentos para ${date}:`);
-            const dailyAppointments = appointmentsSelet[date] || [];
-            if (dailyAppointments.length === 0) {
-                console.log('Sem agendamentos');
-                return;
-            }
+        // Preenche os dias do mês
+        for (let i = 1; i <= daysInMonth; i++) {
+            const day = document.createElement('div');
+            day.classList.add('daySelet');
+            day.textContent = i;
 
-            dailyAppointments.forEach(appointment => {
-                console.log(appointment);
-            });
+            const date = `${currentYearSelet}-${String(currentMonthSelet + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+            day.dataset.date = date;
+
+            day.addEventListener('click', () => handleDayClick(date, day));
+
+            calendarDaysSelet.appendChild(day);
         }
+    }
 
-        document.getElementById('prev-month-selet').addEventListener('click', () => {
-            currentMonthSelet -= 1;
-            if (currentMonthSelet < 0) {
-                currentMonthSelet = 11;
-                currentYearSelet -= 1;
-            }
-            renderCalendarSelet();
-        });
+    // Lida com o clique no dia do calendário
+    async function handleDayClick(date, dayElement) {
+        try {
+            const response = await fetch(`/agendamentos/dia?day=${date}`);
+            const scheduleHtml = await response.text();
 
-        document.getElementById('next-month-selet').addEventListener('click', () => {
-            currentMonthSelet += 1;
-            if (currentMonthSelet > 11) {
-                currentMonthSelet = 0;
-                currentYearSelet += 1;
-            }
-            renderCalendarSelet();
-        });
+            // Atualiza a tabela de agendamentos
+            scheduleContainer.innerHTML = scheduleHtml;
 
-        // Render inicial
+            // Adiciona feedback visual
+            document.querySelectorAll(".daySelet").forEach(day => day.classList.remove("active"));
+            dayElement.classList.add("active");
+        } catch (err) {
+            console.error("Erro ao buscar agendamentos por dia:", err);
+        }
+    }
+
+    // Navegação de meses
+    document.getElementById('prev-month-selet').addEventListener('click', () => {
+        currentMonthSelet -= 1;
+        if (currentMonthSelet < 0) {
+            currentMonthSelet = 11;
+            currentYearSelet -= 1;
+        }
         renderCalendarSelet();
+    });
+
+    document.getElementById('next-month-selet').addEventListener('click', () => {
+        currentMonthSelet += 1;
+        if (currentMonthSelet > 11) {
+            currentMonthSelet = 0;
+            currentYearSelet += 1;
+        }
+        renderCalendarSelet();
+    });
+
+    // Renderiza o calendário inicial
+    renderCalendarSelet();
+});
     </script>
     <!--Script para o funcionamento do calendário de adicionar agendamento-->
     <script>
