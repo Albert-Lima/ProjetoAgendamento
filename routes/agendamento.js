@@ -9,13 +9,9 @@ const ProfissionalModel = require("../models/profissional")
 const AgendamentoModel = require("../models/agendamento")
 const ServicesModel = require("../models/service")
 
-
-
-
 // Rodar todos os dias à meia-noite
 const cron = require("node-cron")
 cron.schedule('0 0 * * *', async () => {
-    
     try {
         const today = new Date(); // Data atual
         const twoDaysAgo = new Date();
@@ -119,40 +115,86 @@ router.get("/agendamentos/:date", eAdmin, async (req, res) => {
     try {
         const { date } = req.params;
 
-        // Obtem os profissionais
-        const profissionais = await ProfissionalModel.find({ userId: req.user.id });
+        // Verifica se a data é válida
+        const parsedDate = new Date(date);
+        if (isNaN(parsedDate.getTime())) {
+            return res.status(400).json({ error: "Data inválida" });
+        }
 
-        // Obtem os agendamentos do dia
+        // Obtém o estabelecimento associado ao usuário
+        const estabelecimento = await EstabelecimentoModel.findOne({
+            userId: req.user.id,
+        });
+        
+
+        if (!estabelecimento) {
+            return res.status(404).json({ error: "Estabelecimento não encontrado" });
+        }
+
+        // Obtém os profissionais do estabelecimento
+        const profissionais = await ProfissionalModel.find({
+            userId: req.user.id,
+        });
+
+        // Define o intervalo de horário para os agendamentos
+        const horarioInicial = estabelecimento.horarioInicial; // Definido pelo estabelecimento
+        const horarioFinal = estabelecimento.horarioFinal; // Definido pelo estabelecimento
+        const intervaloMinutos = estabelecimento.intervaloTempo; // Intervalo do estabelecimento
+
+        // Cria a lista de horários
+        const horarios = [];
+        for (let hora = horarioInicial; hora < horarioFinal; hora++) {
+            const horarioFormatado = `${hora}h`;
+            horarios.push(horarioFormatado);
+        }
+
+        // Converte a data para o início e fim do dia
+        const startOfDay = new Date(parsedDate.setUTCHours(0, 0, 0, 0));
+        const endOfDay = new Date(parsedDate.setUTCHours(23, 59, 59, 999));
+
+        // Obtém os agendamentos para o dia
         const agendamentos = await AgendamentoModel.find({
             userId: req.user.id,
-            data: new Date(date), // Filtra os agendamentos pela data
-            isDeleted: false
-        }).populate('service profissional');
+            data: { $gte: startOfDay, $lte: endOfDay } // Filtra por intervalo
+        }).populate("service profissional"); // Popula os dados do serviço e do profissional
 
-        // Monta a estrutura de agendamentos agrupados por profissional e horário
+
+        // Organiza os agendamentos por horário e profissional
         const agendamentosOrganizados = {};
-        profissionais.forEach(profissional => {
+
+        profissionais.forEach((profissional) => {
             agendamentosOrganizados[profissional._id] = {}; // Inicializa o objeto para o profissional
         });
 
-        agendamentos.forEach(agendamento => {
-            const profId = agendamento.profissional._id.toString();
-            const horario = agendamento.horario;
-
-            if (!agendamentosOrganizados[profId][horario]) {
-                agendamentosOrganizados[profId][horario] = [];
+        // Preenche os agendamentosOrganizados com base nos dados de agendamento
+        agendamentos.forEach((agendamento) => {
+            if (!agendamento.profissional) {
+                console.error("Profissional não encontrado para o agendamento:", agendamento);
+                return; // Caso o profissional seja nulo, pula para o próximo agendamento
             }
 
-            agendamentosOrganizados[profId][horario].push({
-                service: agendamento.service.name,
-                clientName: agendamento.nameClient,
-                phoneClient: agendamento.phoneClient
-            });
-        });
+            const profId = agendamento.profissional._id.toString();
+            const horario = `${agendamento.horario}h`; // Ajuste para incluir a hora com ":00"
 
+            // Verifica se o profissional está no estabelecimento
+            if (profissionais.some((prof) => prof._id.toString() === profId)) {
+                if (!agendamentosOrganizados[profId][horario]) {
+                    agendamentosOrganizados[profId][horario] = [];
+                }
+
+                agendamentosOrganizados[profId][horario].push({
+                    service: agendamento.service.name, // Nome do serviço
+                    clientName: agendamento.nameClient, // Nome do cliente
+                    phoneClient: agendamento.phoneClient, // Telefone do cliente (se necessário)
+                });
+            }
+        });
+        
+        // Responde com os dados organizados para o frontend
         res.json({
             profissionais,
-            agendamentosOrganizados
+            horarios,
+            agendamentosOrganizados,
         });
     } catch (err) {
         console.error("Erro ao buscar agendamentos:", err);
@@ -199,7 +241,6 @@ router.get("/agendamentos", eAdmin, async (req, res) => {
         res.redirect("/estabelecimentos");
     }
 });
-
 
 //salva os agendamentos diretamente sem precisar da confirmação via whatsapp
 router.post("/addagendamentodirect", eAdmin, async (req, res) => {
@@ -318,9 +359,6 @@ router.post("/addagendamentobywhatsapp", eAdmin, async (req, res)=>{
         res.status(500).send("Erro ao salvar agendamento.");
     }
 })
-
-
-
 
 router.get("/deleteagendamento/:id", eAdmin, async (req, res)=>{
     try{
