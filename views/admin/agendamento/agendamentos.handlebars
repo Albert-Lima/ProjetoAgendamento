@@ -221,8 +221,9 @@
         }
 
         .schedule-cell {
-            padding: 10px;
             border: 1px solid gray;
+            width: max-content;
+            height: max-content;
         }
 
         .schedule-time-cell{
@@ -232,12 +233,36 @@
 
         .schedule-agenda {
             text-align: center;
-            color: #4CAF50;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 10pt;
+            text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.123);
+            background-color: #1F5055;
+            min-width: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            height: 80px;
+        }
+        .buttonOpitionsAgendamentos{
+            border: none;
+            cursor: pointer;
+        }
+        .buttonOpitionsAgendamentos:hover{
+            background-color: #122e31;
         }
 
         .schedule-no-agenda {
             color: #888;
             font-style: italic;
+            min-width: 200px;
+            height: 80%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
     </style>
     <title>Estabelecimentos</title>
@@ -396,193 +421,213 @@
     </main>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-                // Carrega automaticamente a planilha do dia atual
-                const today = new Date();
-                const todayFormatted = formatDate(today.getFullYear(), today.getMonth() + 1, today.getDate());
-                handleDayClick(todayFormatted);
-        const calendarDaysSelet = document.getElementById("calendar-days-selet");
-        const monthNameSelet = document.getElementById("month-name-selet");
-        const scheduleContainer = document.querySelector("#schedule");
+            // Carrega automaticamente a planilha do dia atual
+            const today = new Date();
+            const todayFormatted = formatDate(today.getFullYear(), today.getMonth() + 1, today.getDate());
 
-        let currentMonthSelet = new Date().getMonth();
-        let currentYearSelet = new Date().getFullYear();
+            handleDayClick(todayFormatted);
 
-        /**
-        * Renderiza o calendário na interface.
-        */
-        function renderCalendarSelet() {
-            const firstDay = new Date(currentYearSelet, currentMonthSelet, 1);
-            const lastDay = new Date(currentYearSelet, currentMonthSelet + 1, 0);
-            const daysInMonth = lastDay.getDate();
-            const firstDayIndex = firstDay.getDay();
+            const calendarDaysSelet = document.getElementById("calendar-days-selet");
+            const monthNameSelet = document.getElementById("month-name-selet");
+            const scheduleContainer = document.querySelector("#schedule");
 
-            calendarDaysSelet.innerHTML = "";
-            monthNameSelet.textContent = firstDay.toLocaleDateString("pt-BR", {
-                month: "long",
-                year: "numeric",
-            });
+            let currentMonthSelet = new Date().getMonth();
+            let currentYearSelet = new Date().getFullYear();
 
-            // Preenche os espaços vazios antes do início do mês
-            for (let i = 0; i < firstDayIndex; i++) {
-                const emptySlot = document.createElement("div");
-                emptySlot.classList.add("daySelet");
-                emptySlot.style.visibility = "hidden";
-                calendarDaysSelet.appendChild(emptySlot);
-            }
+            /**
+            * Renderiza o calendário na interface.
+            */
+            function renderCalendarSelet() {
+                const firstDay = new Date(currentYearSelet, currentMonthSelet, 1);
+                const lastDay = new Date(currentYearSelet, currentMonthSelet + 1, 0);
+                const daysInMonth = lastDay.getDate();
+                const firstDayIndex = firstDay.getDay();
 
-            // Preenche os dias do mês
-            for (let i = 1; i <= daysInMonth; i++) {
-                const day = document.createElement("div");
-                day.classList.add("daySelet");
-                day.textContent = i;
-
-                // Cria a data no formato `YYYY-MM-DD`
-                const date = formatDate(currentYearSelet, currentMonthSelet + 1, i);
-                day.dataset.date = date;
-
-                day.addEventListener("click", () => handleDayClick(date, day));
-
-                calendarDaysSelet.appendChild(day);
-            }
-        }
-
-        /**
-        * Lida com o clique em um dia do calendário.
-        * @param {string} date - Data no formato `YYYY-MM-DD`.
-        * @param {HTMLElement} dayElement - Elemento clicado no calendário.
-        */
-        async function handleDayClick(date, dayElement) {
-            try {
-                // Chama a API para pegar os dados de agendamento
-                const response = await fetch(`/agendamentos/${date}`);
-                const data = await response.json();
-
-                // Cria a tabela de agendamentos
-                createScheduleTable(data);
-
-                // Adiciona feedback visual ao clicar no dia
-                document.querySelectorAll(".daySelet").forEach((day) =>
-                    day.classList.remove("active")
-                );
-                dayElement.classList.add("active");
-            } catch (err) {
-                console.error("Erro ao buscar agendamentos por dia:", err);
-            }
-        }
-
-        /**
-        * Cria a tabela de agendamentos.
-        * @param {Object} data - Dados retornados pela API.
-        */
-        function createScheduleTable(data) {
-            // Limpa o conteúdo da tabela anterior
-            scheduleContainer.innerHTML = '';
-
-            // Cria o elemento de tabela
-            const table = document.createElement('table');
-            table.classList.add('schedule-table'); // Classe para a tabela principal
-
-            // Cria o cabeçalho da tabela
-            const thead = document.createElement('thead');
-            thead.classList.add('schedule-header'); // Classe para o cabeçalho
-            const headerRow = document.createElement('tr');
-            headerRow.classList.add('schedule-header-row'); // Classe para a linha do cabeçalho
-            const timeHeader = document.createElement('th');
-            timeHeader.classList.add('schedule-header-time'); // Classe para o cabeçalho de horários
-            timeHeader.textContent = 'hrs';
-            headerRow.appendChild(timeHeader);
-
-            // Cria as colunas dos profissionais
-            data.profissionais.forEach((profissional, index) => {
-                const th = document.createElement('th');
-                th.classList.add('schedule-header-professional');
-                th.classList.add(`professional-${index}`); // Classe específica para cada profissional
-
-                // Cria um contêiner para alinhar foto e nome
-                const container = document.createElement('div');
-                container.classList.add('professional-container'); // Classe para o contêiner
-
-                // Adiciona a foto do profissional
-                const img = document.createElement('img');
-                img.src = profissional.photoUrl; // Presume que a URL da foto esteja em 'profissional.photoUrl'
-                img.alt = `${profissional.name} photo`;
-                img.classList.add('professional-photo'); // Classe para estilizar a foto
-
-                // Adiciona o nome do profissional
-                const name = document.createElement('span');
-                name.textContent = profissional.name;
-                name.classList.add('professional-name'); // Classe para o nome
-
-                // Adiciona a imagem e o nome ao contêiner
-                container.appendChild(img);
-                container.appendChild(name);
-
-                // Adiciona o contêiner ao cabeçalho
-                th.appendChild(container);
-                headerRow.appendChild(th);
-            });
-            thead.appendChild(headerRow);
-            table.appendChild(thead);
-
-            // Cria o corpo da tabela com os horários e os agendamentos
-            const tbody = document.createElement('tbody');
-            tbody.classList.add('schedule-body'); // Classe para o corpo da tabela
-
-            // Para cada horário
-            data.horarios.forEach((hora, rowIndex) => {
-                const row = document.createElement('tr');
-                row.classList.add('schedule-row'); // Classe para cada linha
-                row.classList.add(`row-${rowIndex}`); // Classe específica para cada linha baseada no índice
-
-                // Adiciona a célula de horário
-                const timeCell = document.createElement('td');
-                timeCell.classList.add('schedule-time-cell'); // Classe para a célula de horários
-                timeCell.textContent = hora;
-                row.appendChild(timeCell);
-
-                // Para cada profissional, adiciona o agendamento
-                data.profissionais.forEach((profissional, colIndex) => {
-                    const cell = document.createElement('td');
-                    cell.classList.add('schedule-cell'); // Classe para cada célula
-                    cell.classList.add(`cell-${rowIndex}-${colIndex}`); // Classe específica baseada em linha e coluna
-
-                    // Verifica se há agendamentos para esse horário e profissional
-                    const agendamento = data.agendamentosOrganizados[profissional._id] && data.agendamentosOrganizados[profissional._id][hora];
-
-                    if (agendamento && agendamento.length > 0) {
-                        agendamento.forEach(agenda => {
-                            const div = document.createElement('div');
-                            div.classList.add('schedule-agenda'); // Classe para os agendamentos
-                            div.textContent = `${agenda.service} (${agenda.clientName})`;
-                            cell.appendChild(div);
-                        });
-                    } else {
-                        const div = document.createElement('div');
-                        div.classList.add('schedule-no-agenda'); // Classe para "Sem agendamento"
-                        div.textContent = 'Sem agendamento';
-                        cell.appendChild(div);
-                    }
-
-                    row.appendChild(cell);
+                calendarDaysSelet.innerHTML = "";
+                monthNameSelet.textContent = firstDay.toLocaleDateString("pt-BR", {
+                    month: "long",
+                    year: "numeric",
                 });
 
-                tbody.appendChild(row);
-            });
+                // Preenche os espaços vazios antes do início do mês
+                for (let i = 0; i < firstDayIndex; i++) {
+                     const emptySlot = document.createElement("div");
+                    emptySlot.classList.add("daySelet");
+                    emptySlot.style.visibility = "hidden";
+                    calendarDaysSelet.appendChild(emptySlot);
+                }
 
-            table.appendChild(tbody);
-            scheduleContainer.appendChild(table);
-        }
+                // Preenche os dias do mês
+                for (let i = 1; i <= daysInMonth; i++) {
+                    const day = document.createElement("div");
+                    day.classList.add("daySelet");
+                    day.textContent = i;
 
-        /**
-        * Formata uma data no formato `YYYY-MM-DD`.
-        * @param {number} year - Ano.
-        * @param {number} month - Mês (1-12).
-        * @param {number} day - Dia do mês.
-        * @returns {string} - Data no formato `YYYY-MM-DD`.
-        */
-        function formatDate(year, month, day) {
-            return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
-        }
+                    // Cria a data no formato `YYYY-MM-DD`
+                    const date = formatDate(currentYearSelet, currentMonthSelet + 1, i);
+                    day.dataset.date = date;
+
+                    day.addEventListener("click", () => handleDayClick(date, day));
+
+                    calendarDaysSelet.appendChild(day);
+                }
+            }
+
+            // Carrega automaticamente a planilha do dia atual e destaca o botão
+            async function loadTodaySchedule() {
+                try {
+                    const todayElement = Array.from(calendarDaysSelet.children).find(
+                        (child) => child.dataset.date === todayFormatted
+                    );
+
+                    if (todayElement) {
+                        todayElement.classList.add("active"); // Destaca o botão do dia atual
+                    }
+
+                    await handleDayClick(todayFormatted, todayElement); // Carrega os agendamentos do dia
+                } catch (err) {
+                    console.error("Erro ao carregar agendamentos para o dia atual:", err);
+                }
+            }
+
+            /**
+            * Lida com o clique em um dia do calendário.
+            * @param {string} date - Data no formato `YYYY-MM-DD`.
+            * @param {HTMLElement} dayElement - Elemento clicado no calendário.
+            */
+            async function handleDayClick(date, dayElement) {
+                try {
+                    // Chama a API para pegar os dados de agendamento
+                    const response = await fetch(`/agendamentos/${date}`);
+                    const data = await response.json();
+
+                    // Cria a tabela de agendamentos
+                    createScheduleTable(data);
+
+                    // Adiciona feedback visual ao clicar no dia
+                    document.querySelectorAll(".daySelet").forEach((day) =>
+                        day.classList.remove("active")
+                    );
+                    dayElement.classList.add("active");
+                } catch (err) {
+                    console.error("Erro ao buscar agendamentos por dia:", err);
+                }
+            }
+
+                /**
+                * Cria a tabela de agendamentos.
+                * @param {Object} data - Dados retornados pela API.
+                */
+                function createScheduleTable(data) {
+                    // Limpa o conteúdo da tabela anterior
+                    scheduleContainer.innerHTML = '';
+
+                    // Cria o elemento de tabela
+                    const table = document.createElement('table');
+                    table.classList.add('schedule-table'); // Classe para a tabela principal
+
+                    // Cria o cabeçalho da tabela
+                    const thead = document.createElement('thead');
+                    thead.classList.add('schedule-header'); // Classe para o cabeçalho
+                    const headerRow = document.createElement('tr');
+                    headerRow.classList.add('schedule-header-row'); // Classe para a linha do cabeçalho
+                    const timeHeader = document.createElement('th');
+                    timeHeader.classList.add('schedule-header-time'); // Classe para o cabeçalho de horários
+                    timeHeader.textContent = 'hrs';
+                    headerRow.appendChild(timeHeader);
+
+                    // Cria as colunas dos profissionais
+                    data.profissionais.forEach((profissional, index) => {
+                        const th = document.createElement('th');
+                        th.classList.add('schedule-header-professional');
+                        th.classList.add(`professional-${index}`); // Classe específica para cada profissional
+
+                        // Cria um contêiner para alinhar foto e nome
+                        const container = document.createElement('div');
+                        container.classList.add('professional-container'); // Classe para o contêiner
+
+                        // Adiciona a foto do profissional
+                        const img = document.createElement('img');
+                        img.src = profissional.photoUrl; // Presume que a URL da foto esteja em 'profissional.photoUrl'
+                        img.alt = `${profissional.name} photo`;
+                        img.classList.add('professional-photo'); // Classe para estilizar a foto
+
+                        // Adiciona o nome do profissional
+                        const name = document.createElement('span');
+                        name.textContent = profissional.name;
+                        name.classList.add('professional-name'); // Classe para o nome
+
+                        // Adiciona a imagem e o nome ao contêiner
+                        container.appendChild(img);
+                        container.appendChild(name);
+
+                        // Adiciona o contêiner ao cabeçalho
+                        th.appendChild(container);
+                        headerRow.appendChild(th);
+                    });
+                    thead.appendChild(headerRow);
+                    table.appendChild(thead);
+
+                    // Cria o corpo da tabela com os horários e os agendamentos
+                    const tbody = document.createElement('tbody');
+                    tbody.classList.add('schedule-body'); // Classe para o corpo da tabela
+
+                    // Para cada horário
+                    data.horarios.forEach((hora, rowIndex) => {
+                        const row = document.createElement('tr');
+                        row.classList.add('schedule-row'); // Classe para cada linha
+                        row.classList.add(`row-${rowIndex}`); // Classe específica para cada linha baseada no índice
+
+                        // Adiciona a célula de horário
+                        const timeCell = document.createElement('td');
+                        timeCell.classList.add('schedule-time-cell'); // Classe para a célula de horários
+                        timeCell.textContent = hora;
+                        row.appendChild(timeCell);
+
+                        // Para cada profissional, adiciona o agendamento
+                        data.profissionais.forEach((profissional, colIndex) => {
+                            const cell = document.createElement('td');
+                            cell.classList.add('schedule-cell'); // Classe para cada célula
+                            cell.classList.add(`cell-${rowIndex}-${colIndex}`); // Classe específica baseada em linha e coluna
+
+                            // Verifica se há agendamentos para esse horário e profissional
+                            const agendamento = data.agendamentosOrganizados[profissional._id] && data.agendamentosOrganizados[profissional._id][hora];
+
+                            if (agendamento && agendamento.length > 0) {
+                                agendamento.forEach(agenda => {
+                                    const buttonOpitionsAgendamentos = document.createElement('button');
+                                    buttonOpitionsAgendamentos.classList.add('schedule-agenda'); // Classe para os agendamentos
+                                    buttonOpitionsAgendamentos.classList.add('buttonOpitionsAgendamentos')
+                                    buttonOpitionsAgendamentos.innerHTML = `${agenda.service} <br> <br> ${agenda.clientName}`;
+                                    cell.appendChild(buttonOpitionsAgendamentos);
+                                });
+                            } else {
+                                const div = document.createElement('div');
+                                div.classList.add('schedule-no-agenda'); // Classe para "Sem agendamento"
+                                div.textContent = 'Sem agendamento';
+                                cell.appendChild(div);
+                            }
+
+                            row.appendChild(cell);
+                        });
+
+                        tbody.appendChild(row);
+                    });
+
+                    table.appendChild(tbody);
+                    scheduleContainer.appendChild(table);
+                }
+
+                /**
+                * Formata uma data no formato `YYYY-MM-DD`.
+                * @param {number} year - Ano.
+                * @param {number} month - Mês (1-12).
+                * @param {number} day - Dia do mês.
+                * @returns {string} - Data no formato `YYYY-MM-DD`.
+                */
+                function formatDate(year, month, day) {
+                    return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+                }
 
         // Navegação de meses anteriores
         document.getElementById("prev-month-selet").addEventListener("click", () => {
@@ -606,6 +651,7 @@
 
         // Renderiza o calendário inicial
         renderCalendarSelet();
+        loadTodaySchedule();
     });
     </script>
     <!--Script para o funcionamento do calendário de adicionar agendamento-->
