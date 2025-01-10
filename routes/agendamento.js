@@ -111,6 +111,7 @@ router.post("/agendamentos/verifyDays", eAdmin, async (req,res)=>{
     }
 })
 
+//rota para requisição de agendamentos da data passada através do FrontEnd
 router.get("/agendamentos/:date", eAdmin, async (req, res) => {
     try {
         const { date } = req.params;
@@ -169,7 +170,6 @@ router.get("/agendamentos/:date", eAdmin, async (req, res) => {
         // Preenche os agendamentosOrganizados com base nos dados de agendamento
         agendamentos.forEach((agendamento) => {
             if (!agendamento.profissional) {
-                console.error("Profissional não encontrado para o agendamento:", agendamento);
                 return; // Caso o profissional seja nulo, pula para o próximo agendamento
             }
 
@@ -241,7 +241,6 @@ router.get("/agendamentos", eAdmin, async (req, res) => {
         res.redirect("/estabelecimentos");
     }
 });
-
 //salva os agendamentos diretamente sem precisar da confirmação via whatsapp
 router.post("/addagendamentodirect", eAdmin, async (req, res) => {
     const { 
@@ -294,7 +293,6 @@ router.post("/addagendamentodirect", eAdmin, async (req, res) => {
         });
 
         await novoAgendamento.save();
-        console.log("Agendamento realizado")
         res.redirect("/agendamentos");
     } catch (err) {
         console.error("Erro ao salvar agendamento:", err);
@@ -359,7 +357,6 @@ router.post("/addagendamentobywhatsapp", eAdmin, async (req, res)=>{
         res.status(500).send("Erro ao salvar agendamento.");
     }
 })
-
 router.get("/deleteagendamento/:id", eAdmin, async (req, res)=>{
     try{
         const agendamentoId = req.params.id

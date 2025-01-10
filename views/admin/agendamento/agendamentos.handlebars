@@ -264,6 +264,13 @@
             align-items: center;
             justify-content: center;
         }
+
+        /*responsividade*/
+        @media (max-width: 1080px) {
+            .containerSchedule{
+                width: calc(100% - 60px);
+            }
+        }
     </style>
     <title>Estabelecimentos</title>
 </head>
@@ -292,7 +299,7 @@
 
         <section class="ConteinerInfo">
             <!--Container de todas as informções -->
-            <section class="viewPanel">
+            <section class="viewPanel" style="position: relative;">
                <aside class="toolBarAgenda">
                     <div id="calendarSelet">
                         <div id="calendar-header-selet">
@@ -955,8 +962,42 @@
             filterProfessionals()  // Inicializa a filtragem no carregamento
         });
     </script>
-    <!--Script para o poupUp de opções do agendamento-->
+    <!--Script para o poupUp de opções do agendamento e fechar toolBAR-->
     <script>
+        //fechar toolbar
+        const closeToolBarCalendar = document.querySelector(".closeToolBarCalendar")
+        const buttonAddAgendamento = document.querySelector(".buttonAddAgendamento")
+        const toolBarAgenda = document.querySelector(".toolBarAgenda")
+        const calendarSelet = document.querySelector("#calendarSelet")
+
+        function closeToolBar(){
+            calendarSelet.style.display = "none"
+
+            toolBarAgenda.style.width = "max-content"
+
+            buttonAddAgendamento.style.display = "none"
+
+            closeToolBarCalendar.innerHTML = "<img src='/images/icons8-chevron-right-24.png' alt='abrir aba de calendário'>"
+            closeToolBarCalendar.style.height = "100%"
+
+            closeToolBarCalendar.removeEventListener("click", closeToolBar)
+            closeToolBarCalendar.addEventListener("click", openToolBar)
+        }
+        closeToolBarCalendar.addEventListener("click", closeToolBar)
+
+        function openToolBar(){
+            calendarSelet.style.display = "block"
+
+            toolBarAgenda.style.width = "240px"
+
+            buttonAddAgendamento.style.display = "flex"
+
+            closeToolBarCalendar.innerHTML = "<p>fechar</p><img src='/images/icons8-voltar-48.png' alt='fechar aba de calendário'>"
+            closeToolBarCalendar.style.height = "auto"
+
+            closeToolBarCalendar.removeEventListener("click", openToolBar)
+            closeToolBarCalendar.addEventListener("click", closeToolBar)
+        }
         
         //abrir pouUp de opções
         const optionButtons = document.querySelectorAll(".buttonOpitionsAgendamentos");
