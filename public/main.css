@@ -22,6 +22,13 @@ body{
     height: 100vh;
     width: 100%;
 }
+.block-selectionHTML{
+    user-select: none; /* Impede seleção de texto */
+    -webkit-user-select: none; /* Compatibilidade com navegadores WebKit */
+    -moz-user-select: none; /* Compatibilidade com Firefox */
+    -ms-user-select: none; /* Compatibilidade com IE/Edge */
+    cursor: default; /* Indica que o texto não é selecionável */
+}
 .line{
     height: 80%;
     width: 1px;
