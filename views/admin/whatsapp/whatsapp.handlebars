@@ -1,0 +1,88 @@
+<!--Esta é a página que será carregada ao clicar no botão de Feedbacks-->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="whatsapp.css">
+    <title>Estabelecimentos</title>
+</head>
+<body>
+    <aside class="ContainerMenuLeft">
+        <div class="ContainerLogoPanel">
+            LOGO AQUI
+        </div>
+        {{>menuWhatsapp}}
+    </aside>
+    <main class="panel">
+        <header class="HeaderPanel">
+            <div>
+                <button class="doboutButton">
+                    <p>Ajuda</p>
+                    <img src="/images/icons8-ajuda-32.png" alt="manual da aplicação">
+                </button>
+            </div>
+            <div class="infoUsuario">
+                {{#if user}}
+                    <span>{{user.name}}</span>
+                {{else}}
+                {{/if}}
+            </div>
+        </header>
+
+
+        <section class="ConteinerInfo">
+            <section class="viewPanel">
+                <section class="containerPendentMSG">
+                    <header>
+                        <p>Agendamentos Pendentes</p>
+                        <span class="numMSG"><!--aqui deve aparecer o número de mensagens-->
+                            4
+                        </span>
+                    </header>
+                    <section class="containerMSG">
+                        
+                    </section>
+                </section>
+                <section class="containerBotZAP">
+
+                    <div id="qr-container" style="text-align: center;">
+                        <h3>Escaneie o QR Code para conectar ao WhatsApp</h3>
+                        <img id="qr-code" src="" alt="QR Code" style="display: none;" />
+                        <p id="status"></p>
+                    </div>
+
+                </section>
+            </section>
+        </section>
+    </main>
+    <script>
+        async function startBot() {
+            try {
+                const response = await fetch("http://localhost:8081/whatsapp/start", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({}), // Se necessário, envie dados adicionais
+                });
+
+                const data = await response.json();
+
+                if (data.qrImage) {
+                    const qrCodeImage = document.getElementById("qr-code");
+                    qrCodeImage.src = data.qrImage; // Define a URL do QR Code
+                    qrCodeImage.style.display = "block"; // Exibe o QR Code
+                    document.getElementById("status").textContent = "Escaneie o QR Code para conectar.";
+                } else if (data.message) {
+                    document.getElementById("status").textContent = data.message;
+                }
+            } catch (error) {
+                console.error("Erro ao iniciar o bot:", error);
+                document.getElementById("status").textContent = "Erro ao iniciar o bot.";
+            }
+        }
+
+        // Inicia o bot ao carregar a página
+        startBot();
+    </script>
+</body>
+</html>

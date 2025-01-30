@@ -1,0 +1,87 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+:root{
+    --var-DarkGreen: #00272B;
+    --var-ColorGreen: #E0FF4F;
+    --var-BorderColorDark: rgb(182, 182, 182);
+    --var-ColorBaseGray: #D9D9D9;
+    --var-ColorGreenOliva: #25291C;
+    --var-WhatsappDark: #1F5055;
+    --var-ColorGreenWhatsapp: #25D366;
+    --var-ColorRedCancel: #ED5E68;
+    --var-BoxShadowContainer: 0px 0px 4px 1px rgba(0, 0, 0, 0.192);
+}
+
+
+.ConteinerInfo{
+    width: calc(100% - 30px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    padding-top: 30px;
+}
+
+.viewPanel{
+    width: 100%;
+    height: calc(100vh - 130px);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+.containerPendentMSG{
+    height: calc(100% - 10px);
+    width: 30%;
+    border-radius: 10px;
+    box-shadow: var(--var-BoxShadowContainer);
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    gap: 10px;
+    padding-top: 10px;
+    position: relative;
+}
+.containerPendentMSG header{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+.containerPendentMSG header p{
+    font-size: 12pt;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 500;
+    color: var(--var-ColorGreenOliva);
+}
+.containerPendentMSG header span{
+    height: 20px;
+    width: 30px;
+    border-radius: 5px;
+    box-shadow: var(--var-BoxShadowContainer);
+    background-color: #25D366;
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 10pt;
+    font-weight: 600;
+    text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.239);
+    position: absolute;
+    right: -15px;
+    text-align: center;
+}
+
+
+.containerBotZAP{
+    width: 70%;
+    height: 100%;
+    box-shadow: var(--var-BoxShadowContainer);
+    background-color: white;
+    border-radius: 10px;
+}

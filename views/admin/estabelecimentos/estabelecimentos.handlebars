@@ -92,15 +92,24 @@
             })
             .then((data) => {
                 const ctx = document.getElementById('myChart').getContext('2d');
+
+                // Criando o gradiente linear
+                const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+                gradient.addColorStop(0, 'rgb(31, 80, 85)'); // Verde-azulado claro (40% opacidade)
+                gradient.addColorStop(1, 'rgba(31, 80, 85, 0.1)');
                 new Chart(ctx, {
                     type: 'bar',
                     data: {
                     labels: data.labels, // Datas no eixo X
                     datasets: [{
                         data: data.data, // Quantidade no eixo Y
-                        backgroundColor: '#00272B',
-                        borderColor: '#00272B',
-                        borderWidth: 0,
+                        borderColor: '#1F5055',
+                        backgroundColor: gradient,
+                        tension: 0, // Suaviza as linhas
+                        borderWidth: 2,
+                        pointRadius: 1, // Remove os pontos
+                        pointHoverRadius: 1, // Remove os pontos ao passar o mouse
+                        fill: true,
                     }],
                     },
                     options: {

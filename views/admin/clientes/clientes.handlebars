@@ -1,0 +1,170 @@
+<!--Esta é a página que será carregada ao clicar no botão de Historico-->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/clientes.css">
+    <title>Estabelecimentos</title>
+</head>
+<body>
+    <aside class="ContainerMenuLeft">
+        <div class="ContainerLogoPanel">
+            LOGO AQUI
+        </div>
+        {{>menuClientes}}
+    </aside>
+    <main class="panel">
+        <header class="HeaderPanel">
+            <div>
+                <button class="doboutButton">
+                    <p>Ajuda</p>
+                    <img src="/images/icons8-ajuda-32.png" alt="manual da aplicação">
+                </button>
+            </div>
+            <div class="infoUsuario">
+                {{#if user}}
+                    <span>{{user.name}}</span>
+                {{else}}
+                {{/if}}
+            </div>
+        </header>
+        <section class="ConteinerInfo">
+            <section class="viewPanel">
+                <header>
+                    <button class="bttHeaderClientes selectedBttHeaderClient" id="selectCadCliente">cadastrados</button>
+                    <button class="bttHeaderClientes" id="selectNoCadCliente">não confirmados</button>
+                    <button class="bttHeaderClientes" id="openFormCliente">
+                        <img src="/images/icons8-soma-30.png" alt="adicionar novo cliente">
+                        <p>novo</p>
+                    </button>
+                </header>
+                
+                <section class="cadProf">
+                    {{#each clientes}}
+                    <section class="boxCadCliente">
+                        <div class="containerIMGClientCad">
+                            {{#if clientIMG}}
+                                <img src="{{this}}" alt="foto de perfil do cliente {{clientName}}" class="imgClient">
+                            {{else}}
+                                <img src="/images/icons8-usuário-100.png" alt="cliente sem foto de perfil" class="imgNoClient">
+                            {{/if}}
+                        </div>
+                        <div class="containerDataClientCad">
+                            <p>{{clientName}}</p>
+                            {{clientZap}}
+                        </div>
+                        <div class="containerOrderedServices">
+                            <header>
+                                <p>Serviços mais pedidos</p>
+                            </header>
+                            <div class="containerClientServices">
+                                {{#if clientServices}}
+                                    {{#each clientServices}}
+                                        <div>{{serviceId}}</div>
+                                        <div>{{quantity}}</div>
+                                    {{/each}}
+                                {{else}}
+                                    <p>
+                                        Este cliente ainda não experimentou 
+                                        nenhum de nossos serviços.
+                                    </p>
+                                {{/if}}
+                                
+                            </div>
+                        </div>
+
+                        <div class="containerDeleteCliente">
+                            <button class="buttonJunkDelete">
+                                <img src="/images/icons8-lixeira-48.png" alt="deletar cliente">
+                            </button>
+
+                            <section class="poupUpDeleteCliente">
+                                <p>
+                                    O Cliente será notificado e seus agendamentos não serão cancelados
+                                </p>
+                                <div>
+                                    <button class="cancelDeleteButton">cancelar</button>
+                                    <a href="/clientes/delete-cliente/{{_id}}">confirmar</a>
+                                </div>
+                            </section>
+                        </div>
+                    </section>
+                    {{/each}}
+                </section>
+            </section>
+        </section>
+    </main>
+
+    <section class="poupUpForm" id="containerFormCliente">
+        <section class="containerForm">
+            <header>
+                <p class="titleForm">Novo Cliente</p>
+                <button type="button" class="buttonClosePoupUp" id="closeFormAddCliente"><img src="/images/icons8-excluir-50.png" alt="fechar formulário"></button>
+            </header>
+            <form action="/clientes/add-cliente" method="post" class="formMain">
+                <section class="partForm">
+                    <h2>Cliente</h2>
+                    <input type="text" name="clientName" class="inputName" placeholder="nome" value>
+                    <input type="number" name="clientZap" class="inputName" placeholder="whatsapp">
+                    <input type="hidden" name="clientServices">
+                </section>
+                        
+                <button type="submit">
+                    <p>enviar confirmação</p>
+                    <img src="/images/icons8-whatsapp-48 (1).png" alt="enviar confirmação por whatsapp">
+                </button>
+            </form>
+        </section>
+    </section>
+
+    <!--Aba do formulário para adicionar cliente -->
+    <script>
+        const bttOpenFormCliente = document.querySelector("#openFormCliente")
+        const bttCloseFormAddCliente= document.querySelector("#closeFormAddCliente")
+
+        const poupUpFormCliente = document.querySelector("#containerFormCliente")
+
+        function openFormCliente(){
+            poupUpFormCliente.style.display = "flex"
+        }
+        bttOpenFormCliente.addEventListener("click", openFormCliente)
+
+        function closeFormAddCliente(){
+            poupUpFormCliente.style.display = "none"
+        }
+        bttCloseFormAddCliente.addEventListener("click", closeFormAddCliente)
+    </script>
+
+    <!--Script para selecionar os botões do header-->
+    <script>
+        const bttHeaderCliente = document.querySelectorAll(".bttHeaderClientes")
+
+        
+    </script>
+
+    <!--Script para selecionar abrir popUp de Deletar cliente-->
+    <script>
+        const buttonJunkDelete = document.querySelectorAll(".buttonJunkDelete")
+        const cancelDeleteButton = document.querySelectorAll(".cancelDeleteButton")
+
+        buttonJunkDelete.forEach(button => {
+            button.addEventListener("click", ()=>{
+                const containerDelete = button.closest(".containerDeleteCliente")
+                const popUp = containerDelete.querySelector(".poupUpDeleteCliente")
+
+                popUp.style.display = "flex"
+            })
+
+        })
+
+        cancelDeleteButton.forEach(cancelButton => {
+            cancelButton.addEventListener("click", ()=>{
+                const container = cancelButton.closest(".containerDeleteCliente");
+                const popup = container.querySelector(".poupUpDeleteCliente");
+                popup.style.display = "none"; // Oculta o popup
+            })
+        })
+    </script>
+</body>
+</html>

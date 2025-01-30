@@ -87,15 +87,15 @@ require("./config/passport.js")
     const agendRouter = require("./routes/agendamento")
     app.use("/", agendRouter)
     //historico
-    const histRouter = require("./routes/historico")
-    app.use("/", histRouter)
+    const clientRouter = require("./routes/clientes")
+    app.use("/", clientRouter)
     //servicos
     const servRouter = require("./routes/servicos")
     app.use("/", servRouter)
-    //feedbacks
-    const feedRouter = require("./routes/feedbacks")
+    /*//whatsapp
+    const feedRouter = require("./routes/whatsapp")
     app.use("/", feedRouter)
-    //configurações
+    *///configurações
     const configRouter = require("./routes/configurar")
     app.use("/", configRouter)
 
