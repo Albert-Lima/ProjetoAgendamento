@@ -8,6 +8,7 @@ const EstabelecimentoModel = require("../models/estabelecimentos")
 const ProfissionalModel = require("../models/profissional")
 const AgendamentoModel = require("../models/agendamento")
 const ServicesModel = require("../models/service")
+const ClientesModel = require("../models/clientes")
 
 // Rodar todos os dias à meia-noite
 const cron = require("node-cron")
@@ -207,11 +208,13 @@ router.get("/agendamentos", eAdmin, async (req, res) => {
         const servicesPromise = ServicesModel.find({ userId: req.user.id });
         const profissionaisPromise = ProfissionalModel.find({ userId: req.user.id });
         const agendamentosPromise = AgendamentoModel.find({ userId: req.user.id }).populate('service profissional');
+        const clientesPromise = ClientesModel.find({userId: req.user.id})
         
-        const [services, profissionais, agendamentos] = await Promise.all([
+        const [services, profissionais, agendamentos, clientes] = await Promise.all([
             servicesPromise,
             profissionaisPromise,
-            agendamentosPromise
+            agendamentosPromise,
+            clientesPromise
         ]);
 
         // Horários do estabelecimento (você pode ajustar conforme sua modelagem de dados)
@@ -220,7 +223,7 @@ router.get("/agendamentos", eAdmin, async (req, res) => {
 
         // Função para gerar os horários
         const horarios = [];
-        let currentTime = horarioInicial; // Horário inicial (ex: 8h)
+        let currentTime = horarioInicial;
         horarios.push(`${currentTime}h`)
 
         for( i = 0; currentTime < horarioFinal - intervaloTempo ; i++){
@@ -234,7 +237,8 @@ router.get("/agendamentos", eAdmin, async (req, res) => {
             profissionais,
             user: req.user,
             agendamentos,
-            horarios
+            horarios,
+            clientes
         });
     } catch (err) {
         console.error("Erro ao listar agendamentos:", err);
@@ -243,12 +247,12 @@ router.get("/agendamentos", eAdmin, async (req, res) => {
 });
 //salva os agendamentos diretamente sem precisar da confirmação via whatsapp
 router.post("/addagendamentodirect", eAdmin, async (req, res) => {
-    const { 
-        nameClient, 
-        phoneClient, 
+    const {
         service, 
         profissional,
         horario,
+        nameClient,
+        phoneClient,
         data // String no formato "dd mm"
     } = req.body;
 

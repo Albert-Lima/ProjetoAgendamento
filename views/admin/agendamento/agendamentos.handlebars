@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/agendamentos.css">
     <style>
         .selected-label {
-            background-color: #28a745;
+            background-color: #1F5055;
             color: white;
             padding: 5px 10px;
             border-radius: 5px;
@@ -26,7 +26,7 @@
             margin-bottom: 10px;
         }
         .navigation button {
-            background: #007bff;
+            background: #1F5055;
             color: white;
             border: none;
             padding: 10px 15px;
@@ -34,7 +34,7 @@
             cursor: pointer;
         }
         .navigation button:hover {
-            background: #0056b3;
+            background: #0f2b2e;
         }
         #calendar {
             display: grid;
@@ -48,7 +48,7 @@
         }
         .day-header {
             font-weight: bold;
-            background: #007bff;
+            background: #1F5055;
             color: white;
             border-radius: 5px;
         }
@@ -62,7 +62,7 @@
             cursor: not-allowed;
         }
         .day:hover:not(.disabled) {
-            background: #007bff;
+            background: #1F5055;
             color: #fff;
         }
         .day.selected {
@@ -70,18 +70,26 @@
             color: #fff;
         }
         .containerHour{
-            height: 30px;
-            width: 40px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
         }
         .containerHour div{
+            display: block;
+            text-align: center;
             font-size: 10pt;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             font-weight: 400;
             color: black;
+        }
+
+        .containerHour label{
+            background-color: white;
+            color: black;
+            box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.063);
+            width: 90px;
+            text-align: center;
         }
 
         /*calendáio para ver agendamentos---------------------------*/
@@ -346,11 +354,61 @@
                     <button type="button" class="buttonClosePoupUp" id="closeFormAgendamento"><img src="/images/icons8-excluir-50.png" alt="fechar formulário"></button>
                 </header>
                 <form action="" method="post" class="formMain">
-                    <section class="partForm">
+                    <section class="partForm" id="clienteManualSection">
                         <h2>cliente</h2>
                         <input type="text" name="nameClient" class="inputName" placeholder="nome">
                         <input type="number" name="phoneClient" class="inputName" placeholder="whatsapp">
                     </section>
+
+                    <section class="partForm">
+                        <button class="buttonAgendeWithClientesCad" type="button">Clientes Cadastrados</button>
+                        <button class="buttonAgendeWithClientesGen" type="button">Cliente genérico</button>
+                    </section>
+
+                    <section class="partForm" id="clienteAutoSection">
+                        <section class="selectBox">
+                            <div class="selectBoxHeader">Clientes</div>
+                            <section class="containerOptions">
+                                {{#each clientes}}
+                                    <label class="LabelCheckBoxAddOptions">
+                                        <input type="checkbox" class="clienteCheckbox" name="nameClient" value="{{clientName}}">
+                                        <input type="checkbox" class="clienteCheckbox" name="phoneClient" value="{{clientZap}}">
+                                        {{clientName}}
+                                        {{clientZap}}
+                                    </label>
+                                {{else}}
+                                    <a href="/servicos">Cadastre Serviços</a>
+                                {{/each}}
+                            </section>
+                        </section>
+                    </section>
+
+                    <script>
+                        const clienteManualSection = document.querySelector("#clienteManualSection")
+                        const buttonAgendeWithClientesCad = document.querySelector(".buttonAgendeWithClientesCad")
+
+                        const clienteAutoSection = document.querySelector("#clienteAutoSection")
+                        const buttonAgendeWithClientesGen = document.querySelector(".buttonAgendeWithClientesGen")
+
+                        buttonAgendeWithClientesCad.addEventListener("click", ()=>{
+                            clienteManualSection.style.display = "none"
+                            clienteManualSection.innerHTML = ""
+                            clienteAutoSection.style.display = "flex"
+
+                            buttonAgendeWithClientesCad.style.display = "none"
+                            buttonAgendeWithClientesGen.style.display = "block"
+                        })
+
+                        buttonAgendeWithClientesGen.addEventListener("click", ()=>{
+                            clienteManualSection.style.display = "flex"
+                            clienteManualSection.innerHTML = `<h2>cliente</h2><input type="text" name="nameClient" class="inputName" placeholder="nome"><input type="number" name="phoneClient" class="inputName" placeholder="whatsapp">`
+                            clienteAutoSection.style.display = "none"
+
+                            buttonAgendeWithClientesCad.style.display = "block"
+                            buttonAgendeWithClientesGen.style.display = "none"
+                        })
+                    </script>
+
                     <section class="partForm">
                         <section class="selectBox">
                             <div class="selectBoxHeader">Serviços</div>
@@ -381,7 +439,7 @@
                             </section>
                         </section>
                     </section>
-                    <section class="partForm">
+                    <section class="calendarForm">
                         <div class="calendar-container">
                             <h1 id="current-month">Mês Atual</h1>
                             <div class="navigation">
@@ -824,7 +882,8 @@
                 horariosContainer.innerHTML = "<h3>"+horarios[0]+"</h3>";
             } else if (horarios.length > 0) {
                 horariosContainer.innerHTML = `<h3>Horários disponíveis:</h3>`;
-                const list = document.createElement('ul');
+                const list = document.createElement('section');
+                list.classList.add("HoursBox")
                 horarios.forEach(horario => {
                     const listItem = document.createElement('div');
                     listItem.classList.toggle('containerHour')
@@ -868,99 +927,62 @@
     </script>
     <script>
 
-        var openFormAgendamento = document.querySelector("#openFormAgendamento")
-        var closeFormAgendamento = document.querySelector("#closeFormAgendamento")
-        var containerFormAgendamento = document.querySelector("#containerFormAgendamento")
-
-        function openForm(){
-            containerFormAgendamento.style.display = "flex"
-        }
-        openFormAgendamento.addEventListener("click", openForm)
-
-        function closeForm(){
-            containerFormAgendamento.style.display = "none"
-        }
-        closeFormAgendamento.addEventListener("click", closeForm)
-
-
-        //checkboxes
         document.addEventListener('DOMContentLoaded', function () {
-            // Seleciona todos os `selectBox` na página
-            const selectBoxes = document.querySelectorAll('.selectBox');
+            // Abre e fecha o formulário de agendamento
+            const openFormAgendamento = document.querySelector("#openFormAgendamento");
+            const closeFormAgendamento = document.querySelector("#closeFormAgendamento");
+            const containerFormAgendamento = document.querySelector("#containerFormAgendamento");
 
-            // Itera sobre cada `selectBox`
-            selectBoxes.forEach(selectBox => {
-                const containerOptions = selectBox.querySelector('.containerOptions');
-                const labels = containerOptions.querySelectorAll('.LabelCheckBoxAddOptions');
+            openFormAgendamento.addEventListener("click", () => {
+                containerFormAgendamento.style.display = "flex";
+            });
 
-                labels.forEach(label => {
-                    label.addEventListener('click', function () {
-                        const checkbox = this.querySelector('input[type="checkbox"]');
-                        if (!checkbox) return;
+            closeFormAgendamento.addEventListener("click", () => {
+                containerFormAgendamento.style.display = "none";
+            });
 
-                        // Desmarca todos os checkboxes dentro do container atual
-                        const allCheckboxes = containerOptions.querySelectorAll('input[type="checkbox"]');
-                        allCheckboxes.forEach(cb => {
-                            cb.checked = false;
-                            cb.closest('.LabelCheckBoxAddOptions').classList.remove('active');
-                        });
+            // Seleção de checkboxes ao clicar na label
+            document.querySelectorAll('.LabelCheckBoxAddOptions').forEach(label => {
+                label.addEventListener('click', function () {
+                    const checkboxes = this.querySelectorAll('input[type="checkbox"]');
+                    const isChecked = [...checkboxes].every(cb => cb.checked);
 
-                        // Marca o checkbox associado à label clicada
-                        checkbox.checked = true;
-                        this.classList.add('active'); // Adiciona a classe 'active' somente ao clicado
+                    checkboxes.forEach(cb => {
+                        cb.checked = !isChecked;
                     });
+
+                    this.classList.toggle('active', !isChecked);
                 });
             });
 
-
-
+            // Filtragem de profissionais com base nos serviços selecionados
             const serviceCheckboxes = document.querySelectorAll('.serviceCheckbox');
             const profissionalLabels = document.querySelectorAll('.profissionalLabels');
 
-            // Função para obter os serviços selecionados
             function getSelectedServices() {
-                const selectedServices = [];
-                serviceCheckboxes.forEach(checkbox => {
-                    if (checkbox.checked) {
-                        selectedServices.push(checkbox.value);  // Armazena o ID dos serviços selecionados
-                    }
-                });
-                return selectedServices;
+                return [...serviceCheckboxes].filter(cb => cb.checked).map(cb => cb.value);
             }
 
-            // Função para filtrar profissionais com base nos serviços selecionados
             function filterProfessionals() {
-                const selectedServices = getSelectedServices();  // Obtém os serviços selecionados
+                const selectedServices = getSelectedServices();
 
                 profissionalLabels.forEach(label => {
                     const dataServices = label.getAttribute('data-services');
                     if (!dataServices) {
-                        // Se o atributo data-services não existe, ignore este profissional
                         label.style.display = 'none';
                         return;
                     }
 
-                    // Converte os IDs dos serviços do profissional em um array
                     const profissionalServices = dataServices.split(',').map(id => id.trim());  
-
-                    // Verifica se o profissional oferece algum dos serviços selecionados
-                    const isVisible = selectedServices.length === 0 || profissionalServices.some(service => selectedServices.includes(service));
-
-                    if (isVisible) {
-                        label.style.display = 'block';  // Exibe o profissional
-                    } else {
-                        label.style.display = 'none';   // Esconde o profissional
-                    }
+                    label.style.display = selectedServices.length === 0 || profissionalServices.some(service => selectedServices.includes(service)) ? 'block' : 'none';
                 });
             }
 
-            // Adiciona evento para filtrar os profissionais sempre que um serviço for alterado
             serviceCheckboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', filterProfessionals);  // Filtro ativado quando um serviço é marcado/desmarcado
+                checkbox.addEventListener('change', filterProfessionals);
             });
 
-            // Inicializa a filtragem quando a página carrega
-            filterProfessionals()  // Inicializa a filtragem no carregamento
+            filterProfessionals(); // Inicializa a filtragem ao carregar
         });
     </script>
     <!--Script para o poupUp de opções do agendamento e fechar toolBAR-->
