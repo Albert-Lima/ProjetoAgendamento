@@ -7,6 +7,24 @@
     <title>Estabelecimentos</title>
 </head>
 <body>
+    {{#if aviso_msg}}
+        <section class="container_msgAviso">
+            <div class="popAviso">
+                <span>
+                    <img src="/images/icons8-ponto-de-exclamação-64.png" alt="aviso">
+                </span>
+                <h1>aviso!</h1>
+                <p>
+                    {{aviso_msg}}
+                </p>
+                <div>
+                    <button id="closeAviso">
+                        <img src="/images/icons8-excluir-48.png" alt="fechar popUp">
+                    </button>
+                </div>
+            </div>
+        </section>
+    {{/if}}
     <aside class="ContainerMenuLeft">
         <div class="ContainerLogoPanel">
             LOGO AQUI

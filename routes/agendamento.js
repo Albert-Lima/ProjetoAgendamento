@@ -241,7 +241,7 @@ router.get("/agendamentos", eAdmin, async (req, res) => {
             clientes
         });
     } catch (err) {
-        console.error("Erro ao listar agendamentos:", err);
+        req.flash("aviso_msg", "Para ver agendamentos é preciso configurar o estabelecimento antes");
         res.redirect("/estabelecimentos");
     }
 });

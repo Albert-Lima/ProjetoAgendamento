@@ -18,7 +18,7 @@ router.get("/auth/verify", async (req, res) => {
     const { token } = req.query;
 
     if (!token) {
-        req.flash("error_msg", "Token inválido.");
+        req.flash("error_msg", "Verifique seu email");
         return res.redirect("/auth");
     }
 
@@ -80,13 +80,26 @@ router.post("/auth", async (req, res) => {
 
         const verificationLink = `http://localhost:8081/auth/verify?token=${verificationToken}`;
         await transporter.sendMail({
-            from: '"Gendal" albertsousalima@gmail.com',
+            from: '"Glamis App" albertsousalima@gmail.com',
             to: req.body.email,
             subject: "Verifique seu e-mail",
             html: `
-                <h1>Bem-vindo!</h1>
-                <p>Por favor, clique no link abaixo para verificar seu e-mail:</p>
-                <a href="${verificationLink}">Verificar E-mail</a>
+                <div style="font-family: Arial, sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; border: 1px solid #1F5055; border-radius: 10px; background-color: #f9f9f9;">
+                    <h1 style="color: #333; text-align: center;">Bem-vindo ao Glamis!</h1>
+                    <p style="font-size: 16px; color: #555; text-align: center;">
+                        Para ativar sua conta, clique no botão abaixo:
+                    </p>
+                    <div style="text-align: center; margin: 20px 0;">
+                        <a href="${verificationLink}" 
+                        style="display: inline-block; background-color: #1F5055; color: #fff; text-decoration: none; 
+                                padding: 12px 20px; border-radius: 5px; font-size: 18px; font-weight: bold;">
+                            Verificar E-mail
+                        </a>
+                    </div>
+                    <p style="font-size: 14px; color: #777; text-align: center;">
+                        Se você não se cadastrou no Gendal, ignore este e-mail.
+                    </p>
+                </div>
             `,
         });
 
@@ -109,7 +122,6 @@ router.post("/login", (req, res, next) => {
         }
 
         if (!user.isVerified) {
-            console.log("Usuário não verificado"); // Para debug no terminal
             req.flash("error_msg", "Por favor, verifique seu e-mail antes de fazer login.");
             return res.redirect("/auth"); // Adicionado o `return` aqui
         }
