@@ -128,50 +128,42 @@
 
 
         //controle dos inputs de horario
-        const horarioInicial = document.getElementById('horarioInicial');
+        document.addEventListener('DOMContentLoaded', function () {
+    const horarioInicial = document.getElementById('horarioInicial');
     const horarioFinal = document.getElementById('horarioFinal');
-
+    
     if (horarioInicial && horarioFinal) {
-        // Controle do input de horário inicial
         horarioInicial.addEventListener('input', function() {
-            let inicio = parseInt(this.value);
-            let fim = parseInt(horarioFinal.value);
-
-            if (isNaN(inicio) || inicio < 0 || inicio > 23) {
-                this.value = '';
-                return;
-            }
-
-            // Se o fim não foi editado pelo usuário, preenche com +1 do início
-            if (!horarioFinal.dataset.userEdited) {
-                horarioFinal.value = Math.min(inicio + 1, 24);
-            }
-
-            // Garante que o início não seja maior que o fim
-            if (!isNaN(fim) && inicio > fim) {
-                this.value = fim;
+            let inicio = this.value.replace(/\D/g, '');
+            if (inicio.length > 2) inicio = inicio.slice(0, 2);
+            this.value = inicio;
+            
+            let sugestaoFim = parseInt(inicio, 10) + 1;
+            if (!isNaN(sugestaoFim) && sugestaoFim <= 24) {
+                horarioFinal.placeholder = sugestaoFim;
+            } else {
+                horarioFinal.placeholder = '';
             }
         });
 
-        // Controle do input de horário final
         horarioFinal.addEventListener('input', function() {
-            let fim = parseInt(this.value);
-            let inicio = parseInt(horarioInicial.value);
+            let fim = this.value.replace(/\D/g, '');
+            if (fim.length > 2) fim = fim.slice(0, 2);
+            this.value = fim;
+        });
 
-            if (isNaN(fim) || fim < 0 || fim > 24) {
-                this.value = '';
-                return;
+        document.querySelector("form").addEventListener("submit", function (e) {
+            let inicio = parseInt(horarioInicial.value, 10);
+            let fim = parseInt(horarioFinal.value, 10);
+            
+            if (!isNaN(inicio) && !isNaN(fim) && fim < inicio) {
+                e.preventDefault();
+                alert("O início do expediente deve ser antes do fim.");
             }
-
-            // Garante que o fim não seja menor que o início
-            if (!isNaN(inicio) && fim < inicio) {
-                this.value = inicio;
-            }
-
-            // Marca que o usuário editou manualmente o horário final
-            this.dataset.userEdited = true;
         });
     }
+});
+
     </script>
 </body>
 </html>
