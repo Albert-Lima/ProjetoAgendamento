@@ -46,47 +46,34 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    padding-top: 20px;
-}
-.buttonLink::after{
-    color: var(--var-ColorGreenOliva);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 12pt;
-    font-weight: 400;
-    content: "adicionar um estabelecimento";
-    display: none;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    height: max-content;
-    width: max-content;
-    padding: 20px;
-    border: 1px solid rgb(177, 177, 177);
-    border-radius: 5px;
-    position: absolute;
-    transform: translateY(60px);
-    background-color: white;
-    box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.178);
-}
-.buttonLink:hover::after{
-    display: flex;
+    padding: 0px 20px 0px 20px;
+    background-color: var(--var-WhatsappDark);
+    border-radius: 10px;
 }
 
 .buttonLink a{
     height: 50px;
-    width: 50px;
+    width: auto;
     box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.123);
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
     border-radius: 10px;
     text-decoration: none;
     text-align: center;
+    gap: 5px
 }
 
 .buttonLink a img{
-    height: 40px;
+    height: 20px;
+}
+.buttonLink a p{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 10pt;
+    font-weight: 400;
+    color: white;
+    transform: translateY(-2px);
 }
 
 .containerRelatorio{
@@ -228,6 +215,7 @@
 }
 
 /*add estabelecimento-------------------------------------------------------------------------------------*/
+
 .BoxProf{
     display: flex;
     flex-direction: row;
@@ -291,6 +279,7 @@
     padding-top: 20px;
     border-radius: 0px;
     background-color: var(--var-ColorBaseGray);
+    margin-bottom: 200px;
 }
 #buttonAddEstabelecimentos img{
     height: 40px;

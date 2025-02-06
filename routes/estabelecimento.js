@@ -110,7 +110,7 @@ router.post("/addestabelecimento", eAdmin, async (req, res) => {
     if (!nomeEstabelecimento) erros.push({ texto: "Nome do estabelecimento é obrigatório." });
     if (!phoneEstabelecimento) erros.push({ texto: "Telefone do estabelecimento é obrigatório." });
     if (!endereco) erros.push({ texto: "Endereço do estabelecimento é obrigatório." });
-    if (!profissionais || profissionais.length === 0) erros.push({ texto: "Profissionais são obrigatórios." });
+    
     if (!horarioInicial) erros.push({ texto: "Horário inicial é obrigatório." });
     if (!horarioFinal) erros.push({ texto: "Horário final é obrigatório." });
     if (!diasFuncionamento || diasFuncionamento.length === 0) erros.push({ texto: "Pelo menos um dia de funcionamento deve ser selecionado." });

@@ -17,11 +17,10 @@
     <main class="panel">
         <header class="HeaderPanel">
             <div>
-                <button class="doboutButton"><img src="/images/icons8-dúvida-100.png" alt="manual da aplicação"></button>
-            </div>
-            <div class="infoUsuario">
-                <span>nome de usuário</span>
-                <span class="userPicture"><!--<img src="/images/icons8-adicionar-usuário-masculino-90.webp" alt="imagem do usuário">--></span>
+                <button class="doboutButton">
+                    <img src="/images/icons8-ajuda-32.png" alt="manual da aplicação">
+                    <p>Ajuda</p>
+                </button>
             </div>
         </header>
         <section class="ConteinerInfo">
@@ -29,7 +28,7 @@
                 <form action="/addestabelecimento" method="post" id="formulario">
                     <section>
                         <input type="text" name="nomeEstabelecimento" id="" placeholder="nome do estabelecimento">
-                        <input type="tel" pattern="[0-9]+" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" name="phoneEstabelecimento" id="" placeholder="Whatsapp do estabelecimento">
+                        <input type="tel"  inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" name="phoneEstabelecimento" id="" placeholder="Whatsapp do estabelecimento" class="numbersInput">
                         <input type="text" name="endereco" id="" placeholder="Endereço">
                     </section>
                     <section class="SelectProfissionais">
@@ -41,7 +40,7 @@
                                     {{name}}
                                 </label>
                             {{else}}
-                                <a href="/addprofissionais">Cadastre profissionais</a>
+                                <a href="/addprofissionais" class="linkCompletePerfil">Cadastre profissionais</a>
                             {{/each}}
                         </section>
                     </section>
@@ -81,6 +80,30 @@
                         <button  type="submit" form="formulario">salvar</button>
                     </nav>
                 </form>
+
+                <!--Script para mostrar os números de celular corretamente no formulário-->
+                <script>
+                    const phoneInput = document.querySelector(".numbersInput");
+                    const form = phoneInput.closest("form");
+
+                    phoneInput.addEventListener("input", function (e) {
+                        let value = e.target.value.replace(/\D/g, ""); // Remove tudo que não for número
+                        
+                        if (value.length > 2) {
+                            value = `(${value.slice(0, 2)}) ` + value.slice(2);
+                        }
+                        if (value.length > 10) {
+                            value = value.slice(0, 10) + "-" + value.slice(10);
+                        }
+
+                        e.target.value = value;
+                    });
+
+                    form.addEventListener("submit", function (e) {
+                        const rawNumber = phoneInput.value.replace(/\D/g, ""); // Remove a formatação
+                        phoneInput.value = rawNumber;
+                    });
+                </script>
             </section>
         </section>
     </main>
@@ -105,35 +128,50 @@
 
 
         //controle dos inputs de horario
-        document.getElementById('horarioInicial').addEventListener('input', function() {
-            let inicio = parseInt(this.value);
-            let fim = parseInt(document.getElementById('horarioFinal').value);
+        const horarioInicial = document.getElementById('horarioInicial');
+    const horarioFinal = document.getElementById('horarioFinal');
 
-            if (inicio < 0 || inicio > 23) {
-                alert('O horário de início deve estar entre 0 e 23.');
-                this.value = Math.max(0, Math.min(inicio, 23)); // Mantém o valor entre 0 e 23
+    if (horarioInicial && horarioFinal) {
+        // Controle do input de horário inicial
+        horarioInicial.addEventListener('input', function() {
+            let inicio = parseInt(this.value);
+            let fim = parseInt(horarioFinal.value);
+
+            if (isNaN(inicio) || inicio < 0 || inicio > 23) {
+                this.value = '';
+                return;
             }
 
-            // Verifica se o início é maior que o fim
-            if (fim && inicio > fim) {
+            // Se o fim não foi editado pelo usuário, preenche com +1 do início
+            if (!horarioFinal.dataset.userEdited) {
+                horarioFinal.value = Math.min(inicio + 1, 24);
+            }
+
+            // Garante que o início não seja maior que o fim
+            if (!isNaN(fim) && inicio > fim) {
                 this.value = fim;
             }
         });
 
-        document.getElementById('horarioFinal').addEventListener('input', function() {
+        // Controle do input de horário final
+        horarioFinal.addEventListener('input', function() {
             let fim = parseInt(this.value);
-            let inicio = parseInt(document.getElementById('horarioInicial').value);
+            let inicio = parseInt(horarioInicial.value);
 
-            if (fim < 0 || fim > 24) {
-                alert('O horário final deve estar entre 0 e 24.');
-                this.value = Math.max(0, Math.min(fim, 24)); // Mantém o valor entre 0 e 24
+            if (isNaN(fim) || fim < 0 || fim > 24) {
+                this.value = '';
+                return;
             }
 
-            // Verifica se o fim é menor que o início
-            if (inicio && fim < inicio) {
+            // Garante que o fim não seja menor que o início
+            if (!isNaN(inicio) && fim < inicio) {
                 this.value = inicio;
             }
+
+            // Marca que o usuário editou manualmente o horário final
+            this.dataset.userEdited = true;
         });
+    }
     </script>
 </body>
 </html>
