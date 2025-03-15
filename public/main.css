@@ -1,9 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
 *{
     margin: 0px;
     padding: 0px;
 }
 :root{
-    --var-DarkGreen: #00272B;
+    --var-BaseGreen: #209F84;
+    --var-BaseBody: #ebf3ea;
+    --var-SelectedMenu: #E1F297;
+
+    --var-FontStyled: "Karla", sans-serif;
+    --var-FontMain: "Open Sans", sans-serif;
+
+
     --var-ColorGreen: #E0FF4F;
     --var-BorderColorDark: rgb(182, 182, 182);
     --var-ColorBaseGray: #D9D9D9;
@@ -17,7 +26,7 @@
     --var-BoxShadowContainer: 0px 0px 4px 1px rgba(0, 0, 0, 0.192);
 }
 body{
-    background-color: var(--var-DarkGreen);
+    background-color: var(--var-BaseBody);
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -32,41 +41,16 @@ body{
     -ms-user-select: none; /* Compatibilidade com IE/Edge */
     cursor: default; /* Indica que o texto não é selecionável */
 }
-.line{
-    height: 80%;
-    width: 1px;
-    background-color: var(--var-ColorGreenOliva);
-    display: block;
-}
-.ContainerMenuLeft{
-    width: 300px;
-    height: 90%;
-    position: absolute;
-    left: 0px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: start;
-    gap: 10px;
-}
-.ContainerLogoPanel{
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: var(--var-ColorGreen);
-    font-size: 20pt;
-    padding-bottom: 20px;
-}
+
 .panel{
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: start;
-    width: calc(100% - 300px);
-    height: 98vh;
+    width: calc(100% - 200px);
+    height: 100vh;
     position: absolute;
-    right: 1vh;
-    top: 1vh;
-    background-color: rgb(255, 255, 255);
-    border-radius: 15px;
+    right: 0vh;
 }
 .HeaderPanel{
     display: flex;
@@ -76,10 +60,72 @@ body{
     width: calc(100% - 60px);
     height: 50px;
     margin-top: 15px;
-    box-shadow: var(--var-BoxShadowContainer);
     padding-left: 10px;
     padding-right: 20px;
     border-radius: 10px;
+    background-color: white;
+}
+.doboutButton{
+    background-color: var(--var-BaseGreen);
+    height: 30px;
+    width: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    font-size: 10pt;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    gap: 10px;
+}
+.doboutButton p{
+    transform: translateY(-2px);
+}
+.doboutButton img{
+    width: 20px;
+    height: 20px;
+}
+
+.infoUsuario{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 12pt;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.712);
+}
+.picture_adm{
+    height: 30px;
+    width: 30px;
+}
+.picture_adm img{
+    height: 30px;
+    width: 30px;
+}
+.ReturnButton{
+    padding: 0px;
+    height: 25px;
+    width: 25px;
+    border: none;
+    background-color: var(--var-ColorGradient1);
+    border-radius: 5px;
+    cursor: pointer;
+}
+.ReturnButton img{
+    height: 100%;
+    width: auto;
+    align-self: center;
+    justify-self: center;
 }
 .linkCompletePerfil{
     text-decoration: none;
@@ -218,47 +264,37 @@ body{
     max-width: 80%;
 }
 
-.doboutButton{
-    background-color: var(--var-WhatsappDark);
-    height: 30px;
-    width: 100px;
+
+
+/*Partial MenuLeft*/
+.line{
+    height: 80%;
+    width: 1px;
+    background-color: var(--var-ColorGreenOliva);
+    display: block;
+}
+.ContainerMenuLeft{
+    width: 200px;
+    height: 100%;
+    border-top-right-radius: 40px;
+    border-bottom-right-radius: 40px;
+    position: absolute;
+    left: 0px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    border: none;
-    border-radius: 10px;
-    font-size: 10pt;
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    color: white;
     gap: 10px;
+    background-color: var(--var-BaseGreen);
 }
-.doboutButton p{
-    transform: translateY(-2px);
+.ContainerLogoPanel{
+    height: 30px;
+    position: absolute;
+    top: 35px;
 }
-.doboutButton img{
-    width: 20px;
-    height: 20px;
+.ContainerLogoPanel img{
+    height: 30px;
 }
-
-.infoUsuario{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    font-size: 12pt;
-    font-weight: 600;
-    color: rgba(0, 0, 0, 0.712);
-}
-
-/*Partial MenuLeft*/
 .ContainerButtons{
     position: relative;
     display: flex;
@@ -266,7 +302,8 @@ body{
     align-items: center;
     padding-right: 13px;
     justify-content: start;
-    width: 100%;
+    width: calc(100% - 10px);
+    gap: 10px;
 }
 .boxButtons{
     height: 50px;
@@ -277,7 +314,6 @@ body{
     justify-content: start;
     padding-left: 20px;
     gap: 10px;
-    background-color: var(--var-DarkGreen);
     border-radius: 80px;
     text-decoration: none;
     color: white;
@@ -296,8 +332,7 @@ body{
 }
 .selectedMenuLeft{
     height: 50px;
-    background-color: white;
-    color: black;
+    color: var(--var-SelectedMenu);
     position: relative;
     border-radius: 30px;
 }
@@ -306,7 +341,7 @@ body{
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 30px;
+    height: 25px;
 }
 .ContainerIconMenuLeft img{
     height: 100%;
@@ -323,6 +358,9 @@ body{
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-weight: bold;
     text-decoration: none;
+    position: absolute;
+    bottom: 30px;
+    cursor: pointer;
 }
 
 /*formulário principal----------------------------------------------------------------------------------------------------------------*/

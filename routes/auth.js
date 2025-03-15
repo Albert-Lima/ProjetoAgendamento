@@ -133,4 +133,19 @@ router.post("/login", (req, res, next) => {
     })(req, res, next);
 });
 
+router.get("/logout", (req, res) => {
+    req.logout((err) => {
+        if (err) {
+            console.log("Erro ao fazer logout:", err);
+            req.flash("error_msg", "Erro ao fazer logout.");
+            return res.redirect("/estabelecimentos");
+        }
+        req.flash("success_msg", "Você saiu da sua conta.");
+        res.redirect("/auth");
+    });
+});
+
+
+
+
 module.exports = router;

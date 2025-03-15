@@ -17,11 +17,14 @@
     <main class="panel">
         <header class="HeaderPanel">
             <div>
-                <button class="doboutButton"><img src="/images/icons8-dúvida-100.png" alt="manual da aplicação"></button>
+                <button class="ReturnButton"><img src="/images/icons8-voltar-48.png" alt="retornar"></button>
             </div>
             <div class="infoUsuario">
-                <span>nome de usuário</span>
-                <span class="userPicture"><!--<img src="/images/icons8-adicionar-usuário-masculino-90.webp" alt="imagem do usuário">--></span>
+                {{#if user}}
+                    <span>{{user.name}}</span>
+                {{else}}
+                    erro ao carregar os dados
+                {{/if}}
             </div>
         </header>
         <section class="ConteinerInfo">

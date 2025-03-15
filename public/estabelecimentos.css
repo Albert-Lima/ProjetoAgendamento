@@ -1,8 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
 *{
     margin: 0px;
     padding: 0px;
 }
 :root{
+    --var-BaseGreen: #209F84;
+    --var-BaseClearGreen: #59B989;
+    --var-BaseBody: #ebf3ea;
+    --var-SelectedMenu: #E1F297;
+    --var-TextDark: #3D5553;
+
+    --var-FontStyled: "Karla", sans-serif;
+    --var-FontMain: "Open Sans", sans-serif;
+
     --var-DarkGreen: #00272B;
     --var-ColorGreen: #E0FF4F;
     --var-BorderColorDark: rgb(182, 182, 182);
@@ -79,13 +90,13 @@
 .containerRelatorio{
     width: calc(100% - 30px);
     border-radius: 10px;
-    height: 200px;
+    height: max-content;
     display: flex;
-    flex-direction: row;
-    align-items: center;
+    flex-direction: column;
+    align-items: start;
     justify-content: space-between;
-    box-shadow: var(--var-BoxShadowContainer);
     position: relative;
+    background-color: var(--var-BaseGreen);
 }
 .descEstabelecimento{
     display: flex;
@@ -93,24 +104,64 @@
     align-items: start;
     justify-content: start;
     gap: 30px;
-    padding: 30px;
-    height: calc(100% - 60px);
-    width: 100%;
+    padding: 20px;
+    width: 80%;
 }
 .descEstabelecimento h2{
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 15pt;
     font-weight: 500;
+    color: white;
 }
-.descEstabelecimento span{
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+.weatherInfo{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    padding-left: 20px;
+    gap: 15px;
+    margin-top: 20px;
+}
+.containerImgClima{
+    height: 40px;
+}
+.containerImgClima img{
+    height: 100%;
+}
+.containerTemp{
+    font-family: var(--var-FontMain);
+    font-size: 30px;
+    font-weight: 600;
+    color: white;
+}
+.containerClimaStatus{
+    font-family: var(--var-FontStyled);
+    font-size: 12pt;
+    color: white;
+    font-weight: 500;
+}
+
+
+.infoEstabelecimento{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    gap: 10px;
+    padding-left: 20px;
+    padding-bottom: 20px;
+    margin-top: 30px;
+}
+.infoEstabelecimento span{
+    font-family: var(--var-FontMain);
     font-size: 11pt;
     font-weight: 400;
+    color: white;
 }
+
 .buttonConfig{
     height: 40px;
     width: 40px;
-    background-color: var(--var-WhatsappDark);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -138,8 +189,8 @@
 }
 
 .sectionGraphic{
-    height: 350px;
-    width: calc(50% - 65px);
+    height: 300px;
+    width: calc(60% - 65px);
     display: flex;
     flex-direction: column;
     align-items: start;
@@ -148,15 +199,14 @@
     padding: 30px;
     gap: 20px;
     border-radius: 10px;
-    box-shadow: var(--var-BoxShadowContainer);
+    background-color: white;
 }
 .sectionGraphic header{
     text-align: center;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 12pt;
     font-weight: 500;
-    color: var(--var-ColorGreenOliva);
-    height: 30px;
+    color: var(--var-BaseGreen);
 }
 
 
@@ -166,52 +216,142 @@
     align-items: start;
     justify-content: start;
     gap: 20px;
-    height: 350px;
-    padding: 30px;
-    width: calc(50% - 65px);
+    height: 360px;
+    padding: 0px;
+    width: calc(40% - 5px);
     border-radius: 10px;
-    box-shadow: var(--var-BoxShadowContainer);
 }
 .ContainerDataMain{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 30px 0px 30px 30px;
+    width: calc(100% - 30px);
+    border-radius: 10px;
+    position: relative;
 }
-.ContainerDataMain h2{
-    text-align: center;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+.ContainerDataMain:nth-child(1){
+    background-color: var(--var-SelectedMenu);
+}
+.ContainerDataMain:nth-child(1) h2{
+    font-family: var(--var-FontMain);
     font-size: 12pt;
     font-weight: 500;
-    color: var(--var-ColorGreenOliva);
-    height: 30px;
+    color: var(--var-TextDark);
 }
-.ContainerDataMain span{
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 15pt;
-    font-weight: 600;
-    color: var(--var-ColorGreenOliva)
-}
-.ContainerDataMain div{
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    justify-content: start;
-    gap: 10px;
-}
-.ContainerDataMain div span{
+.containerResultsDataMain{
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: start;
+    justify-content: center;
+    position: absolute;
+    right: 10px;
     gap: 10px;
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    height: calc(100% - 20px);
+}
+.containerResultsDataMain div{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.180);
+    height: 100%;
+    padding: 0px 15px 0px 15px;
+}
+.containerResultsDataMain div span:nth-child(1){
+    font-family: var(--var-FontStyled);
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--var-TextDark);
+}
+.iconResult{
+    height: 30px;
+}
+.iconResult img{
+    height: 100%;
+    width: auto;
+}
+.numberClientes{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background-color: white;
+    border-radius: 10px;
+    border-top-right-radius: 0px;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.180);
+    height: 100%;
+    padding: 0px 15px 0px 15px;
+    width: 50px;
+
+    font-family: var(--var-FontStyled);
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--var-TextDark);
+}
+
+.ContainerDataMain:nth-child(2){
+    background-color: var(--var-BaseClearGreen);
+}
+.ContainerDataMain:nth-child(2) h2{
+    font-family: var(--var-FontMain);
     font-size: 12pt;
     font-weight: 500;
-    color: gray;
+    color: white;
 }
-.ContainerDataMain div span img{
-    height: 20px;
-    width: auto;
-    filter: drop-shadow(0px 0px 3px rgba(0, 0, 0, 0.19));
+.ContainerDataMain:nth-child(3){
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    gap: 20px;
+    padding-bottom: 0px;
+    background-color: white;
+    height: 100%;
+}
+.ContainerDataMain:nth-child(3) h2{
+    font-family: var(--var-FontMain);
+    font-size: 12pt;
+    font-weight: 500;
+    color: var(--var-BaseGreen);
+}
+.containerBestServices{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 10px;
+    justify-content: center;
+    width: calc(100% - 30px);
+}
+.containerBestServices span{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: calc(100% - 10px);
+    padding: 5px;
+    border-radius: 5px;
+}
+.containerBestServices span p:nth-child(1){
+    font-family: var(--var-FontMain);
+    font-size: 11pt;
+    font-weight: 500;
+    color: var(--var-TextDark);
+}
+.containerBestServices span p:nth-child(2){
+    font-family: var(--var-FontMain);
+    font-size: 12pt;
+    font-weight: 600;
+    color: var(--var-TextDark);
+}
+.containerBestServices span:hover{
+    background-color: rgb(235, 235, 235);
+    cursor: default;
+    transition: 0.5s;
 }
 
 /*add estabelecimento-------------------------------------------------------------------------------------*/

@@ -27,62 +27,110 @@
     {{/if}}
     <aside class="ContainerMenuLeft">
         <div class="ContainerLogoPanel">
-            LOGO AQUI
+            <img src="/images/logoGlamii.png" alt="glamii software">
         </div>
         {{>menuEstabelecimentos}}
+        <a href="/logout" class="boxButtons" id="LogOut">
+            <div class="ContainerIconMenuLeft"><img src="/images/icons8-sair-100.png" alt="Deslogar"></div>
+            <p>LogOut</p>
+        </a>
     </aside>
     <main class="panel">
         <header class="HeaderPanel">
             <div>
                 <button class="doboutButton">
-                    <p>
-                        Ajuda
-                    </p>
                     <img src="/images/icons8-ajuda-32.png" alt="manual da aplicação">
                 </button>
             </div>
             <div class="infoUsuario">
                 {{#if user}}
                     <span>{{user.name}}</span>
+                    <span class="picture_adm">
+                        <img src="/images/perfilGendaiTeste.png" alt="foto de perfil"><!--link deve vir do cloudnary-->
+                    </span>
                 {{else}}
-                    erro ao carregar os dados
+                    <span>User not Found</span>
+                    <span class="picture_adm_notFound">
+                        <img src="/images/icons8-usuário-90 (1).png" alt="foto de perfil">
+                    </span>
                 {{/if}}
             </div>
         </header>
         <section class="ConteinerInfo">
             <section class="viewPanel">
                 {{#each estab}}
+                    <span id="hiddenCity" style="opacity: 0; scale: 0; display: none;">Caucaia, CE</span><!--a API do tempo se basea no valor desse span-->
                     <div class="containerRelatorio">
                         <div class="descEstabelecimento">                
                             <h2>{{nomeEstabelecimento}}</h2>
-                            <span>Horário de funcionamento: {{horarioInicial}}h ás {{horarioFinal}}h</span>
-                            <span>{{endereco}}</span>
+                        </div>
+
+
+                        <div class="weatherInfo">      
+                            <span class="containerImgClima"><img src="" alt="imagem clima"></span>
+                            <span class="containerTemp"></span>
+                            <span class="containerClimaStatus"></span>
+                        </div>
+
+
+                        <div class="infoEstabelecimento">
+                            <span>Horário de funcionamento: {{horarioInicial}}h - {{horarioFinal}}h</span>
+                            <span id="endereco">{{endereco}}</span>
                         </div>
                         <a href="/editestabelecimento/{{_id}}" class="buttonConfig"><!--deve levar para a página de editar estabelecimento-->
                             <img src="/images/icons8-configurações-100.webp" alt="configurações do estabelecimento">
                         </a>
                     </div>
+
+
                     <section class="containerDataEstab">
                         <div class="sectionGraphic">
                             <header>
-                                Agendamentos nos últimos 30 dias
+                                Estatísticas de Agendamentos
                             </header>
                             <canvas class="containerGraphic" id="myChart" style="width: 100%; height: 250px;"></canvas>
                         </div>
+
                         <div class="ContainerClassificacao">
                             <div class="ContainerDataMain">
                                 <h2>Novos clientes</h2>
-                                <span>56</span>
+                                <div class="containerResultsDataMain">
+                                    <div>
+                                        <span><!--resultado em porcentagem aqui-->
+                                            -25,2%
+                                        </span>
+                                        <span class="iconResult"><!--icon de positivo ou negativo dever vir aqui-->
+                                            <img src="images/icons8-gráfico-combinado-100.png" alt="">
+                                        </span>
+                                    </div>
+                                    <span class="numberClientes">+56</span>
+                                </div>
                             </div>
                             <div class="ContainerDataMain">
                                 <h2>Agendamentos mensais</h2>
-                                <span>96</span>
+                                <div class="containerResultsDataMain">
+                                    <div>
+                                        <span><!--resultado em porcentagem aqui-->
+                                            +5,5%
+                                        </span>
+                                        <span class="iconResult"><!--icon de positivo ou negativo dever vir aqui-->
+                                            <img src="images/icons8-gráfico-combinado-100 (1).png" alt="">
+                                        </span>
+                                    </div>
+                                    <span class="numberClientes">93</span>
+                                </div>
                             </div>
                             <div class="ContainerDataMain">
                                 <h2>Serviços mais vendidos</h2>
-                                <div>
-                                    <span><img src="/images/icons8-diamante-48.png" alt="serviço mais vendido"> serviço 1</span>
-                                    <span><img src="/images/icons8-diamante-48.png" alt="serviço mais vendido"> serviço 2</span>
+                                <div class="containerBestServices"><!--Aqui deve conter uma listagem dos dois serviços mais acessados-->
+                                    <span>
+                                         <p>service one</p>
+                                        <p>145</p>
+                                    </span>
+                                    <span>
+                                        <p>service two</p>
+                                        <p>137</p>
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -102,41 +150,37 @@
 
     <!--Script para buscar os dados do Gráfico-->
     <script>
-    // Faz a requisição para buscar os dados
-    document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', () => {
         fetch('/agendamentospordias')
             .then((response) => {
-            if (!response.ok) {
-                throw new Error('Erro na requisição');
-            }
-            return response.json();
+                if (!response.ok) {
+                    throw new Error('Erro na requisição');
+                }
+                return response.json();
             })
             .then((data) => {
                 const ctx = document.getElementById('myChart').getContext('2d');
 
-                // Criando o gradiente linear
-                const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-                gradient.addColorStop(0, 'rgb(31, 80, 85)'); // Verde-azulado claro (40% opacidade)
-                gradient.addColorStop(1, 'rgba(31, 80, 85, 0.1)');
                 new Chart(ctx, {
                     type: 'bar',
                     data: {
-                    labels: data.labels, // Datas no eixo X
-                    datasets: [{
-                        data: data.data, // Quantidade no eixo Y
-                        borderColor: '#1F5055',
-                        backgroundColor: gradient,
-                        tension: 0, // Suaviza as linhas
-                        borderWidth: 2,
-                        pointRadius: 1, // Remove os pontos
-                        pointHoverRadius: 1, // Remove os pontos ao passar o mouse
-                        fill: true,
-                    }],
+                        labels: data.labels, // Datas no eixo X
+                        datasets: [{
+                            data: data.data, // Quantidade no eixo Y
+                            borderColor: '#1F5055',
+                            backgroundColor: '#E1F297', // Cor de fundo inicial
+                            hoverBackgroundColor: '#59B989', // Cor de fundo ao passar o mouse
+                            tension: 0, // Suaviza as linhas
+                            borderWidth: 0,
+                            borderRadius: 20,
+                            pointRadius: 1, // Remove os pontos
+                            pointHoverRadius: 1, // Remove os pontos ao passar o mouse
+                            fill: true,
+                        }],
                     },
                     options: {
                         responsive: false,
                         maintainAspectRatio: false,
-
                         plugins: {
                             legend: {
                                 display: false // Desativa a exibição da legenda
@@ -147,7 +191,8 @@
                                 beginAtZero: true,
                                 grid: {
                                     drawBorder: true, // Mostra a linha do eixo Y
-                                    display: false // Remove as linhas da grade horizontal
+                                    color: 'red', // Cor das linhas de grade do eixo Y
+                                    display: false // Exibe as linhas da grade horizontal
                                 },
                                 ticks: {
                                     display: true, // Mantém os ticks no eixo Y
@@ -155,22 +200,281 @@
                                     callback: function (value) {
                                         return Number.isInteger(value) ? value : ''; // Mostra apenas inteiros
                                     },
-                                }
+                                    color: '#209F84',
+                                },
+                                borderColor: '#209F84', // Cor da linha do eixo Y
                             },
                             x: {
                                 grid: {
-                                    display: false
+                                    drawBorder: true, // Mostra a linha do eixo X
+                                    color: 'red', // Cor das linhas de grade do eixo X
+                                    display: false // Exibe as linhas da grade vertical
                                 },
                                 ticks: {
                                     display: false
-                                }
+                                },
+                                borderColor: 'red', // Cor da linha do eixo X
+                                color: '#209F84', // Cor dos ticks do eixo X
                             }
+                        },
+                        hover: {
+                            mode: 'index', // Ajusta o comportamento do hover
+                            intersect: false, // Permite hover em qualquer lugar do gráfico
+                            animationDuration: 100, // Duração da animação
                         },
                     },
                 });
             })
             .catch((error) => console.error('Erro ao buscar dados:', error));
         });
+    </script>
+
+    <!--Script para api do clima-->
+    <script>
+        const apiKey = '4e1ba0a39fb4408dbce22102251303'; // Substitua por sua chave de API
+
+        // Mapeamento dos códigos das condições para imagens (com diferenciação entre dia e noite)
+        const weatherIcons = {
+            1000: {
+                day: "images/icons8-sol-240.png", // Céu limpo (dia)
+                night: "images/icons8-lua-crescente-100.png" // Céu limpo (noite)
+            },
+            1003: {
+                day: "imagens/parcialmente_nublado.png",
+                night: "imagens/parcialmente_nublado_noite.png"
+            },
+            1006: {
+                day: "imagens/nublado.png",
+                night: "imagens/nublado_noite.png"
+            },
+            1009: {
+                day: "imagens/nublado.png",
+                night: "imagens/nublado_noite.png"
+            },
+            1030: {
+                day: "imagens/nevoa.png",
+                night: "imagens/nevoa_noite.png"
+            },
+            1063: {
+                day: "imagens/possivel_chuva.png",
+                night: "imagens/possivel_chuva_noite.png"
+            },
+            1066: {
+                day: "imagens/neve_leve.png",
+                night: "imagens/neve_leve_noite.png"
+            },
+            1069: {
+                day: "imagens/neve_moderada.png",
+                night: "imagens/neve_moderada_noite.png"
+            },
+            1072: {
+                day: "imagens/chuva_leve.png",
+                night: "imagens/chuva_leve_noite.png"
+            },
+            1087: {
+                day: "imagens/trovoadas.png",
+                night: "imagens/trovoadas_noite.png"
+            },
+            1114: {
+                day: "imagens/nevasca.png",
+                night: "imagens/nevasca_noite.png"
+            },
+            1117: {
+                day: "imagens/nevasca.png",
+                night: "imagens/nevasca_noite.png"
+            },
+            1135: {
+                day: "imagens/neblina.png",
+                night: "imagens/neblina_noite.png"
+            },
+            1147: {
+                day: "imagens/neblina_congelante.png",
+                night: "imagens/neblina_congelante_noite.png"
+            },
+            1150: {
+                day: "imagens/chuva_leve.png",
+                night: "imagens/chuva_leve_noite.png"
+            },
+            1153: {
+                day: "imagens/chuva_leve.png",
+                night: "imagens/chuva_leve_noite.png"
+            },
+            1168: {
+                day: "imagens/neblina_congelante.png",
+                night: "imagens/neblina_congelante_noite.png"
+            },
+            1171: {
+                day: "imagens/chuva_forte.png",
+                night: "imagens/chuva_forte_noite.png"
+            },
+            1180: {
+                day: "imagens/chuva_leve.png",
+                night: "imagens/chuva_leve_noite.png"
+            },
+            1183: {
+                day: "imagens/chuva_leve.png",
+                night: "imagens/chuva_leve_noite.png"
+            },
+            1186: {
+                day: "imagens/chuva_moderada.png",
+                night: "imagens/chuva_moderada_noite.png"
+            },
+            1189: {
+                day: "imagens/chuva_moderada.png",
+                night: "imagens/chuva_moderada_noite.png"
+            },
+            1192: {
+                day: "imagens/chuva_forte.png",
+                night: "imagens/chuva_forte_noite.png"
+            },
+            1195: {
+                day: "imagens/chuva_forte.png",
+                night: "imagens/chuva_forte_noite.png"
+            },
+            1198: {
+                day: "imagens/granizo.png",
+                night: "imagens/granizo_noite.png"
+            },
+            1201: {
+                day: "imagens/granizo.png",
+                night: "imagens/granizo_noite.png"
+            },
+            1204: {
+                day: "imagens/neve_leve.png",
+                night: "imagens/neve_leve_noite.png"
+            },
+            1207: {
+                day: "imagens/neve_moderada.png",
+                night: "imagens/neve_moderada_noite.png"
+            },
+            1210: {
+                day: "imagens/neve_leve.png",
+                night: "imagens/neve_leve_noite.png"
+            },
+            1213: {
+                day: "imagens/neve_moderada.png",
+                night: "imagens/neve_moderada_noite.png"
+            },
+            1216: {
+                day: "imagens/neve_moderada.png",
+                night: "imagens/neve_moderada_noite.png"
+            },
+            1219: {
+                day: "imagens/neve_forte.png",
+                night: "imagens/neve_forte_noite.png"
+            },
+            1222: {
+                day: "imagens/neve_forte.png",
+                night: "imagens/neve_forte_noite.png"
+            },
+            1225: {
+                day: "imagens/nevasca.png",
+                night: "imagens/nevasca_noite.png"
+            },
+            1237: {
+                day: "imagens/granizo.png",
+                night: "imagens/granizo_noite.png"
+            },
+            1240: {
+                day: "imagens/chuva_leve.png",
+                night: "imagens/chuva_leve_noite.png"
+            },
+            1243: {
+                day: "imagens/chuva_moderada.png",
+                night: "imagens/chuva_moderada_noite.png"
+            },
+            1246: {
+                day: "imagens/chuva_forte.png",
+                night: "imagens/chuva_forte_noite.png"
+            },
+            1249: {
+                day: "imagens/neve_leve.png",
+                night: "imagens/neve_leve_noite.png"
+            },
+            1252: {
+                day: "imagens/neve_moderada.png",
+                night: "imagens/neve_moderada_noite.png"
+            },
+            1255: {
+                day: "imagens/neve_moderada.png",
+                night: "imagens/neve_moderada_noite.png"
+            },
+            1258: {
+                day: "imagens/neve_forte.png",
+                night: "imagens/neve_forte_noite.png"
+            },
+            1261: {
+                day: "imagens/granizo.png",
+                night: "imagens/granizo_noite.png"
+            },
+            1264: {
+                day: "imagens/granizo.png",
+                night: "imagens/granizo_noite.png"
+            },
+            1273: {
+                day: "imagens/trovoadas.png",
+                night: "imagens/trovoadas_noite.png"
+            },
+            1276: {
+                day: "imagens/chuva_trovoadas.png",
+                night: "imagens/chuva_trovoadas_noite.png"
+            },
+            1279: {
+                day: "imagens/neve_forte.png",
+                night: "imagens/neve_forte_noite.png"
+            },
+            1282: {
+                day: "imagens/nevasca.png",
+                night: "imagens/nevasca_noite.png"
+            }
+        };
+
+        // Função para obter o ícone correspondente à condição climática e hora do dia
+        function getWeatherIcon(code, isDaytime) {
+            const icons = weatherIcons[code];
+            if (!icons) return "images/icons8-sol-240.png"; // Ícone padrão se o código não estiver mapeado
+            
+            return isDaytime ? icons.day : icons.night; // Retorna o ícone para o dia ou noite
+        }
+
+        // Função para buscar o clima ao carregar a página
+        function getWeather() {
+            const city = document.getElementById('hiddenCity').textContent.trim();
+            if (!city) {
+                console.error("Localização não encontrada.");
+                return;
+            }
+
+            const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}&lang=pt`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        console.error('Cidade não encontrada!');
+                    } else {
+                        updateWeatherUI(data);
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao buscar o clima:', error);
+                });
+        }
+
+        // Função para atualizar a interface com as informações do clima
+        function updateWeatherUI(data) {
+            const conditionCode = data.current.condition.code; // Usando o código da condição para pegar o ícone
+            const isDaytime = data.current.is_day === 1; // Verifica se é dia (1 para dia, 0 para noite)
+            const imgSrc = getWeatherIcon(conditionCode, isDaytime);
+
+            document.querySelector('.containerImgClima img').src = imgSrc;
+            document.querySelector('.containerImgClima img').alt = data.current.condition.text;
+            document.querySelector('.containerTemp').textContent = `${data.current.temp_c}°C`;
+            document.querySelector('.containerClimaStatus').textContent = data.current.condition.text;
+        }
+
+        // Chamar a função quando a página carregar
+        window.onload = getWeather;
     </script>
 </body>
 </html>
