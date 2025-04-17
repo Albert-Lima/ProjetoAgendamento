@@ -721,20 +721,22 @@ body{
         background-color: var(--var-BaseBody);
     }
     .ContainerMenuLeft{
-        background-color: var(--var-WhatsappDark);
-        width: calc(94% - 20px);
-        height: 50px;
+        background-color: var(--var-BaseGreen);
+        width: calc(100% - 20px);
+        height: 80px;
         position: fixed;
         z-index: 100000;
-        bottom: 10px;
-        left: 3%;
+        bottom: 0px;
+        left: 0%;
         display: flex;
         flex-direction: row;
         align-items: center;
-        justify-content: start;
+        justify-content: center;
         gap: 10px;
         padding: 10px;
-        border-radius: 10px;
+        border-radius: 0px;
+        border-top-right-radius: 40px;
+        border-top-left-radius: 40px;
     }
     .ContainerLogoPanel{
         display: none;
@@ -743,8 +745,8 @@ body{
         position: relative;
         flex-direction: row;
         padding-right: 0px;
-        justify-content: start;
-        gap: 10px;
+        justify-content: center;
+        gap: 20px;
     }
     .boxButtons{
         height: 40px;
@@ -765,8 +767,9 @@ body{
     .selectedMenuLeft{
         height: 40px;
         width: 40px;
-        background-color: white;
-        border-radius: 10px;
+        background-color: transparent;
+        border-bottom: 2px solid white;
+        border-radius: 0px;
     }
     .ContainerIconMenuLeft{
         display: flex;
@@ -797,7 +800,7 @@ body{
     }
     #LogOut{
         position: absolute;
-        right: 0px;
+        right: 20px;
     }
 }
 
@@ -809,5 +812,32 @@ body{
         width: calc(100% - 20px);
         padding-left: 10px;
         padding-right: 10px;
+    }
+}
+
+@media (max-width: 560px) {
+    .ContainerMenuLeft{
+        align-items: center;
+        justify-content: start;
+        height: 60px;
+    }
+    .ContainerButtons{
+        padding-left: 10px;
+        justify-content: start;
+        gap: 8px;
+    }
+    .ContainerIconMenuLeft{
+        height: 25px;
+    }
+    #LogOut{
+        position: absolute;
+        right: 10px;
+        bottom: 20px;
+    }
+}
+@media (max-width: 410px) {
+    .ContainerButtons{
+        width: 85%;
+        overflow-x: scroll;
     }
 }
