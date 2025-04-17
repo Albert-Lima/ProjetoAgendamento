@@ -686,12 +686,40 @@ body{
 
 
 /*Responsividade menu e painel principal--------------------------------------------------------------------------------------------*/
+@media (max-height: 750px) {
+    .ContainerButtons{
+        gap: 0px;
+    }
+    .boxButtons{
+        font-size: 10pt;
+        font-weight:600;
+    }
+    .ContainerIconMenuLeft{
+        height: 23px;
+    }
+    #LogOut{
+        font-size: 10pt;
+        bottom: 10px;
+    }
+}
+@media (max-height: 600px) {
+    .ContainerLogoPanel{
+        height: 25px;
+        top: 35px;
+    }
+    .ContainerLogoPanel img{
+        height: 25px;
+    }
+}
 @media (max-width: 750px) {
     .containerForm{
         width: 80%;
     }
 }
 @media (max-width: 700px) {
+    .panel{
+        background-color: var(--var-BaseBody);
+    }
     .ContainerMenuLeft{
         background-color: var(--var-WhatsappDark);
         width: calc(94% - 20px);

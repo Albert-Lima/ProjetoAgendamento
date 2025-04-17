@@ -429,7 +429,15 @@
 
 
 /*Estabelecimentos main responsividade----------------------------------------------------------------------------------*/
-@media (max-width: 900px) {
+@media (max-width: 1400px) {
+    .sectionGraphic{
+        width: calc(50% - 65px);
+    }
+    .ContainerClassificacao{
+        width: calc(50% - 5px);
+    }
+}
+@media (max-width: 1160px) {
     .containerDataEstab{
         margin-bottom: none;
         flex-direction: column;
@@ -443,6 +451,53 @@
         flex-direction: column;
     }
     .ContainerClassificacao{
-        width: calc(100% - 60px);
+        width: 100%;
+        margin-top: 10px;
+    }
+}
+@media (max-width: 700px) {
+    .panel{
+        background-color: var(--var-BaseBody);
+    }
+    .ContainerClassificacao{
+        padding-bottom: 100px;
+    }
+}
+@media (max-width: 500px) {
+    .containerResultsDataMain div span:nth-child(1){
+        font-size: 15px;
+    }
+    .numberClientes{
+        width: 30px;
+        font-family: var(--var-FontStyled);
+        font-size: 15px;
+    }
+}
+@media (max-width: 470px) {
+    .ContainerClassificacao{
+        padding-bottom: 220px;
+    }
+    .ContainerDataMain{
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+        justify-content: center;
+    }
+    .ContainerDataMain h2{
+        transform: translateX(-10px);
+    }
+    .containerResultsDataMain{
+        position: relative;
+        right: auto;
+        align-items: center;
+        justify-content: center;
+        transform: translateX(-10px);
+    }
+    .containerResultsDataMain div{
+        height: 50px;
+    }
+    .ContainerDataMain:nth-child(3){
+        padding-bottom: 20px;
+        height: max-content;
     }
 }
