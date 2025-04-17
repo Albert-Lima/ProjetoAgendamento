@@ -35,6 +35,7 @@
             <p>LogOut</p>
         </a>
     </aside>
+
     <main class="panel">
         <header class="HeaderPanel">
             <div>
@@ -49,7 +50,7 @@
                         <img src="/images/perfilGendaiTeste.png" alt="foto de perfil"><!--link deve vir do cloudnary-->
                     </span>
                 {{else}}
-                    <span>User not Found</span>
+                    <span>Usuário não encontrado</span>
                     <span class="picture_adm_notFound">
                         <img src="/images/icons8-usuário-90 (1).png" alt="foto de perfil">
                     </span>
@@ -57,19 +58,13 @@
             </div>
         </header>
         <section class="ConteinerInfo">
+
+
             <section class="viewPanel">
                 {{#each estab}}
-                    <span id="hiddenCity" style="opacity: 0; scale: 0; display: none;">Caucaia, CE</span><!--a API do tempo se basea no valor desse span-->
                     <div class="containerRelatorio">
                         <div class="descEstabelecimento">                
                             <h2>{{nomeEstabelecimento}}</h2>
-                        </div>
-
-
-                        <div class="weatherInfo">      
-                            <span class="containerImgClima"><img src="" alt="imagem clima"></span>
-                            <span class="containerTemp"></span>
-                            <span class="containerClimaStatus"></span>
                         </div>
 
 
@@ -97,13 +92,15 @@
                                 <div class="containerResultsDataMain">
                                     <div>
                                         <span><!--resultado em porcentagem aqui-->
-                                            -25,2%
+                                            {{novosClientesUltimos30Dias}}
                                         </span>
                                         <span class="iconResult"><!--icon de positivo ou negativo dever vir aqui-->
                                             <img src="images/icons8-gráfico-combinado-100.png" alt="">
                                         </span>
                                     </div>
-                                    <span class="numberClientes">+56</span>
+                                    <span class="numberClientes">
+                                        +{{novosClientesUltimos30Dias}}
+                                    </span>
                                 </div>
                             </div>
                             <div class="ContainerDataMain">
@@ -229,252 +226,6 @@
         });
     </script>
 
-    <!--Script para api do clima-->
-    <script>
-        const apiKey = '4e1ba0a39fb4408dbce22102251303'; // Substitua por sua chave de API
-
-        // Mapeamento dos códigos das condições para imagens (com diferenciação entre dia e noite)
-        const weatherIcons = {
-            1000: {
-                day: "images/icons8-sol-240.png", // Céu limpo (dia)
-                night: "images/icons8-lua-crescente-100.png" // Céu limpo (noite)
-            },
-            1003: {
-                day: "imagens/parcialmente_nublado.png",
-                night: "imagens/parcialmente_nublado_noite.png"
-            },
-            1006: {
-                day: "imagens/nublado.png",
-                night: "imagens/nublado_noite.png"
-            },
-            1009: {
-                day: "imagens/nublado.png",
-                night: "imagens/nublado_noite.png"
-            },
-            1030: {
-                day: "imagens/nevoa.png",
-                night: "imagens/nevoa_noite.png"
-            },
-            1063: {
-                day: "imagens/possivel_chuva.png",
-                night: "imagens/possivel_chuva_noite.png"
-            },
-            1066: {
-                day: "imagens/neve_leve.png",
-                night: "imagens/neve_leve_noite.png"
-            },
-            1069: {
-                day: "imagens/neve_moderada.png",
-                night: "imagens/neve_moderada_noite.png"
-            },
-            1072: {
-                day: "imagens/chuva_leve.png",
-                night: "imagens/chuva_leve_noite.png"
-            },
-            1087: {
-                day: "imagens/trovoadas.png",
-                night: "imagens/trovoadas_noite.png"
-            },
-            1114: {
-                day: "imagens/nevasca.png",
-                night: "imagens/nevasca_noite.png"
-            },
-            1117: {
-                day: "imagens/nevasca.png",
-                night: "imagens/nevasca_noite.png"
-            },
-            1135: {
-                day: "imagens/neblina.png",
-                night: "imagens/neblina_noite.png"
-            },
-            1147: {
-                day: "imagens/neblina_congelante.png",
-                night: "imagens/neblina_congelante_noite.png"
-            },
-            1150: {
-                day: "imagens/chuva_leve.png",
-                night: "imagens/chuva_leve_noite.png"
-            },
-            1153: {
-                day: "imagens/chuva_leve.png",
-                night: "imagens/chuva_leve_noite.png"
-            },
-            1168: {
-                day: "imagens/neblina_congelante.png",
-                night: "imagens/neblina_congelante_noite.png"
-            },
-            1171: {
-                day: "imagens/chuva_forte.png",
-                night: "imagens/chuva_forte_noite.png"
-            },
-            1180: {
-                day: "imagens/chuva_leve.png",
-                night: "imagens/chuva_leve_noite.png"
-            },
-            1183: {
-                day: "imagens/chuva_leve.png",
-                night: "imagens/chuva_leve_noite.png"
-            },
-            1186: {
-                day: "imagens/chuva_moderada.png",
-                night: "imagens/chuva_moderada_noite.png"
-            },
-            1189: {
-                day: "imagens/chuva_moderada.png",
-                night: "imagens/chuva_moderada_noite.png"
-            },
-            1192: {
-                day: "imagens/chuva_forte.png",
-                night: "imagens/chuva_forte_noite.png"
-            },
-            1195: {
-                day: "imagens/chuva_forte.png",
-                night: "imagens/chuva_forte_noite.png"
-            },
-            1198: {
-                day: "imagens/granizo.png",
-                night: "imagens/granizo_noite.png"
-            },
-            1201: {
-                day: "imagens/granizo.png",
-                night: "imagens/granizo_noite.png"
-            },
-            1204: {
-                day: "imagens/neve_leve.png",
-                night: "imagens/neve_leve_noite.png"
-            },
-            1207: {
-                day: "imagens/neve_moderada.png",
-                night: "imagens/neve_moderada_noite.png"
-            },
-            1210: {
-                day: "imagens/neve_leve.png",
-                night: "imagens/neve_leve_noite.png"
-            },
-            1213: {
-                day: "imagens/neve_moderada.png",
-                night: "imagens/neve_moderada_noite.png"
-            },
-            1216: {
-                day: "imagens/neve_moderada.png",
-                night: "imagens/neve_moderada_noite.png"
-            },
-            1219: {
-                day: "imagens/neve_forte.png",
-                night: "imagens/neve_forte_noite.png"
-            },
-            1222: {
-                day: "imagens/neve_forte.png",
-                night: "imagens/neve_forte_noite.png"
-            },
-            1225: {
-                day: "imagens/nevasca.png",
-                night: "imagens/nevasca_noite.png"
-            },
-            1237: {
-                day: "imagens/granizo.png",
-                night: "imagens/granizo_noite.png"
-            },
-            1240: {
-                day: "imagens/chuva_leve.png",
-                night: "imagens/chuva_leve_noite.png"
-            },
-            1243: {
-                day: "imagens/chuva_moderada.png",
-                night: "imagens/chuva_moderada_noite.png"
-            },
-            1246: {
-                day: "imagens/chuva_forte.png",
-                night: "imagens/chuva_forte_noite.png"
-            },
-            1249: {
-                day: "imagens/neve_leve.png",
-                night: "imagens/neve_leve_noite.png"
-            },
-            1252: {
-                day: "imagens/neve_moderada.png",
-                night: "imagens/neve_moderada_noite.png"
-            },
-            1255: {
-                day: "imagens/neve_moderada.png",
-                night: "imagens/neve_moderada_noite.png"
-            },
-            1258: {
-                day: "imagens/neve_forte.png",
-                night: "imagens/neve_forte_noite.png"
-            },
-            1261: {
-                day: "imagens/granizo.png",
-                night: "imagens/granizo_noite.png"
-            },
-            1264: {
-                day: "imagens/granizo.png",
-                night: "imagens/granizo_noite.png"
-            },
-            1273: {
-                day: "imagens/trovoadas.png",
-                night: "imagens/trovoadas_noite.png"
-            },
-            1276: {
-                day: "imagens/chuva_trovoadas.png",
-                night: "imagens/chuva_trovoadas_noite.png"
-            },
-            1279: {
-                day: "imagens/neve_forte.png",
-                night: "imagens/neve_forte_noite.png"
-            },
-            1282: {
-                day: "imagens/nevasca.png",
-                night: "imagens/nevasca_noite.png"
-            }
-        };
-
-        // Função para obter o ícone correspondente à condição climática e hora do dia
-        function getWeatherIcon(code, isDaytime) {
-            const icons = weatherIcons[code];
-            if (!icons) return "images/icons8-sol-240.png"; // Ícone padrão se o código não estiver mapeado
-            
-            return isDaytime ? icons.day : icons.night; // Retorna o ícone para o dia ou noite
-        }
-
-        // Função para buscar o clima ao carregar a página
-        function getWeather() {
-            const city = document.getElementById('hiddenCity').textContent.trim();
-            if (!city) {
-                console.error("Localização não encontrada.");
-                return;
-            }
-
-            const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}&lang=pt`;
-
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.error) {
-                        console.error('Cidade não encontrada!');
-                    } else {
-                        updateWeatherUI(data);
-                    }
-                })
-                .catch(error => {
-                    console.error('Erro ao buscar o clima:', error);
-                });
-        }
-
-        // Função para atualizar a interface com as informações do clima
-        function updateWeatherUI(data) {
-            const conditionCode = data.current.condition.code; // Usando o código da condição para pegar o ícone
-            const isDaytime = data.current.is_day === 1; // Verifica se é dia (1 para dia, 0 para noite)
-            const imgSrc = getWeatherIcon(conditionCode, isDaytime);
-
-            document.querySelector('.containerImgClima img').src = imgSrc;
-            document.querySelector('.containerImgClima img').alt = data.current.condition.text;
-            document.querySelector('.containerTemp').textContent = `${data.current.temp_c}°C`;
-            document.querySelector('.containerClimaStatus').textContent = data.current.condition.text;
-        }
-
-        // Chamar a função quando a página carregar
-        window.onload = getWeather;
-    </script>
+    
 </body>
 </html>

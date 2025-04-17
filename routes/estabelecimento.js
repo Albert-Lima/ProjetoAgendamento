@@ -65,17 +65,52 @@ router.get('/agendamentospordias', async (req, res) => {
 });
 
 
-router.get("/estabelecimentos", eAdmin, async (req, res) => {
-    try {
-        const estab = await EstabelecimentoModel.find({ userId: req.user.id }).populate("profissionais").lean();
+    router.get("/estabelecimentos", eAdmin, async (req, res) => {
+        try {
+            const estabelecimentos = await EstabelecimentoModel.find({ userId: req.user.id })
+                .populate("profissionais")
+                .lean();
+    
+            const hoje = new Date();
+            hoje.setHours(0, 0, 0, 0);
+    
+            const data30diasAtras = new Date(hoje);
+            data30diasAtras.setDate(hoje.getDate() - 29);
+    
+            const data60diasAtras = new Date(hoje);
+            data60diasAtras.setDate(hoje.getDate() - 59);
+    
+            for (let estab of estabelecimentos) {
+                // --- Clientes nos últimos 30 dias (atual) ---
+                const clientesUltimos30Dias = await ProfissionaisModel.countDocuments({
+                    estabelecimentoId: estab._id,
+                    createdAt: { $gte: data30diasAtras, $lte: hoje }
+                });
+    
+                // --- Clientes entre 31 e 60 dias atrás (período anterior) ---
+                const clientesPeriodoAnterior = await ProfissionaisModel.countDocuments({
+                    estabelecimentoId: estab._id,
+                    createdAt: { $gte: data60diasAtras, $lt: data30diasAtras }
+                });
+    
+                // --- Porcentagem de crescimento ---
+                const crescimentoPercentual = ((clientesUltimos30Dias - clientesPeriodoAnterior) / (clientesPeriodoAnterior || 1)) * 100;
+    
+                estab.novosClientesUltimos30Dias = clientesUltimos30Dias;
+                estab.porcentagemCrescimentoClientes = crescimentoPercentual.toFixed(2); // 2 casas decimais
+            }
+    
+            res.render("admin/estabelecimentos/estabelecimentos", {
+                estab: estabelecimentos,
+                user: req.user
+            });
+        } catch (err) {
+            console.error("Erro ao listar os estabelecimentos:", err);
+            req.flash("error_msg", "Houve um erro ao listar os estabelecimentos");
+            res.redirect("/auth");
+        }
+    });
 
-        res.render("admin/estabelecimentos/estabelecimentos", { estab, user: req.user });
-    } catch (err) {
-        console.error("Erro ao listar os estabelecimentos:", err);
-        req.flash("error_msg", "Houve um erro ao listar os estabelecimentos");
-        res.redirect("/auth");
-    }
-});
 
 router.get("/addestabelecimento", eAdmin, (req, res) => { 
     ProfissionaisModel.find({ userId: req.user.id }).lean()

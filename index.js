@@ -64,9 +64,6 @@ require("./config/passport.js")
 
         next()
     })
-    //passport para autenticação
-
-
 
 
 

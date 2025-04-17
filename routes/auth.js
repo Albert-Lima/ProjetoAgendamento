@@ -80,7 +80,7 @@ router.post("/auth", async (req, res) => {
 
         const verificationLink = `http://localhost:8081/auth/verify?token=${verificationToken}`;
         await transporter.sendMail({
-            from: '"Glamis App" albertsousalima@gmail.com',
+            from: '"Glami Software" albertsousalima@gmail.com',
             to: req.body.email,
             subject: "Verifique seu e-mail",
             html: `
