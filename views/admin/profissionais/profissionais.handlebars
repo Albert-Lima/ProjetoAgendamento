@@ -13,14 +13,15 @@
             LOGO AQUI
         </div>
         {{>menuProfissionais}}
+        <a href="/logout" class="boxButtons" id="LogOut">
+            <div class="ContainerIconMenuLeft"><img src="/images/icons8-sair-100.png" alt="Deslogar"></div>
+            <p>LogOut</p>
+        </a>
     </aside>
     <main class="panel">
             <header class="HeaderPanel">
                 <div>
                     <button class="doboutButton">
-                        <p>
-                            Ajuda
-                        </p>
                         <img src="/images/icons8-ajuda-32.png" alt="manual da aplicação">
                     </button>
                 </div>
@@ -36,9 +37,6 @@
             <section class="containerButtonAddProfissional">
                 <button class="buttonAddProfissional" id="openFormProfissional">
                     <img src="/images/icons8-soma-30.png" alt="adicionar usuários">
-                    <p>
-                        novo
-                    </p>
                 </button>
             </section>
             <section class="ConteinerInfoProfissionais">
@@ -52,16 +50,6 @@
                                     <span>
                                         <h2>{{name}}</h2>
                                         <p>{{phone}}</p>
-                                    </span>
-                                    <span>
-                                        <h2>Serviços</h2>
-                                        <div>
-                                            {{#each services}}
-                                                <p>{{name}}</p>
-                                            {{else}}
-                                                <p>não há serviços</p>
-                                            {{/each}}
-                                        </div>
                                     </span>
                                 </div>
                                 <div class="controlProf">
