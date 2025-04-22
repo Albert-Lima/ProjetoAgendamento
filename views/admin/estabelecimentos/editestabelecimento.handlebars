@@ -10,14 +10,18 @@
 <body>
     <aside class="ContainerMenuLeft">
         <div class="ContainerLogoPanel">
-            LOGO AQUI
+            <img src="/images/logoGlamii.png" alt="glamii software">
         </div>
         {{>menuEstabelecimentos}}
+        <a href="/logout" class="boxButtons" id="LogOut">
+            <div class="ContainerIconMenuLeft"><img src="/images/icons8-sair-100.png" alt="Deslogar"></div>
+            <p>LogOut</p>
+        </a>
     </aside>
     <main class="panel">
         <header class="HeaderPanel">
             <div>
-                <button class="ReturnButton"><img src="/images/icons8-voltar-48.png" alt="retornar"></button>
+                <button class="ReturnButton"><img src="/images/icons8-esquerda-50 (1).png" alt="retornar"></button>
             </div>
             <div class="infoUsuario">
                 {{#if user}}
@@ -37,7 +41,7 @@
                         <input type="text" name="endereco" id="" placeholder="Endereço" value="{{estabelecimento.endereco}}">
                     </section>
                     <section class="SelectProfissionais">
-                        <div id="AbaSelectProfissionais">Add Profisisonais</div>
+                        <div id="AbaSelectProfissionais">Profisisonais Ativos</div>
                         <section class="ContainerProfissionaisNames">
                             {{#each profissionais}}
                                 <label class="LabelCheckBoxAddProfissional">
@@ -128,6 +132,18 @@
                 this.value = inicio;
             }
         });
+    </script>
+    <!--estilização ranger-->
+    <script>
+        const input = document.getElementById("horarioRange");
+
+        function updateBg(el) {
+        const percent = ((el.value - el.min) / (el.max - el.min)) * 100;
+        el.style.background = `linear-gradient(to right, #209F84 ${percent}%, #ccc ${percent}%)`;
+        }
+
+        input.addEventListener("input", () => updateBg(input));
+        updateBg(input);
     </script>
 </body>
 </html>

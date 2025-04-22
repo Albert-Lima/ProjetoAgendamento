@@ -10,7 +10,7 @@
 <body>
     <aside class="ContainerMenuLeft">
         <div class="ContainerLogoPanel">
-            LOGO AQUI
+            <img src="/images/logoGlamii.png" alt="glamii software">
         </div>
         {{>menuProfissionais}}
         <a href="/logout" class="boxButtons" id="LogOut">
@@ -52,9 +52,13 @@
                                         <p>{{phone}}</p>
                                     </span>
                                 </div>
+                                <div class="infoOkProf">
+                                    <h2>Status</h2>
+                                    <p>Actived <span class="statusProf"></span></p>
+                                </div>
                                 <div class="controlProf">
-                                    <button id="bttConfigProf" class="bttControlProf"><img src="/images/icons8-configurações-100.webp" alt="configurar profissional"></button>
-                                    <button id="bttDeleteProf" class="bttControlProf"><img src="/images/icons8-lixeira-48.png" alt="deletar profissional"></button>
+                                    <button id="bttConfigProf" class="bttControlProf"><img src="/images/icons8-editar-48.png" alt="configurar profissional"></button>
+                                    <button id="bttDeleteProf" class="bttControlProf"><img src="/images/icons8-remover-48.png" alt="deletar profissional"></button>
                                 </div>
 
                                 <section class="poupUpForm containerEditProfissinal" id="containerFormEditProfissional" style="z-index: 20000;">

@@ -41,6 +41,7 @@
     padding-left: 20px;
     padding-right: 0px;
     overflow-y: scroll;
+    padding-top: 5px;
     padding-bottom: 70px;
 }
 .PanelAddEstabelecimento form section:nth-child(1){
@@ -54,11 +55,11 @@
 .PanelAddEstabelecimento form section:nth-child(1) input{
     border: none;
     width: calc(100% - 22px);
-    border: 1px solid gray;
+    border: none;
     border-radius: 5px;
     padding: 10px;
-    outline-color: var(--var-ColorGreen);
-    color: black;
+    outline-color: #209F84;
+    color: gray;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
@@ -70,13 +71,14 @@
     align-items: center;
     justify-content: center;
     margin-top: 20px;
-    border: 1px solid var(--var-DarkGreen);
+    background-color: white;
     width: calc(100% - 22px);
+    border-radius: 10px;
 }
 #AbaSelectProfissionais {
     height: 40px;
     width: 100%;
-    background-color: var(--var-DarkGreen);
+    background-color: #209F84;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -84,6 +86,8 @@
     position: relative;
     color: white;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
 
 .ContainerProfissionaisNames{
@@ -135,7 +139,7 @@
     border-radius: 5px;
     display: inline-block;
     margin: 5px;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.1s ease;
 }
 
 .LabelCheckBoxAddProfissional input[type="checkbox"] {
@@ -147,11 +151,7 @@
 }
 
 .LabelCheckBoxAddProfissional.active {
-    background-color: #4CAF50;
-    color: white;
-}
-.LabelCheckBoxAddProfissional.active:hover{
-    background-color: #266e28;
+    background-color: #59B989;
     color: white;
 }
 
@@ -175,8 +175,30 @@
 /* Estilo do input range */
 input[type="range"] {
     width: 100%;
-    transition: background 0.3s;
-}
+    height: 8px;
+    border-radius: 5px;
+    background: linear-gradient(to right, #209F84 0%, #ccc 0%);
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: #209F84;
+    border: none;
+  }
+input[type="range"]::-moz-range-thumb {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: #209F84;
+    border: none;
+  }
+
+
 
 #horarioValue {
     font-weight: bold;

@@ -114,12 +114,13 @@ body{
 }
 .ReturnButton{
     padding: 0px;
-    height: 25px;
-    width: 25px;
+    height: 30px;
+    width: 35px;
     border: none;
-    background-color: var(--var-ColorGradient1);
+    background-color: var(--var-BaseGreen);
     border-radius: 5px;
     cursor: pointer;
+    transform: translateY(2px);
 }
 .ReturnButton img{
     height: 100%;
