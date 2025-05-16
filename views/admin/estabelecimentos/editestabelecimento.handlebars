@@ -8,6 +8,11 @@
     <title>Estabelecimentos</title>
 </head>
 <body>
+    {{#if erros}}
+        {{#each erros}}
+            <div class="container_poupUpError">{{texto}}</div>
+        {{/each}}
+    {{/if}}
     <aside class="ContainerMenuLeft">
         <div class="ContainerLogoPanel">
             <img src="/images/logoGlamii.png" alt="glamii software">
@@ -37,7 +42,7 @@
                 <form action="/editestabelecimento/{{estabelecimento._id}}" method="post" id="formulario">
                     <section>
                         <input type="text" name="nomeEstabelecimento" id="" placeholder="nome" value="{{estabelecimento.nomeEstabelecimento}}">
-                        <input type="tel" pattern="[0-9]+" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" name="phoneEstabelecimento" id="" placeholder="Contato" value="{{estabelecimento.phoneEstabelecimento}}">
+                        <input type="tel" pattern="[0-9]+" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" name="phoneEstabelecimento" id="" placeholder="Contato" value="{{estabelecimento.phoneEstabelecimento}}" class="numbersInput">
                         <input type="text" name="endereco" id="" placeholder="Endereço" value="{{estabelecimento.endereco}}">
                     </section>
                     <section class="SelectProfissionais">
@@ -49,7 +54,8 @@
                                     {{name}}
                                 </label>
                             {{else}}
-                                <a href="/addprofissionais">Cadastre profissionais</a>
+                                <p class="textCompletePerfil">Você ainda não tem profissionais cadastrados</p>
+                                <a href="/profissionais" class="linkCompletePerfil">Cadastre profissionais</a>
                             {{/each}}
                         </section>
                     </section>
@@ -59,7 +65,7 @@
                         <span id="horarioValue">1 h</span>
                     </section>
                     <section class="horarioDeFuncionamento">
-                        <h2 class="titleForm">Selecione o horário de funcionamento:</h2>
+                        <h2 class="titleForm">Expediente:</h2>
                         <div>
                             <span>
                                 <p>inicio:</p>
@@ -76,12 +82,53 @@
                         <button  type="submit" form="formulario">salvar</button>
                     </nav>
                 </form>
+                <!--Script para mostrar os números de celular corretamente no formulário-->
+                <script>
+                    const phoneInput = document.querySelector(".numbersInput");
+                    const form = phoneInput.closest("form");
+
+                    function formatPhoneNumber(value) {
+                        value = value.replace(/\D/g, ""); // Remove tudo que não for número
+
+                        if (value.length > 2) {
+                            value = `(${value.slice(0, 2)}) ` + value.slice(2);
+                        }
+                        if (value.length > 10) {
+                            value = value.slice(0, 10) + "-" + value.slice(10);
+                        }
+
+                        return value;
+                    }
+
+                    // Formata ao digitar
+                    phoneInput.addEventListener("input", function (e) {
+                        e.target.value = formatPhoneNumber(e.target.value);
+                    });
+
+                    // Formata ao carregar a página
+                    window.addEventListener("DOMContentLoaded", function () {
+                        phoneInput.value = formatPhoneNumber(phoneInput.value);
+                    });
+
+                    // Remove formatação antes de enviar
+                    form.addEventListener("submit", function (e) {
+                        const rawNumber = phoneInput.value.replace(/\D/g, ""); // Remove a formatação
+                        phoneInput.value = rawNumber;
+                    });
+                </script>
                 {{else}}
                 erro ao renderizar o formulário
                 {{/if}}
             </section>
         </section>
     </main>
+    <!--return to main dashboard-->
+    <script>
+        document.querySelector('.ReturnButton').addEventListener('click', function () {
+            history.back(); // Volta para a página anterior
+        });
+
+    </script>
     <script>
         //checkboxes
         const labels = document.querySelectorAll('.LabelCheckBoxAddProfissional');

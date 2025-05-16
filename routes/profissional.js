@@ -51,7 +51,7 @@ router.post("/addprofissionais", eAdmin, upload.single('photo'), async (req, res
     if (!services) erros.push({ texto: "Adicione os serviços" });
 
     if (erros.length > 0) {
-        return res.render("admin/estabelecimentos/profissionais", { erros });
+        return res.render("admin/profissionais/profissionais", { erros });
     }
 
     try {

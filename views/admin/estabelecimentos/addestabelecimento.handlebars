@@ -5,26 +5,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/addEstabelecimento.css">
+    <link rel="stylesheet" href="/estabelecimentos.css">
     <title>Estabelecimentos</title>
 </head>
 <body>
+    {{#if erros}}
+    <div class="popErrorCad">
+        <button type="button" class="closePopup">
+            <img src="/images/icons8-close-48.png" alt="fechar popup">
+        </button>
+        {{#each erros}}
+        <p>{{this.texto}}</p>
+        {{/each}}
+    </div>
+    <script>
+        //fechar popup de erro de cadastro
+        document.addEventListener("DOMContentLoaded", function () {
+            const closeBtn = document.querySelector(".popErrorCad .closePopup");
+            if (closeBtn) {
+                closeBtn.addEventListener("click", function () {
+                    const popup = this.closest(".popErrorCad");
+                    if (popup) {
+                        popup.remove();
+                    }
+                });
+            }
+        });
+    </script>
+    {{/if}}
     <aside class="ContainerMenuLeft">
         <div class="ContainerLogoPanel">
-            LOGO AQUI
+            <img src="/images/logoGlamii.png" alt="glamii software">
         </div>
         {{>menuEstabelecimentos}}
+        <a href="/logout" class="boxButtons" id="LogOut">
+            <div class="ContainerIconMenuLeft"><img src="/images/icons8-sair-100.png" alt="Deslogar"></div>
+            <p>LogOut</p>
+        </a>
     </aside>
     <main class="panel">
         <header class="HeaderPanel">
             <div>
                 <button class="doboutButton">
-                    <img src="/images/icons8-ajuda-32.png" alt="manual da aplicação">
-                    <p>Ajuda</p>
+                    <img src="/images/icons8-esquerda-50 (1).png" alt="manual da aplicação">
                 </button>
             </div>
         </header>
+
         <section class="ConteinerInfo">
             <section class="PanelAddEstabelecimento">
+            
+            
                 <form action="/addestabelecimento" method="post" id="formulario">
                     <section>
                         <input type="text" name="nomeEstabelecimento" id="" placeholder="nome do estabelecimento">
@@ -40,7 +71,8 @@
                                     {{name}}
                                 </label>
                             {{else}}
-                                <a href="/addprofissionais" class="linkCompletePerfil">Cadastre profissionais</a>
+                                <p class="textCompletePerfil">Você ainda não tem profissionais cadastrados</p>
+                                <a href="/profissionais" class="linkCompletePerfil">Cadastre profissionais</a>
                             {{/each}}
                         </section>
                     </section>
@@ -106,6 +138,7 @@
                 </script>
             </section>
         </section>
+        
     </main>
     <script>
         //checkboxes
@@ -129,41 +162,78 @@
 
         //controle dos inputs de horario
         document.addEventListener('DOMContentLoaded', function () {
-    const horarioInicial = document.getElementById('horarioInicial');
-    const horarioFinal = document.getElementById('horarioFinal');
-    
-    if (horarioInicial && horarioFinal) {
-        horarioInicial.addEventListener('input', function() {
-            let inicio = this.value.replace(/\D/g, '');
-            if (inicio.length > 2) inicio = inicio.slice(0, 2);
-            this.value = inicio;
-            
-            let sugestaoFim = parseInt(inicio, 10) + 1;
-            if (!isNaN(sugestaoFim) && sugestaoFim <= 24) {
-                horarioFinal.placeholder = sugestaoFim;
-            } else {
-                horarioFinal.placeholder = '';
+            const horarioInicial = document.getElementById('horarioInicial');
+            const horarioFinal = document.getElementById('horarioFinal');
+
+            function validarHora(valor, maximo) {
+                valor = valor.replace(/\D/g, '');
+
+                if (valor.length > 2) valor = valor.slice(0, 2);
+
+                // Remove zero à esquerda (exceto se for "0")
+                if (valor.length === 2 && valor.startsWith('0')) {
+                    valor = String(parseInt(valor, 10));
+                }
+
+                const numero = parseInt(valor, 10);
+                if (isNaN(numero) || numero < 0 || numero > maximo) {
+                    return '';
+                }
+
+                return numero.toString();
+            }
+
+            if (horarioInicial && horarioFinal) {
+                horarioInicial.addEventListener('input', function () {
+                    let inicio = validarHora(this.value, 23);
+                    this.value = inicio;
+
+                    let sugestaoFim = parseInt(inicio, 10) + 1;
+                    if (!isNaN(sugestaoFim) && sugestaoFim <= 24) {
+                        horarioFinal.placeholder = sugestaoFim;
+                    } else {
+                        horarioFinal.placeholder = '';
+                    }
+                });
+
+                horarioFinal.addEventListener('input', function () {
+                    let fim = validarHora(this.value, 24);
+                    this.value = fim;
+                });
+
+                document.querySelector("form").addEventListener("submit", function (e) {
+                    let inicio = parseInt(horarioInicial.value, 10);
+                    let fim = parseInt(horarioFinal.value, 10);
+
+                    if (isNaN(inicio) || isNaN(fim)) {
+                        e.preventDefault();
+                        alert("Preencha ambos os horários corretamente.");
+                    } else if (fim < inicio) {
+                        e.preventDefault();
+                        alert("O início do expediente não pode ser maior que o fim.");
+                    }
+                });
             }
         });
 
-        horarioFinal.addEventListener('input', function() {
-            let fim = this.value.replace(/\D/g, '');
-            if (fim.length > 2) fim = fim.slice(0, 2);
-            this.value = fim;
-        });
+    </script>
+    <!--estilização ranger-->
+    <script>
+        const input = document.getElementById("horarioRange");
 
-        document.querySelector("form").addEventListener("submit", function (e) {
-            let inicio = parseInt(horarioInicial.value, 10);
-            let fim = parseInt(horarioFinal.value, 10);
-            
-            if (!isNaN(inicio) && !isNaN(fim) && fim < inicio) {
-                e.preventDefault();
-                alert("O início do expediente deve ser antes do fim.");
-            }
-        });
-    }
-});
+        function updateBg(el) {
+        const percent = ((el.value - el.min) / (el.max - el.min)) * 100;
+        el.style.background = `linear-gradient(to right, #209F84 ${percent}%, #ccc ${percent}%)`;
+        }
 
+        input.addEventListener("input", () => updateBg(input));
+        updateBg(input);
+    </script>
+    <!--return to main dashboard-->
+    <script>
+        document.querySelector('.doboutButton').addEventListener('click', function () {
+            history.back(); // Volta para a página anterior
+        });
     </script>
 </body>
 </html>

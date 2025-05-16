@@ -43,19 +43,7 @@
                     <img src="/images/icons8-ajuda-32.png" alt="manual da aplicação">
                 </button>
             </div>
-            <div class="infoUsuario">
-                {{#if user}}
-                    <span>{{user.name}}</span>
-                    <span class="picture_adm">
-                        <img src="/images/perfilGendaiTeste.png" alt="foto de perfil"><!--link deve vir do cloudnary-->
-                    </span>
-                {{else}}
-                    <span>Usuário não encontrado</span>
-                    <span class="picture_adm_notFound">
-                        <img src="/images/icons8-usuário-90 (1).png" alt="foto de perfil">
-                    </span>
-                {{/if}}
-            </div>
+            
         </header>
         <section class="ConteinerInfo">
 
@@ -132,6 +120,7 @@
                         </div>
                     </section>
                 {{else}}
+                    <p class="orderInitMsg">adicione um estabelecimento</p>
                     <div class="buttonLink">
                         <a href="/addestabelecimento">
                             <img src="/images/icons8-soma-30.png" alt="novoEstabelecimento">
@@ -224,7 +213,15 @@
             .catch((error) => console.error('Erro ao buscar dados:', error));
         });
     </script>
+    <!--Script close popUp Aviso-->
+    <script>
+        const containerAviso = document.querySelector(".container_msgAviso")
+        const buttonClose = document.querySelector("#closeAviso")
 
+        buttonClose.addEventListener("click", ()=>{
+            containerAviso.style.display = "none"
+        })
+    </script>
     
 </body>
 </html>

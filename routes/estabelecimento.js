@@ -65,51 +65,51 @@ router.get('/agendamentospordias', async (req, res) => {
 });
 
 
-    router.get("/estabelecimentos", eAdmin, async (req, res) => {
-        try {
-            const estabelecimentos = await EstabelecimentoModel.find({ userId: req.user.id })
-                .populate("profissionais")
-                .lean();
+router.get("/estabelecimentos", eAdmin, async (req, res) => {
+    try {
+        const estabelecimentos = await EstabelecimentoModel.find({ userId: req.user.id })
+            .populate("profissionais")
+            .lean();
     
-            const hoje = new Date();
-            hoje.setHours(0, 0, 0, 0);
+        const hoje = new Date();
+        hoje.setHours(0, 0, 0, 0);
     
-            const data30diasAtras = new Date(hoje);
-            data30diasAtras.setDate(hoje.getDate() - 29);
+        const data30diasAtras = new Date(hoje);
+        data30diasAtras.setDate(hoje.getDate() - 29);
     
-            const data60diasAtras = new Date(hoje);
-            data60diasAtras.setDate(hoje.getDate() - 59);
+        const data60diasAtras = new Date(hoje);
+        data60diasAtras.setDate(hoje.getDate() - 59);
     
-            for (let estab of estabelecimentos) {
-                // --- Clientes nos últimos 30 dias (atual) ---
-                const clientesUltimos30Dias = await ProfissionaisModel.countDocuments({
-                    estabelecimentoId: estab._id,
-                    createdAt: { $gte: data30diasAtras, $lte: hoje }
-                });
-    
-                // --- Clientes entre 31 e 60 dias atrás (período anterior) ---
-                const clientesPeriodoAnterior = await ProfissionaisModel.countDocuments({
-                    estabelecimentoId: estab._id,
-                    createdAt: { $gte: data60diasAtras, $lt: data30diasAtras }
-                });
-    
-                // --- Porcentagem de crescimento ---
-                const crescimentoPercentual = ((clientesUltimos30Dias - clientesPeriodoAnterior) / (clientesPeriodoAnterior || 1)) * 100;
-    
-                estab.novosClientesUltimos30Dias = clientesUltimos30Dias;
-                estab.porcentagemCrescimentoClientes = crescimentoPercentual.toFixed(2); // 2 casas decimais
-            }
-    
-            res.render("admin/estabelecimentos/estabelecimentos", {
-                estab: estabelecimentos,
-                user: req.user
+        for (let estab of estabelecimentos) {
+            // --- Clientes nos últimos 30 dias (atual) ---
+            const clientesUltimos30Dias = await ProfissionaisModel.countDocuments({
+                estabelecimentoId: estab._id,
+                createdAt: { $gte: data30diasAtras, $lte: hoje }
             });
-        } catch (err) {
-            console.error("Erro ao listar os estabelecimentos:", err);
-            req.flash("error_msg", "Houve um erro ao listar os estabelecimentos");
-            res.redirect("/auth");
+    
+            // --- Clientes entre 31 e 60 dias atrás (período anterior) ---
+            const clientesPeriodoAnterior = await ProfissionaisModel.countDocuments({
+                estabelecimentoId: estab._id,
+                createdAt: { $gte: data60diasAtras, $lt: data30diasAtras }
+            });
+    
+            // --- Porcentagem de crescimento ---
+            const crescimentoPercentual = ((clientesUltimos30Dias - clientesPeriodoAnterior) / (clientesPeriodoAnterior || 1)) * 100;
+    
+            estab.novosClientesUltimos30Dias = clientesUltimos30Dias;
+            estab.porcentagemCrescimentoClientes = crescimentoPercentual.toFixed(2); // 2 casas decimais
         }
-    });
+    
+        res.render("admin/estabelecimentos/estabelecimentos", {
+            estab: estabelecimentos,
+            user: req.user
+        });
+    } catch (err) {
+        console.error("Erro ao listar os estabelecimentos:", err);
+        req.flash("error_msg", "Houve um erro ao listar os estabelecimentos");
+        res.redirect("/auth");
+    }
+});
 
 
 router.get("/addestabelecimento", eAdmin, (req, res) => { 
@@ -137,7 +137,7 @@ router.post("/addestabelecimento", eAdmin, async (req, res) => {
         profissionais, 
         horarioInicial, 
         horarioFinal, 
-        diasFuncionamento // Adicionando os dias ao corpo da requisição
+        diasFuncionamento
     } = req.body;
 
     const erros = [];
@@ -145,16 +145,38 @@ router.post("/addestabelecimento", eAdmin, async (req, res) => {
     if (!nomeEstabelecimento) erros.push({ texto: "Nome do estabelecimento é obrigatório." });
     if (!phoneEstabelecimento) erros.push({ texto: "Telefone do estabelecimento é obrigatório." });
     if (!endereco) erros.push({ texto: "Endereço do estabelecimento é obrigatório." });
-    
     if (!horarioInicial) erros.push({ texto: "Horário inicial é obrigatório." });
     if (!horarioFinal) erros.push({ texto: "Horário final é obrigatório." });
-    if (!diasFuncionamento || diasFuncionamento.length === 0) erros.push({ texto: "Pelo menos um dia de funcionamento deve ser selecionado." });
 
-    if (erros.length > 0) {
-        console.log(erros);
-        return res.render("admin/estabelecimentos/addestabelecimento", { erros });
+    if (!diasFuncionamento || (Array.isArray(diasFuncionamento) && diasFuncionamento.length === 0)) {
+        erros.push({ texto: "Pelo menos um dia de funcionamento deve ser selecionado." });
     }
 
+    if (erros.length > 0) {
+        try {
+            const profissionaisData = await ProfissionaisModel.find({ userId: req.user.id }).lean();
+            const dias = ['seg', 'ter', 'qua', 'qui', 'sex', 'sáb', 'dom'];
+
+            return res.render("admin/estabelecimentos/addestabelecimento", {
+                erros,
+                nomeEstabelecimento,
+                phoneEstabelecimento,
+                endereco,
+                profissionais,
+                horarioInicial,
+                horarioFinal,
+                diasFuncionamento,
+                profissionais: profissionaisData,
+                dias: dias
+            });
+        } catch (err) {
+            console.error("Erro ao buscar dados para recarregar o formulário:", err);
+            req.flash("error_msg", "Erro interno ao processar o formulário.");
+            return res.redirect("/estabelecimentos");
+        }
+    }
+
+    // Cadastro normal
     try {
         const novoEstabelecimento = new EstabelecimentoModel({
             nomeEstabelecimento,
@@ -163,15 +185,17 @@ router.post("/addestabelecimento", eAdmin, async (req, res) => {
             profissionais,
             horarioInicial,
             horarioFinal,
-            diasFuncionamento, // Salvar os dias selecionados
+            diasFuncionamento,
             userId: req.user.id
         });
 
         await novoEstabelecimento.save();
+        req.flash("success_msg", "Estabelecimento cadastrado com sucesso!");
         res.redirect("/estabelecimentos");
     } catch (err) {
         console.error("Erro ao salvar estabelecimento:", err);
-        res.status(500).send("Erro ao salvar estabelecimento.");
+        req.flash("error_msg", "Erro ao salvar estabelecimento.");
+        res.redirect("/estabelecimentos");
     }
 });
 
@@ -198,16 +222,35 @@ router.post("/editestabelecimento/:id", eAdmin, async (req, res) => {
     const { nomeEstabelecimento, phoneEstabelecimento, endereco, profissionais, horarioInicial, horarioFinal } = req.body;
     const erros = [];
 
-    if (!nomeEstabelecimento) erros.push({ texto: "Nome do estabelecimento é obrigatório." });
-    if (!phoneEstabelecimento) erros.push({ texto: "Telefone do estabelecimento é obrigatório." });
-    if (!endereco) erros.push({ texto: "Endereço do estabelecimento é obrigatório." });
-    if (!profissionais) erros.push({ texto: "Profissionais são obrigatórios." });
-    if (!horarioInicial) erros.push({ texto: "Horário inicial é obrigatório." });
-    if (!horarioFinal) erros.push({ texto: "Horário final é obrigatório." });
+    if (!nomeEstabelecimento) {
+        erros.push({ texto: "Nome do estabelecimento é obrigatório." });
+    } 
+    if (!phoneEstabelecimento) {
+        erros.push({ texto: "Telefone do estabelecimento é obrigatório." });
+    }
+    if (!endereco) {
+        erros.push({ texto: "Endereço do estabelecimento é obrigatório." });
+    }
+    if (!horarioInicial) {
+        erros.push({ texto: "Horário inicial é obrigatório." });
+    }
+    if (!horarioFinal) {
+        erros.push({ texto: "Horário final é obrigatório." });
+    }
 
     if (erros.length > 0) {
-        console.log("houve erros ao salvar edição: "+ erros)
-        return res.render("admin/estabelecimentos/editestabelecimento", { erros, estabelecimento: req.body });
+        try {
+            const profissionaisList = await ProfissionaisModel.find({ userId: req.user.id }).lean();
+            return res.render("admin/estabelecimentos/editestabelecimento", { 
+                erros: erros, 
+                estabelecimento: req.body,
+                profissionais: profissionaisList,
+                user: req.user
+            });
+        } catch (err) {
+            console.error("Erro ao carregar profissionais:", err);
+            return res.status(500).send("Erro ao carregar profissionais.");
+        }
     }
 
     try {
