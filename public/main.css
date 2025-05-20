@@ -177,6 +177,14 @@ body{
     font-weight: 500;
     color: gray;
 }
+@keyframes popErrorCad{
+    0%{
+        transform: translateY(-900px);
+    }
+    100%{
+        transform: translateY(0px);
+    }
+}
 .popErrorCad{
     display: flex;
     flex-direction: column;
@@ -189,6 +197,10 @@ body{
     top: 50px;
     z-index: 20000;
     border-radius: 10px;
+    animation-name: popErrorCad;
+    animation-duration: 0.5s;
+    animation-direction: normal;
+    animation-fill-mode:forwards;
 }
 .popErrorCad button{
     display: flex;
@@ -206,6 +218,12 @@ body{
 }
 .popErrorCad button img{
     height: 25px;
+}
+.popErrorCad p{
+    font-family: var(--var-FontMain);
+    font-weight: 400;
+    font-size: 10pt;
+    color: var(--var-ColorRedCancel);
 }
 .linkCompletePerfil{
     text-decoration: none;
@@ -765,6 +783,45 @@ body{
     color: white;
 }
 
+.diasFuncionamento{
+    margin-top: 30px;
+}
+.ContainerDiasFuncionamento{
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 10px;
+}
+.LabelCheckBoxDias{
+    display: grid;
+    grid-column: 3;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    cursor: pointer;
+    box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.034);
+    background-color: white;
+    border-radius: 5px;
+    font-family: var(--var-FontMain);
+    font-size: 10pt;
+    font-weight: 400;
+    color: gray;
+    width: 60px;
+    height: 40px
+}
+.LabelCheckBoxDias input{
+    opacity: 0;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+}
+.LabelCheckBoxDias:has(input:checked) {
+    background-color: var(--var-BaseGreen);
+    color: white;
+}
 
 /*Responsividade menu e painel principal--------------------------------------------------------------------------------------------*/
 @media (max-height: 750px) {

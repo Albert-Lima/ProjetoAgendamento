@@ -216,7 +216,8 @@ input[type="range"]::-moz-range-thumb {
     padding-top: 50px;
 }
 .horarioDeFuncionamento div{
-    width: calc(50% - 22px);
+    width: max-content;
+    gap: 50px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -240,7 +241,9 @@ input[type="range"]::-moz-range-thumb {
     font-size: 12pt;
     color: var(--var-DarkGreen);
     border-radius: 10px;
-    border: 1px solid #808080;
+    border: none;
+    background-color: white;
+    box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.034);
     outline: none;
 }
 
