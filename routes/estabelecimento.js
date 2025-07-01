@@ -207,10 +207,13 @@ router.get("/editestabelecimento/:id", eAdmin, async (req, res) => {
             ProfissionaisModel.find({ userId: req.user.id }).lean()
         ]);
 
+        const dias = ['seg', 'ter', 'qua', 'qui', 'sex', 'sáb', 'dom'];
+
         res.render("admin/estabelecimentos/editestabelecimento", { 
             estabelecimento: estabelecimento,
             profissionais: profissionais,
-            user: req.user
+            user: req.user,
+            dias: dias
         });
     } catch (err) {
         console.error("Erro ao carregar estabelecimento:", err);
@@ -219,24 +222,19 @@ router.get("/editestabelecimento/:id", eAdmin, async (req, res) => {
 });
 
 router.post("/editestabelecimento/:id", eAdmin, async (req, res) => {
-    const { nomeEstabelecimento, phoneEstabelecimento, endereco, profissionais, horarioInicial, horarioFinal } = req.body;
+    const { nomeEstabelecimento, phoneEstabelecimento, endereco, profissionais, horarioInicial, horarioFinal, diasFuncionamento } = req.body;
     const erros = [];
 
-    if (!nomeEstabelecimento) {
-        erros.push({ texto: "Nome do estabelecimento é obrigatório." });
-    } 
-    if (!phoneEstabelecimento) {
-        erros.push({ texto: "Telefone do estabelecimento é obrigatório." });
+    if (!nomeEstabelecimento) erros.push({ texto: "Nome do estabelecimento é obrigatório." });
+    if (!phoneEstabelecimento) erros.push({ texto: "Telefone do estabelecimento é obrigatório." });
+    if (!endereco) erros.push({ texto: "Endereço do estabelecimento é obrigatório." });
+    if (!horarioInicial) erros.push({ texto: "Horário inicial é obrigatório." });
+    if (!horarioFinal) erros.push({ texto: "Horário final é obrigatório." });
+    if (!diasFuncionamento || (Array.isArray(diasFuncionamento) && diasFuncionamento.length === 0)) {
+        erros.push({ texto: "Pelo menos um dia de funcionamento deve ser selecionado." });
     }
-    if (!endereco) {
-        erros.push({ texto: "Endereço do estabelecimento é obrigatório." });
-    }
-    if (!horarioInicial) {
-        erros.push({ texto: "Horário inicial é obrigatório." });
-    }
-    if (!horarioFinal) {
-        erros.push({ texto: "Horário final é obrigatório." });
-    }
+
+    const dias = ['seg', 'ter', 'qua', 'qui', 'sex', 'sáb', 'dom'];
 
     if (erros.length > 0) {
         try {
@@ -245,7 +243,9 @@ router.post("/editestabelecimento/:id", eAdmin, async (req, res) => {
                 erros: erros, 
                 estabelecimento: req.body,
                 profissionais: profissionaisList,
-                user: req.user
+                user: req.user,
+                dias: dias,
+                diasFuncionamento: diasFuncionamento
             });
         } catch (err) {
             console.error("Erro ao carregar profissionais:", err);
@@ -262,9 +262,10 @@ router.post("/editestabelecimento/:id", eAdmin, async (req, res) => {
                 endereco,
                 profissionais,
                 horarioInicial,
-                horarioFinal
+                horarioFinal,
+                diasFuncionamento
             },
-            { new: true } // Retorna o documento atualizado
+            { new: true }
         );
         res.redirect("/estabelecimentos");
     } catch (err) {

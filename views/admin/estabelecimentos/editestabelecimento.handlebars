@@ -42,7 +42,7 @@
                 <form action="/editestabelecimento/{{estabelecimento._id}}" method="post" id="formulario">
                     <section>
                         <input type="text" name="nomeEstabelecimento" id="" placeholder="nome" value="{{estabelecimento.nomeEstabelecimento}}">
-                        <input type="tel" pattern="[0-9]+" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" name="phoneEstabelecimento" id="" placeholder="Contato" value="{{estabelecimento.phoneEstabelecimento}}" class="numbersInput">
+                        <input type="tel"  inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" name="phoneEstabelecimento" id="" placeholder="Whatsapp do estabelecimento" class="numbersInput">
                         <input type="text" name="endereco" id="" placeholder="Endereço" value="{{estabelecimento.endereco}}">
                     </section>
                     <section class="SelectProfissionais">
@@ -76,6 +76,19 @@
                                 <input type="number" name="horarioFinal" min="0" max="24" id="horarioFinal" value="{{estabelecimento.horarioFinal}}" placeholder="{{estabelecimento.horarioFinal}}">
                             </span>
                         </div>
+                    </section>
+                    <section class="diasFuncionamento">
+                        <h2 class="titleForm">Selecione os dias de funcionamento:</h2>
+                        <section class="ContainerDiasFuncionamento">
+                            {{#each dias}}
+                                <label class="LabelCheckBoxDias">
+                                    <input type="checkbox" name="diasFuncionamento" value="{{this}}">
+                                    {{this}}
+                                </label>
+                            {{else}}
+                                erros ao listar dias de funcionamento
+                            {{/each}}
+                        </section>
                     </section>
                     <nav class="barRightAddEstabelecimentos">
                         <a href="/estabelecimentos" id="buttonReturnEstabelecimentos">cancelar</a>
