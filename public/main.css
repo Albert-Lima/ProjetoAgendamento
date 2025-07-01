@@ -8,6 +8,7 @@
     --var-BaseGreen: #209F84;
     --var-BaseBody: #ebf3ea;
     --var-SelectedMenu: #E1F297;
+    --var-SelectedOption: #59B989;
 
     --var-FontStyled: "Karla", sans-serif;
     --var-FontMain: "Open Sans", sans-serif;
@@ -482,7 +483,7 @@ body{
     justify-content: start;
     padding-top: 20px;
     height: 95%;
-    background-color: #F2F7F1;
+    background-color: var(--var-BaseBody);
     width: 50%;
     box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.185);
     border-radius: 20px;
@@ -521,6 +522,7 @@ body{
     padding-left: 50px;
     padding-right: 50px;
     padding-bottom: 20px;
+    padding-top: 10px;
 }
 .calendarForm{
     display: flex;
@@ -558,26 +560,38 @@ body{
 }
 .partForm h2{
     margin-left: 10px;
-    font-size: 12pt;
+    font-size: 11pt;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-weight: 500;
     color: #808080;
 }
+
 .partForm input, .partForm textarea{
     border-radius: 10px;
     border: none;
     background-color: white;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 11pt;
-    color: rgb(102, 102, 102);
-    box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.11);
+    font-size: 10pt;
+    font-weight: 600;
+    color: #808080;
     width: calc(100% - 20px);
     padding: 10px;
     outline: none;
 }
+.partForm input:focus, .partForm textarea:focus{
+    outline: 1px solid var(--var-BaseGreen);
+}
 .partForm textarea{
     height: 100px;
     resize: none;
+}
+.save-button{
+    padding: 10px 20px;
+    background-color: #808080;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
 .partFormButtons{
     display: flex;
@@ -716,12 +730,12 @@ body{
     padding: 0px;
     border-radius: 20px;
     border: 1px solid rgb(224, 224, 224);
-    box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.11);
+    background-color: white;
 }
 .selectBoxHeader{
     height: 30px;
     width: 100%;
-    background-color: gray;
+    background-color: var(--var-BaseGreen);
     border-top-right-radius: 20px;
     border-top-left-radius: 20px;
     display: flex;
@@ -739,12 +753,24 @@ body{
     margin: auto;
     gap: 5px;
     overflow-y: scroll;
-
+    background-color: transparent;
     display: flex;
     flex-direction: column;
     align-items: start;
     justify-content: start;
     gap: 5px;
+}
+.containerOptions a{
+    align-self: center;
+    font-family: var(--var-FontMain);
+    font-size: 10pt;
+    font-weight: 600;
+    color: white;
+    text-decoration: none;
+    background-color: var(--var-BaseGreen);
+    padding: 5px 15px;
+    border-radius: 5px;
+    margin-top: 20px;
 }
 
 .LabelCheckBoxAddOptions{
@@ -757,6 +783,9 @@ body{
     width: calc(100% - 32px);
     border: 1px solid var(--var-DarkGreen);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 11pt;
+    font-weight: 600;
+    color: #808080;
     cursor: pointer;
     padding: 10px;
     border: 1px solid #ccc;
@@ -771,15 +800,15 @@ body{
 }
 .LabelCheckBoxAddOptions:hover {
     background-color: #f0f0f0;
-    color: black;
+    color: #808080;
 }
 
 .LabelCheckBoxAddOptions.active {
-    background-color: #4CAF50;
+    background-color: var(--var-SelectedOption);
     color: white;
 }
 .LabelCheckBoxAddOptions.active:hover{
-    background-color: #266e28;
+    background-color: #3a8a62;
     color: white;
 }
 
