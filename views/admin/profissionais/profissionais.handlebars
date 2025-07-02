@@ -8,6 +8,30 @@
     <title>Profissionais</title>
 </head>
 <body>
+    {{#if erros}}
+    <div class="popErrorCad">
+        <button type="button" class="closePopup">
+            <img src="/images/icons8-close-48.png" alt="fechar popup">
+        </button>
+        {{#each erros}}
+        <p>{{this.texto}}</p>
+        {{/each}}
+    </div>
+    <script>
+        //fechar popup de erro de cadastro
+        document.addEventListener("DOMContentLoaded", function () {
+            const closeBtn = document.querySelector(".popErrorCad .closePopup");
+            if (closeBtn) {
+                closeBtn.addEventListener("click", function () {
+                    const popup = this.closest(".popErrorCad");
+                    if (popup) {
+                        popup.remove();
+                    }
+                });
+            }
+        });
+    </script>
+    {{/if}}
     <aside class="ContainerMenuLeft">
         <div class="ContainerLogoPanel">
             <img src="/images/logoGlamii.png" alt="glamii software">
@@ -50,6 +74,23 @@
                                     <span>
                                         <h2>{{name}}</h2>
                                         <p>{{phone}}</p>
+                                        {{#if disponivel}}
+                                            <button type="button" class="activeButtonProfissional">
+                                                <div></div>
+                                            </button>
+
+                                            <span>
+                                                <button id="closeActiveProfissional">
+                                                    <img src="" alt="">
+                                                </button>
+                                                <p>Deseja ativar o profissional?</p>
+                                                <button type="button" id="alternateProfissionalState">Confirmar</button>
+                                            </span>
+                                        {{else}}
+                                            <button type="button" class="activeButtonProfissional">
+                                                <div></div>
+                                            </button>
+                                        {{/if}}
                                     </span>
                                 </div>
                                 <div class="controlProf">
@@ -115,7 +156,7 @@
                         <p class="titleForm">Novo Profissional</p>
                         <button type="button" class="buttonClosePoupUp" id="closeFormAddProfissional"><img src="/images/icons8-excluir-50.png" alt="fechar formulário"></button>
                     </header>
-                    <form action="/addprofissionais" method="post" class="formMain" enctype="multipart/form-data">
+                    <form action="/profissionais" method="post" class="formMain" enctype="multipart/form-data">
                         <section class="partForm">
                             <input type="text" name="name" class="inputName" placeholder="Nome">
                             <input type="text" name="phone" class="inputName" placeholder="Whatsapp" maxlength="15" oninput="maskPhone(this)">

@@ -10,9 +10,23 @@ const Profissional = new Schema({
         type: String,
         required: true
     },
-    services: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Services', default: [] }],
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: "Users", required: true },
-    photoUrl: { type: String } // URL da imagem no Cloudinary
+    services: [{ 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'Services', 
+        default: [] }
+    ],
+    userId: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: "Users", 
+        required: true 
+    },
+    photoUrl: { 
+        type: String 
+    }, // URL da imagem no Cloudinary
+    disponivel: {
+        type: Boolean,
+        default: true // ou false, se quiser começar como "indisponível"
+    }
 })
 
 module.exports = mongoose.model('Profissional', Profissional)

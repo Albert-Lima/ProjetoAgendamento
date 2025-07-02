@@ -32,42 +32,54 @@ router.get("/profissionais", eAdmin, async (req, res) => {
     }
 });
 
-
-router.get("/addprofissionais", eAdmin, (req, res)=>{
-    ServicesModel.find({userId: req.user.id}).lean().then((services)=>{
-        res.render("admin/profissionais/addprofissionais", {services: services})
-    }).catch((err)=>{
-        console.log(err)
-        res.redirect("/addprofissionais")
-    })
-})
-
-router.post("/addprofissionais", eAdmin, upload.single('photo'), async (req, res) => {
+router.post("/profissionais", eAdmin, upload.single('photo'), async (req, res) => {
     const { name, phone, services } = req.body;
     const erros = [];
 
+    // Validações
     if (!name) erros.push({ texto: "Nome do profissional é obrigatório." });
     if (!phone) erros.push({ texto: "Telefone do profissional é obrigatório." });
-    if (!services) erros.push({ texto: "Adicione os serviços" });
-
-    if (erros.length > 0) {
-        return res.render("admin/profissionais/profissionais", { erros });
-    }
+    if (!services) erros.push({ texto: "Adicione os serviços." });
+    if (!req.file) erros.push({ texto: "Selecione uma foto para o profissional." });
 
     try {
-        // Log do arquivo enviado
-        console.log('Arquivo enviado:', req.file);
-        // Salvar os dados do profissional
+        // Verificar se o número de telefone já está sendo usado
+        const profissionalExistente = await ProfissionalModel.findOne({
+            phone,
+            userId: req.user.id
+        });
+
+        if (profissionalExistente) {
+            erros.push({ texto: "Esse número de telefone já está sendo usado por outro profissional." });
+        }
+
+        if (erros.length > 0) {
+            console.log(erros);
+            const profissional = await ProfissionalModel.find({ userId: req.user.id }).populate('services').lean();
+            const allServices = await ServicesModel.find({ userId: req.user.id }).lean();
+
+            return res.render("admin/profissionais/profissionais", {
+                erros,
+                profissional,
+                services: allServices,
+                user: req.user,
+                // Campos preenchidos, se quiser reaproveitar o que foi digitado
+                formData: { name, phone, services }
+            });
+        }
+
+        // Salvar novo profissional
         const novoProfissional = new ProfissionalModel({
             name,
             phone,
             services,
             userId: req.user.id,
-            photoUrl: req.file?.path // URL da imagem salva no Cloudinary
+            photoUrl: req.file.path
         });
 
         await novoProfissional.save();
         res.redirect("/profissionais");
+
     } catch (err) {
         console.error("Erro ao salvar profissional:", err);
         res.status(500).send("Erro ao salvar profissional.");
