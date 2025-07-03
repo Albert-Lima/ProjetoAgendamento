@@ -83,14 +83,67 @@
                                                 <button id="closeActiveProfissional">
                                                     <img src="" alt="">
                                                 </button>
-                                                <p>Deseja ativar o profissional?</p>
-                                                <button type="button" id="alternateProfissionalState">Confirmar</button>
+                                                <p>Deseja desativar o profissional?</p>
+                                                <button type="button" class="btn-toggle-disponibilidade ativo" data-id="{{_id}}">
+                                                    Confirmar
+                                                </button>
                                             </span>
                                         {{else}}
                                             <button type="button" class="activeButtonProfissional">
                                                 <div></div>
                                             </button>
+
+                                            <span>
+                                                <button id="closeActiveProfissional">
+                                                    <img src="" alt="">
+                                                </button>
+                                                <p>Deseja disponibilizar o profissional?</p>
+                                                <button type="button" class="btn-toggle-disponibilidade inativo" data-id="{{_id}}">
+                                                    Confirmar
+                                                </button>
+                                            </span>
                                         {{/if}}
+                                        <script>
+                                            document.addEventListener("DOMContentLoaded", () => {
+                                                const toggleButtons = document.querySelectorAll(".btn-toggle-disponibilidade");
+
+                                                toggleButtons.forEach(button => {
+                                                    button.addEventListener("click", async () => {
+                                                        const profissionalId = button.dataset.id;
+
+                                                        try {
+                                                            const response = await fetch(`/profissionais/${profissionalId}/toggle-disponibilidade`, {
+                                                                method: "POST",
+                                                                headers: {
+                                                                    "Content-Type": "application/json"
+                                                                }
+                                                            });
+
+                                                            const data = await response.json();
+
+                                                            if (data.success) {
+                                                                // Feedback visual (opcional)
+                                                                button.textContent = data.disponivel ? "Desativar" : "Ativar";
+                                                                button.classList.toggle("ativo", data.disponivel);
+                                                                button.classList.toggle("inativo", !data.disponivel);
+
+                                                                // Também pode atualizar algum texto do status no DOM, se quiser
+                                                                const statusText = button.closest(".containerProfissional").querySelector(".statusText");
+                                                                if (statusText) {
+                                                                    statusText.textContent = data.disponivel ? "ativo" : "inativo";
+                                                                    statusText.style.color = data.disponivel ? "green" : "red";
+                                                                }
+                                                            } else {
+                                                                alert(data.message || "Erro ao atualizar.");
+                                                            }
+                                                        } catch (err) {
+                                                            console.error("Erro ao enviar requisição:", err);
+                                                            alert("Erro ao atualizar status.");
+                                                        }
+                                                    });
+                                                });
+                                            });
+                                        </script>
                                     </span>
                                 </div>
                                 <div class="controlProf">

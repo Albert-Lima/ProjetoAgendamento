@@ -86,6 +86,27 @@ router.post("/profissionais", eAdmin, upload.single('photo'), async (req, res) =
     }
 });
 
+//rota para alterar disponibilidade do profissional via Fetch
+router.post("/profissionais/:id/toggle-disponibilidade", eAdmin, async (req, res) => {
+    try {
+        const prof = await ProfissionalModel.findOne({ _id: req.params.id, userId: req.user.id });
+
+        if (!prof) return res.status(404).json({ success: false, message: "Profissional não encontrado." });
+
+        prof.disponivel = !prof.disponivel;
+        await prof.save();
+
+        return res.json({
+            success: true,
+            message: "Status atualizado.",
+            disponivel: prof.disponivel
+        });
+    } catch (err) {
+        console.error("Erro ao alternar disponibilidade:", err);
+        return res.status(500).json({ success: false, message: "Erro interno no servidor." });
+    }
+});
+
 router.post("/editprofissionais/:id", eAdmin, async (req, res)=>{
     try{
         const {name, phone, services} = req.body
