@@ -76,35 +76,64 @@
                                         <p>{{phone}}</p>
                                         {{#if disponivel}}
                                             <button type="button" class="activeButtonProfissional">
-                                                <div></div>
+                                                <span class="textStatus">status</span>
+                                                <div class="ballStatus" style="background-color: #25D366;"></div>
                                             </button>
 
-                                            <span>
+                                            <span class="popUpDisponibilidadeProfissional" style="display: none;">
                                                 <button id="closeActiveProfissional">
-                                                    <img src="" alt="">
+                                                    <img src="/images/icons8-close-48.png" alt="">
                                                 </button>
                                                 <p>Deseja desativar o profissional?</p>
                                                 <button type="button" class="btn-toggle-disponibilidade ativo" data-id="{{_id}}">
-                                                    Confirmar
+                                                    Desativar
                                                 </button>
                                             </span>
                                         {{else}}
-                                            <button type="button" class="activeButtonProfissional">
-                                                <div></div>
+                                            <button type="button" class="activeButtonProfissional" >
+                                                <span class="textStatus">status</span>
+                                                <div class="ballStatus" style="background-color: #ED5E68;"></div>
                                             </button>
 
-                                            <span>
+                                            <span class="popUpDisponibilidadeProfissional" style="display: none;">
                                                 <button id="closeActiveProfissional">
-                                                    <img src="" alt="">
+                                                    <img src="/images/icons8-close-48.png" alt="">
                                                 </button>
-                                                <p>Deseja disponibilizar o profissional?</p>
+                                                <p>Deseja ativar o profissional?</p>
                                                 <button type="button" class="btn-toggle-disponibilidade inativo" data-id="{{_id}}">
-                                                    Confirmar
+                                                    Ativar
                                                 </button>
                                             </span>
                                         {{/if}}
                                         <script>
                                             document.addEventListener("DOMContentLoaded", () => {
+                                                // Botão para abrir pop-up
+                                                const statusButtons = document.querySelectorAll(".activeButtonProfissional");
+
+                                                statusButtons.forEach(button => {
+                                                    button.addEventListener("click", () => {
+                                                        const container = button.closest(".containerProfissional");
+                                                        const popup = container.querySelector(".popUpDisponibilidadeProfissional");
+
+                                                        if (popup) {
+                                                            popup.style.display = "flex"; // ou "block" dependendo do seu layout
+                                                        }
+                                                    });
+                                                });
+
+                                                // Botão para fechar pop-up
+                                                const closeButtons = document.querySelectorAll("#closeActiveProfissional");
+
+                                                closeButtons.forEach(closeBtn => {
+                                                    closeBtn.addEventListener("click", () => {
+                                                        const popup = closeBtn.closest(".popUpDisponibilidadeProfissional");
+                                                        if (popup) {
+                                                            popup.style.display = "none";
+                                                        }
+                                                    });
+                                                });
+
+
                                                 const toggleButtons = document.querySelectorAll(".btn-toggle-disponibilidade");
 
                                                 toggleButtons.forEach(button => {
@@ -122,16 +151,25 @@
                                                             const data = await response.json();
 
                                                             if (data.success) {
-                                                                // Feedback visual (opcional)
+                                                                // Altera o texto do botão
                                                                 button.textContent = data.disponivel ? "Desativar" : "Ativar";
                                                                 button.classList.toggle("ativo", data.disponivel);
                                                                 button.classList.toggle("inativo", !data.disponivel);
 
-                                                                // Também pode atualizar algum texto do status no DOM, se quiser
-                                                                const statusText = button.closest(".containerProfissional").querySelector(".statusText");
-                                                                if (statusText) {
-                                                                    statusText.textContent = data.disponivel ? "ativo" : "inativo";
-                                                                    statusText.style.color = data.disponivel ? "green" : "red";
+                                                                // Atualiza o texto da pergunta acima do botão
+                                                                const popup = button.closest(".popUpDisponibilidadeProfissional");
+                                                                const pergunta = popup.querySelector("p");
+                                                                if (pergunta) {
+                                                                    pergunta.textContent = data.disponivel 
+                                                                        ? "Deseja desativar o profissional?" 
+                                                                        : "Deseja ativar o profissional?";
+                                                                }
+
+                                                                // (Opcional) Atualiza algum status de texto
+                                                                const statusTextButton = button.closest(".containerProfissional")?.querySelector(".ballStatus");
+                                                                
+                                                                if (statusTextButton) {
+                                                                    statusTextButton.style.backgroundColor = data.disponivel ? "#25D366" : "#ED5E68";
                                                                 }
                                                             } else {
                                                                 alert(data.message || "Erro ao atualizar.");

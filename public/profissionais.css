@@ -124,8 +124,77 @@
     overflow-y: scroll;
     padding-right: 10px;
 }
+/*disponibilidade do profissional*/
+.activeButtonProfissional{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid gray;
+    outline: none;
+    padding: 10px 0px 5px 0px;
+    gap: 5px;
+}
+.activeButtonProfissional span{
+    font-family: var(--var-FontMain);
+}
+.ballStatus{
+    height: 10px;
+    width: 10px;
+    border-radius: 100%;
+}
+.popUpDisponibilidadeProfissional{
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.068);
+    background-color: white;
+    padding: 10px;
+    position: absolute;
+    top: 80%;
+    left: 120px;
+    width: 250px;
+    height: 100px;
+    z-index: 10000;
+}
+.popUpDisponibilidadeProfissional p{
+    align-self: center;
+    font-family: var(--var-FontMain);
+    font-size: 11pt;
+}
+.btn-toggle-disponibilidade{
+    align-self: center;
+    background-color: var(--var-BaseGreen);
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+#closeActiveProfissional{
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    height: 25px;
+    width: 25px;
+    padding: 0px;
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+#closeActiveProfissional img{
+    height: 100%;
+    width: 100%;
+}
 
-
+/*botões de deletar e editar profissional*/
 .controlProf{
     position: absolute;
     right: 0px;
