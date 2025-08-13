@@ -9,14 +9,14 @@
 </head>
 <body>
     {{#if erros}}
-    <div class="popErrorCad">
-        <button type="button" class="closePopup">
+      <div class="popErrorCad">
+          <button type="button" class="closePopup">
             <img src="/images/icons8-close-48.png" alt="fechar popup">
-        </button>
+          </button>
         {{#each erros}}
-        <p>{{this.texto}}</p>
+          <p>{{this.texto}}</p>
         {{/each}}
-    </div>
+      </div>
     <script>
         //fechar popup de erro de cadastro
         document.addEventListener("DOMContentLoaded", function () {
@@ -49,14 +49,6 @@
                         <img src="/images/icons8-ajuda-32.png" alt="manual da aplicação">
                     </button>
                 </div>
-                {{#if user}}
-                    <div class="infoUsuario">
-                        <span>{{user.name}}</span>
-                        <span class="userPicture"><!--<img src="/images/icons8-adicionar-usuário-masculino-90.webp" alt="imagem do usuário">--></span>
-                    </div>
-                {{else}}
-                    erro ao carregar dados do usuário
-                {{/if}}
             </header>
             <section class="containerButtonAddProfissional">
                 <button class="buttonAddProfissional" id="openFormProfissional">

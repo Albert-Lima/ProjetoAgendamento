@@ -54,7 +54,7 @@ router.post("/profissionais", eAdmin, upload.single('photo'), async (req, res) =
         }
 
         if (erros.length > 0) {
-            console.log(erros);
+            console.log("houve um erro na parte de salvamento do profissional");
             const profissional = await ProfissionalModel.find({ userId: req.user.id }).populate('services').lean();
             const allServices = await ServicesModel.find({ userId: req.user.id }).lean();
 

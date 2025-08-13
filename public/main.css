@@ -962,7 +962,7 @@ body{
         position: absolute;
         right: 0vh;
         top: 0vh;
-        background-color: rgb(255, 255, 255);
+        background-color: var(--var-BaseBody);
         border-radius: 0px;
     }
     #LogOut{
