@@ -107,21 +107,32 @@ router.post("/profissionais/:id/toggle-disponibilidade", eAdmin, async (req, res
     }
 });
 
-router.post("/editprofissionais/:id", eAdmin, async (req, res)=>{
-    try{
-        const {name, phone, services} = req.body
-        const profissionalId = req.params.id
-        await ProfissionalModel.findByIdAndUpdate(profissionalId, {
+router.post("/editprofissionais/:id", eAdmin, upload.single('photo'), async (req, res) => {
+    try {
+        const { name, phone, services } = req.body;
+        const profissionalId = req.params.id;
+
+        const updateData = {
             name,
             phone,
             services
-        })
-        res.redirect("/profissionais")
-    } catch {
-        console.log("houve um erro ao salvar a edição do profissional")
-        res.redirect("/profissionais")
+        };
+
+        // Só atualiza a foto se o usuário enviou uma nova
+        if (req.file) {
+            updateData.photoUrl = req.file.path;
+            console.log("a foto foi selecionada e será alterada")
+        }
+
+        await ProfissionalModel.findByIdAndUpdate(profissionalId, updateData);
+
+        res.redirect("/profissionais");
+        console.log("profissional atualizado")
+    } catch (err) {
+        console.log("houve um erro ao salvar a edição do profissional:", err);
+        res.redirect("/profissionais");
     }
-})
+});
 
 
 //rota para deletar profissional
