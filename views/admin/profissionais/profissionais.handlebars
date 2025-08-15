@@ -215,13 +215,13 @@
                                                 <label for="photo-{{_id}}" class="textPhoto">Atualize a foto do profissional</label>
                     
                                                 <label for="photo-{{_id}}" class="custom-file-button">Selecionar Foto</label>
-                                                <input type="file" id="photo-{{_id}}"  name="photo" accept="image/*">
+                                                <input type="file" id="photo-{{_id}}"  name="photo" accept="image/*" style="opacity: 0;scale: 0;">
                                                 
                                                 <img class="preview-image" src="{{photoUrl}}" alt="Pré-visualização da imagem">
                                                 <div id="error" class="error"></div>
                                             </section>
                                             
-                                            <button type="submit">salvar</button>
+                                            <button type="submit" class="save-button">salvar</button>
                                         </form>
                                         <script>
                                             document.querySelectorAll('.formMain').forEach(form => {

@@ -111,23 +111,51 @@ router.post("/editprofissionais/:id", eAdmin, upload.single('photo'), async (req
     try {
         const { name, phone, services } = req.body;
         const profissionalId = req.params.id;
+        const erros = [];
 
-        const updateData = {
-            name,
+        // Validações básicas
+        if (!name) erros.push({ texto: "Nome do profissional é obrigatório." });
+        if (!phone) erros.push({ texto: "Telefone do profissional é obrigatório." });
+        if (!services) erros.push({ texto: "Adicione os serviços." });
+        // Aqui a foto não é obrigatória, pois pode ser mantida a anterior
+
+        // Verificar se o número de telefone já está sendo usado por outro profissional
+        const profissionalExistente = await ProfissionalModel.findOne({
             phone,
-            services
-        };
+            userId: req.user.id,
+            _id: { $ne: profissionalId } // Ignora o próprio profissional
+        });
 
-        // Só atualiza a foto se o usuário enviou uma nova
+        if (profissionalExistente) {
+            erros.push({ texto: "Esse número de telefone já está sendo usado por outro profissional." });
+        }
+
+        if (erros.length > 0) {
+            console.log("dado inválido ao editar profissional");
+
+            const profissional = await ProfissionalModel.find({ userId: req.user.id }).populate('services').lean();
+            const allServices = await ServicesModel.find({ userId: req.user.id }).lean();
+
+            return res.render("admin/profissionais/profissionais", {
+                erros,
+                profissional,
+                services: allServices,
+                user: req.user,
+                formData: { name, phone, services }
+            });
+        }
+
+        // Caso passe nas validações, segue para a atualização
+        const updateData = { name, phone, services };
         if (req.file) {
             updateData.photoUrl = req.file.path;
-            console.log("a foto foi selecionada e será alterada")
+            console.log("a foto foi selecionada e será alterada");
         }
 
         await ProfissionalModel.findByIdAndUpdate(profissionalId, updateData);
-
+        console.log("profissional atualizado");
         res.redirect("/profissionais");
-        console.log("profissional atualizado")
+
     } catch (err) {
         console.log("houve um erro ao salvar a edição do profissional:", err);
         res.redirect("/profissionais");

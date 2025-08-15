@@ -5,7 +5,7 @@
     padding: 0px;
 }
 :root{
-    --var-BaseGreen: #209F84;
+    --var-BaseGreen: 32, 159, 132;
     --var-BaseBody: #ebf3ea;
     --var-SelectedMenu: #E1F297;
     --var-SelectedOption: #59B989;
@@ -748,10 +748,9 @@ body{
     color: white;
 }
 .containerOptions{
-    height: calc(100% - 35px);
+    height: calc(100% - 60px);
     width: calc(100% - 20px);
     margin: auto;
-    gap: 5px;
     overflow-y: scroll;
     background-color: transparent;
     display: flex;
@@ -759,6 +758,8 @@ body{
     align-items: start;
     justify-content: start;
     gap: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 .containerOptions a{
     align-self: center;

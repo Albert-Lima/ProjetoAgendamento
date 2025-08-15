@@ -3,6 +3,7 @@
     padding: 0px;
 }
 :root{
+    --var-BaseGreen: 32, 159, 132;
     --var-DarkGreen: #00272B;
     --var-ColorGreen: #E0FF4F;
     --var-BorderColorDark: rgb(182, 182, 182);
@@ -43,6 +44,8 @@
     width: auto;
 }
 
+
+/*box profissionais*/
 .ConteinerInfoProfissionais{
     display: flex;
     flex-direction: column;
@@ -124,6 +127,34 @@
     overflow-y: scroll;
     padding-right: 10px;
 }
+
+@media (max-width: 400px) {
+    .containerProfissional{
+        width: calc(100% - 70px);
+        position: relative;
+        height: 60px;
+        padding: 20px;
+        gap: 10px;
+    }
+    .profissionalIMG{
+        height: 60px;
+        width: 60px;
+    }
+    .boxInfoProf span:nth-child(1) h2, .boxInfoProf span:nth-child(2) h2{
+        font-size: 12pt;
+    }
+    .boxInfoProf span:nth-child(1) p, .boxInfoProf span:nth-child(2) p{
+        font-size: 7pt;
+    }
+    .boxInfoProf span:nth-child(2) div{
+        height: 40px;
+        overflow-y: scroll;
+        padding-right: 10px;
+    }
+}
+
+
+
 /*disponibilidade do profissional*/
 .activeButtonProfissional{
     display: flex;
@@ -153,7 +184,7 @@
     justify-content: center;
     gap: 10px;
     border-radius: 5px;
-    box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.068);
+    box-shadow: 0px 5px 10px 4px rgba(0, 0, 0, 0.151);
     background-color: white;
     padding: 10px;
     position: absolute;
@@ -192,6 +223,17 @@
 #closeActiveProfissional img{
     height: 100%;
     width: 100%;
+}
+
+@media (max-width: 420px) {
+    .popUpDisponibilidadeProfissional{
+        left: 0px;
+        width: 240px;
+        height: 90px;
+    }
+    .btn-toggle-disponibilidade{
+        font-size: 8pt;
+    }
 }
 
 /*botões de deletar e editar profissional*/
@@ -298,6 +340,18 @@
     border-radius: 5px;
 }
 
+@media (max-width: 400px) {
+    .controlProf{
+        height: 90px;
+    }
+    .bttControlProf{
+        height: 20px;
+        width: 20px;
+    }
+    .bttControlProf img{
+        height: 20px;
+    }
+}
 
 /*adição de foto dos profissionais*/
 #photoProfesseionalSection{
@@ -332,6 +386,20 @@
 }
 #preview {
     margin-top: 15px;
+    max-width: 300px;
+    max-height: 300px;
+    border: 2px dashed #ccc;
+    padding: 10px;
+    object-fit: cover;
+    border-radius: 5px;
+    align-self: center;
+}
+.saveButton-profissional{
+    background-color: rgba(var(--var-BaseGreen), 0.9);
+}
+
+.preview-image{
+    margin-top: 0px;
     max-width: 300px;
     max-height: 300px;
     border: 2px dashed #ccc;
