@@ -361,7 +361,11 @@
     justify-content: center;
 }
 .custom-file-button {
-    display: inline-block;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
     background-color: var(--var-BaseGreen);
     color: white;
     padding: 10px 15px;
@@ -373,6 +377,10 @@
     font-family: var(--var-FontMain);
     font-size: 10pt;
     font-weight: 400;
+}
+.custom-file-button img{
+    height: 25px;
+    width: auto;
 }
 .textPhoto{
     font-family: var(--var-FontMain);
@@ -407,4 +415,15 @@
     object-fit: cover;
     border-radius: 5px;
     align-self: center;
+}
+
+@media (max-width: 350px) {
+    #preview {
+        max-width: 180px;
+        max-height: 180px;
+    }
+    .preview-image{
+        max-width: 180px;
+        max-height: 180px;
+    }
 }

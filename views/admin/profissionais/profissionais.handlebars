@@ -214,7 +214,10 @@
                                             <section class="partForm" id="photoProfesseionalSection">
                                                 <label for="photo-{{_id}}" class="textPhoto">Atualize a foto do profissional</label>
                     
-                                                <label for="photo-{{_id}}" class="custom-file-button">Selecionar Foto</label>
+                                                <label for="photo-{{_id}}" class="custom-file-button">
+                                                    <img src="/images/icons8-câmera-50.png" alt="selecione a foto do profissional">
+                                                    <p>Foto</p>
+                                                </label>
                                                 <input type="file" id="photo-{{_id}}"  name="photo" accept="image/*" style="opacity: 0;scale: 0;">
                                                 
                                                 <img class="preview-image" src="{{photoUrl}}" alt="Pré-visualização da imagem">
@@ -326,7 +329,10 @@
                         <section class="partForm" id="photoProfesseionalSection">
                             <label for="photo" class="textPhoto">Adicione a foto do profissional</label>
   
-                            <label for="photo" class="custom-file-button">Selecionar Foto</label>
+                            <label for="photo" class="custom-file-button">
+                                <img src="/images/icons8-câmera-50.png" alt="selecione a foto do profissional">
+                                <p>Foto</p>
+                            </label>
                             <input type="file" id="photo" name="photo" accept="image/*">
                             
                             <img id="preview" src="" alt="Pré-visualização da imagem" style="display:none;">
