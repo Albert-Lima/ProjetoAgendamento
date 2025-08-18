@@ -37,10 +37,10 @@ router.post("/profissionais", eAdmin, upload.single('photo'), async (req, res) =
     const erros = [];
 
     // Validações
-    if (!name) erros.push({ texto: "Nome do profissional é obrigatório." });
-    if (!phone) erros.push({ texto: "Telefone do profissional é obrigatório." });
-    if (!services) erros.push({ texto: "Adicione os serviços." });
-    if (!req.file) erros.push({ texto: "Selecione uma foto para o profissional." });
+    if (!name) erros.push({ texto: "Por favor, informe o nome do profissional." });
+    if (!phone) erros.push({ texto: "O número de telefone do profissional é obrigatório." });
+    if (!services) erros.push({ texto: "É necessário adicionar ao menos um serviço para o profissional." });
+    if (!req.file) erros.push({ texto: "Selecione uma foto para identificar o profissional." });
 
     try {
         // Verificar se o número de telefone já está sendo usado
@@ -54,18 +54,8 @@ router.post("/profissionais", eAdmin, upload.single('photo'), async (req, res) =
         }
 
         if (erros.length > 0) {
-            console.log("houve um erro na parte de salvamento do profissional");
-            const profissional = await ProfissionalModel.find({ userId: req.user.id }).populate('services').lean();
-            const allServices = await ServicesModel.find({ userId: req.user.id }).lean();
-
-            return res.render("admin/profissionais/profissionais", {
-                erros,
-                profissional,
-                services: allServices,
-                user: req.user,
-                // Campos preenchidos, se quiser reaproveitar o que foi digitado
-                formData: { name, phone, services }
-            });
+            erros.forEach(err => req.flash("error_msg", err.texto));
+            return res.redirect("/profissionais");
         }
 
         // Salvar novo profissional
@@ -114,9 +104,9 @@ router.post("/editprofissionais/:id", eAdmin, upload.single('photo'), async (req
         const erros = [];
 
         // Validações básicas
-        if (!name) erros.push({ texto: "Nome do profissional é obrigatório." });
-        if (!phone) erros.push({ texto: "Telefone do profissional é obrigatório." });
-        if (!services) erros.push({ texto: "Adicione os serviços." });
+        if (!name) erros.push({ texto: "Por favor, informe o nome do profissional." });
+        if (!phone) erros.push({ texto: "O número de telefone do profissional é obrigatório." });
+        if (!services) erros.push({ texto: "É necessário adicionar ao menos um serviço para o profissional." });
         // Aqui a foto não é obrigatória, pois pode ser mantida a anterior
 
         // Verificar se o número de telefone já está sendo usado por outro profissional
@@ -133,16 +123,9 @@ router.post("/editprofissionais/:id", eAdmin, upload.single('photo'), async (req
         if (erros.length > 0) {
             console.log("dado inválido ao editar profissional");
 
-            const profissional = await ProfissionalModel.find({ userId: req.user.id }).populate('services').lean();
-            const allServices = await ServicesModel.find({ userId: req.user.id }).lean();
-
-            return res.render("admin/profissionais/profissionais", {
-                erros,
-                profissional,
-                services: allServices,
-                user: req.user,
-                formData: { name, phone, services }
-            });
+            erros.forEach(err => req.flash("error_msg", err.texto));
+            return res.redirect("/profissionais");
+            
         }
 
         // Caso passe nas validações, segue para a atualização

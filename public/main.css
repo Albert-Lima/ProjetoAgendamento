@@ -191,17 +191,20 @@ body{
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 30px 80px;
+    padding: 30px 30px;
     background-color: white;
     box-shadow: 0px 0px 10px 4px rgba(0, 0, 0, 0.103);
     position: absolute;
-    top: 50px;
+    top: 30px;
+    right: 30px;
+    gap: 20px;
     z-index: 20000;
     border-radius: 10px;
     animation-name: popErrorCad;
     animation-duration: 0.5s;
     animation-direction: normal;
     animation-fill-mode:forwards;
+    width: 250px;
 }
 .popErrorCad button{
     display: flex;
@@ -224,7 +227,8 @@ body{
     font-family: var(--var-FontMain);
     font-weight: 400;
     font-size: 10pt;
-    color: var(--var-ColorRedCancel);
+    color: #D32F2F;
+    text-align: center;
 }
 .linkCompletePerfil{
     text-decoration: none;
@@ -363,6 +367,19 @@ body{
     max-width: 80%;
 }
 
+@media (max-width: 700px) {
+    .popErrorCad{
+        width: calc(90% - 60px);
+        right: auto;
+    }
+    .popErrorCad button{
+        height: 25px;
+        width: 25px;
+    }
+    .popErrorCad button img{
+        height: 20px;
+    }
+}
 
 
 /*Partial MenuLeft*/
