@@ -3,6 +3,7 @@
     padding: 0px;
 }
 :root{
+    --var-BaseGreen: #209F84;
     --var-DarkGreen: #00272B;
     --var-ColorGreen: #E0FF4F;
     --var-BorderColorDark: rgb(182, 182, 182);
@@ -41,30 +42,29 @@
     flex-direction: column;
     align-items: start;
     justify-content: start;
-    width: 240px;/*deve ser mudado também no script localizado em agendamentos.handlebars*/
+    width: 290px;
     height: 95%;
     padding: 10px;
     gap: 10px;
     background-color: transparent;
     position: relative;
+    transition: 1s;
+    overflow: hidden;
 }
 .buttonAddAgendamento{
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    padding: 5px;
+    padding: 10px 0px;
     border-radius: 5px;
     gap: 5px;
     border: none;
-    background: #1F5055;
+    background: var(--var-BaseGreen);
     box-shadow: 0px 0px 4px 1px rgb(194, 194, 194);
     cursor: pointer;
     color: white;
-}
-.buttonAddAgendamento img{
-    height: 20px;
-    width: 20px;
+    width: 100%;
 }
 
 .closeToolBarCalendar{

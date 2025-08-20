@@ -4,10 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/agendamentos.css">
     <style>
         .selected-label {
-            background-color: #1F5055;
+            background-color: #209F84;
             color: white;
             padding: 5px 10px;
             border-radius: 5px;
@@ -62,11 +61,11 @@
             cursor: not-allowed;
         }
         .day:hover:not(.disabled) {
-            background: #1F5055;
+            background: #209F84;
             color: #fff;
         }
         .day.selected {
-            background: #28a745;
+            background: #209F84;
             color: #fff;
         }
         .containerHour{
@@ -158,7 +157,7 @@
         }
 
         .daySelet.active {
-            background-color: #1F5055;
+            background-color: #209F84;
             color: white;
         }
 
@@ -280,28 +279,26 @@
             }
         }
     </style>
-    <title>Estabelecimentos</title>
+    <link rel="stylesheet" href="/agendamentos.css">
+    <title>Agendamentos</title>
 </head>
 <body>
     <aside class="ContainerMenuLeft">
         <div class="ContainerLogoPanel">
-            LOGO AQUI
+            <img src="/images/logoGlamii.png" alt="glamii software">
         </div>
         {{>menuAgendamentos}}
+        <a href="/logout" class="boxButtons" id="LogOut">
+            <div class="ContainerIconMenuLeft"><img src="/images/icons8-sair-100.png" alt="Deslogar"></div>
+            <p>LogOut</p>
+        </a>
     </aside>
     <main class="panel">
         <header class="HeaderPanel">
             <div>
                 <button class="doboutButton">
-                    <p>Ajuda</p>
                     <img src="/images/icons8-ajuda-32.png" alt="manual da aplicação">
                 </button>
-            </div>
-            <div class="infoUsuario">
-                {{#if user}}
-                    <span>{{user.name}}</span>
-                {{else}}
-                {{/if}}
             </div>
         </header>
 
@@ -326,16 +323,9 @@
                         </div>
                     </div>
                     <button class="buttonAddAgendamento" id="openFormAgendamento">
-                        <img src="/images/icons8-soma-30.png" alt="adicionar usuários">
                         <p>
-                            Agendar
+                            Novo Agendamento
                         </p>
-                    </button>
-                    <button class="closeToolBarCalendar">
-                        <p>
-                            fechar
-                        </p>
-                        <img src="/images/icons8-voltar-48.png" alt="fechar aba de calendário">
                     </button>
                </aside>
                <!--Container Planilha de agendamento -->
@@ -992,35 +982,6 @@
         const buttonAddAgendamento = document.querySelector(".buttonAddAgendamento")
         const toolBarAgenda = document.querySelector(".toolBarAgenda")
         const calendarSelet = document.querySelector("#calendarSelet")
-
-        function closeToolBar(){
-            calendarSelet.style.display = "none"
-
-            toolBarAgenda.style.width = "max-content"
-
-            buttonAddAgendamento.style.display = "none"
-
-            closeToolBarCalendar.innerHTML = "<img src='/images/icons8-chevron-right-24.png' alt='abrir aba de calendário'>"
-            closeToolBarCalendar.style.height = "100%"
-
-            closeToolBarCalendar.removeEventListener("click", closeToolBar)
-            closeToolBarCalendar.addEventListener("click", openToolBar)
-        }
-        closeToolBarCalendar.addEventListener("click", closeToolBar)
-
-        function openToolBar(){
-            calendarSelet.style.display = "block"
-
-            toolBarAgenda.style.width = "240px"
-
-            buttonAddAgendamento.style.display = "flex"
-
-            closeToolBarCalendar.innerHTML = "<p>fechar</p><img src='/images/icons8-voltar-48.png' alt='fechar aba de calendário'>"
-            closeToolBarCalendar.style.height = "auto"
-
-            closeToolBarCalendar.removeEventListener("click", openToolBar)
-            closeToolBarCalendar.addEventListener("click", closeToolBar)
-        }
         
         //abrir pouUp de opções
         const optionButtons = document.querySelectorAll(".buttonOpitionsAgendamentos");
