@@ -50,6 +50,27 @@
     position: relative;
     transition: 1s;
 }
+.closeCalender{
+    height: 25px;
+    width: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--var-BaseGreen);
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.027);
+    padding: 3px;
+    position: absolute;
+    left: 20px;
+    top: 10px;
+    z-index: 2;
+}
+.closeCalender img{
+    height: 100%;
+    width: 100%;
+}
 .buttonAddAgendamento{
     display: flex;
     flex-direction: row;
@@ -66,26 +87,27 @@
     width: 100%;
 }
 
-.closeToolBarCalendar{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-    background-color: #1F5055;
-    border: none;
-    border-radius: 5px;
-    padding: 5px;
-    color: white;
-    cursor: pointer;
-}
-.closeToolBarCalendar img{
-    height: 20px;
-    width: 10px;
-    object-fit: cover;
-}
-
 /*main panel agendamentos---------------------------------------------------------------------------------------------------------------------*/
+    .containerSchedule::-webkit-scrollbar {
+        width: 8px;       /* largura da barra vertical */
+        height: 8px;      /* altura da barra horizontal */
+    }
+
+    .containerSchedule::-webkit-scrollbar-track {
+        background: transparent; /* deixa o trilho invisível */
+    }
+
+    .containerSchedule::-webkit-scrollbar-thumb {
+        background-color: rgba(0,0,0,0.4); /* cor da "bolinha" que desliza */
+        border-radius: 4px; /* bordas arredondadas */
+    }
+
+    /* Para Firefox */
+    * {
+        scrollbar-width: thin;              /* deixa a barra fininha */
+        scrollbar-color: rgba(0,0,0,0.4) transparent; /* cor da "bolinha" e do trilho */
+    }
+
 .containerAgendamentos{
     display: flex;
     flex-direction: column;
@@ -287,8 +309,9 @@
 @media (max-width: 1080px) {
     .viewPanel{
         margin: auto;
+        margin-top: 0px;
         width: 100%;
-        height: calc(100% - 30px);
+        height: calc(100% - 15px);
         overflow-y: scroll;
         gap: 10px;
         display: flex;
@@ -299,7 +322,19 @@
     .toolBarAgenda{
         position: absolute;
         left: 10px;
-        top: 0px;
+        top: 35px;
         height: max-content;
+    }
+    .containerSchedule{
+        height: calc(100% - 80px);
+        margin-top: 45px;
+    }
+}
+@media (max-width: 700px) {
+    .viewPanel{
+        height: calc(100% - 65px);
+    }
+    .containerSchedule{
+        height: calc(100% - 110px);
     }
 }
