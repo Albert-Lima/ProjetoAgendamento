@@ -316,7 +316,7 @@
         margin: auto;
         margin-top: 0px;
         width: 100%;
-        height: calc(100% - 15px);
+        height: calc(100dvh - 15px);
         overflow-y: scroll;
         gap: 10px;
         display: flex;
@@ -329,6 +329,7 @@
         left: 10px;
         top: 35px;
         height: max-content;
+        display: none;
     }
     .containerSchedule{
         height: calc(100% - 80px);

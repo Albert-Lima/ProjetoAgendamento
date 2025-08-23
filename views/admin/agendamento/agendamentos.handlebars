@@ -984,11 +984,43 @@
     </script>
     <!--Script para o poupUp de opções do agendamento e fechar toolBAR-->
     <script>
-        //fechar toolbar
-        const closeToolBarCalendar = document.querySelector(".closeToolBarCalendar")
-        const buttonAddAgendamento = document.querySelector(".buttonAddAgendamento")
-        const toolBarAgenda = document.querySelector(".toolBarAgenda")
-        const calendarSelet = document.querySelector("#calendarSelet")
+        const buttonCalender = document.querySelector(".closeCalender");
+        const toolBarAgenda = document.querySelector(".toolBarAgenda");
+
+        // Função que abre a toolbar
+        function openToolbar() {
+            toolBarAgenda.style.display = "flex";
+
+            buttonCalender.removeEventListener("click", openToolbar);
+            buttonCalender.addEventListener("click", closeToolbar);
+        }
+
+        // Função que fecha a toolbar
+        function closeToolbar() {
+            toolBarAgenda.style.display = "none";
+
+            buttonCalender.removeEventListener("click", closeToolbar);
+            buttonCalender.addEventListener("click", openToolbar);
+        }
+
+        // Função que controla o comportamento de acordo com o tamanho da tela
+        function checkWindowSize() {
+            if (window.innerWidth > 1080) {
+                toolBarAgenda.style.display = "flex"; // sempre visível
+                buttonCalender.removeEventListener("click", openToolbar);
+                buttonCalender.removeEventListener("click", closeToolbar);
+            } else {
+                toolBarAgenda.style.display = "none"; // começa fechada
+                buttonCalender.removeEventListener("click", closeToolbar);
+                buttonCalender.addEventListener("click", openToolbar);
+            }
+        }
+
+        // Checa no carregamento da página
+        checkWindowSize();
+
+        // Checa quando a janela é redimensionada
+        window.addEventListener("resize", checkWindowSize);
         
         //abrir pouUp de opções
         const optionButtons = document.querySelectorAll(".buttonOpitionsAgendamentos");
