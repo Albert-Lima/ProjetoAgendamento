@@ -29,7 +29,7 @@
     margin: auto;
     width: 100%;
     height: calc(100% - 30px);
-    overflow-y: scroll;
+    overflow-y: hidden;
     gap: 10px;
     display: flex;
     flex-direction: row;
@@ -306,6 +306,11 @@
 }
 
 /*Reponsividade para mobile*/
+@media (min-width: 1080px) {
+    .closeCalender{
+        display: none;
+    }
+}
 @media (max-width: 1080px) {
     .viewPanel{
         margin: auto;
@@ -328,6 +333,7 @@
     .containerSchedule{
         height: calc(100% - 80px);
         margin-top: 45px;
+        
     }
 }
 @media (max-width: 700px) {
@@ -336,5 +342,10 @@
     }
     .containerSchedule{
         height: calc(100% - 110px);
+    }
+}
+@media (max-width: 560px) {
+    .containerSchedule{
+        height: calc(100% - 90px);
     }
 }
