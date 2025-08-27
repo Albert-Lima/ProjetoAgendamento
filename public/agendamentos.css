@@ -350,3 +350,14 @@
         height: calc(100% - 90px);
     }
 }
+@media (max-width: 460px) {
+    .schedule-agenda {
+        height: 60px;
+    }
+    .schedule-no-agenda {
+        height: 60px;
+    }
+    .schedule-row{
+        height: 60px;
+    }
+}

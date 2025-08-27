@@ -284,6 +284,7 @@
         .buttonOpitionsAgendamentos{
             border: none;
             cursor: pointer;
+            
         }
         .buttonOpitionsAgendamentos:hover{
             background-color: #1a7e68;
@@ -308,13 +309,16 @@
             }
         }
         @media (max-width: 700px) {
+            .schedule-header-row{
+                background-color: white;
+                height: 60px;
+            }
             .schedule-agenda {
                 font-size: 8pt;
             }
             .schedule-no-agenda {
                 font-size: 8pt;
                 min-width: 150px;
-                background-color: red;
             }
         }
     </style>
@@ -697,7 +701,7 @@
                                     const buttonOpitionsAgendamentos = document.createElement('button');
                                     buttonOpitionsAgendamentos.classList.add('schedule-agenda'); // Classe para os agendamentos
                                     buttonOpitionsAgendamentos.classList.add('buttonOpitionsAgendamentos')
-                                    buttonOpitionsAgendamentos.innerHTML = `${agenda.service} <br> <br> ${agenda.clientName}`;
+                                    buttonOpitionsAgendamentos.innerHTML = `${agenda.service} <br> ${agenda.clientName}`;
                                     cell.appendChild(buttonOpitionsAgendamentos);
                                 });
                             } else {
