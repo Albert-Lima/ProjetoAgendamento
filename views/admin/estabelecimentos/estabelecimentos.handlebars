@@ -147,19 +147,16 @@
                 const ctx = document.getElementById('myChart').getContext('2d');
 
                 new Chart(ctx, {
-                    type: 'bar',
+                    type: 'line',
                     data: {
                         labels: data.labels, // Datas no eixo X
                         datasets: [{
                             data: data.data, // Quantidade no eixo Y
-                            borderColor: '#1F5055',
-                            backgroundColor: '#E1F297', // Cor de fundo inicial
-                            hoverBackgroundColor: '#59B989', // Cor de fundo ao passar o mouse
-                            tension: 0, // Suaviza as linhas
-                            borderWidth: 0,
-                            borderRadius: 20,
-                            pointRadius: 1, // Remove os pontos
-                            pointHoverRadius: 1, // Remove os pontos ao passar o mouse
+                            borderColor: '#209F84',
+                            backgroundColor: "rgba(32, 159, 132, 0.1)", // Cor de fundo inicial
+                            tension: 0.3, // Suaviza as linhas
+                            borderWidth: 1,
+                            borderRadius: 10,
                             fill: true,
                         }],
                     },
