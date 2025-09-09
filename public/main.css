@@ -548,7 +548,7 @@ body{
     justify-content: center;
 }
 .buttonAgendeWithClientesCad{
-    background-color: #1F5055;
+    background-color: var(--var-BaseGreen);
     color: white;
     cursor: pointer;
     padding: 8px 10px 8px 10px;
@@ -557,7 +557,7 @@ body{
 }
 .buttonAgendeWithClientesGen{
     display: none;
-    background-color: #1F5055;
+    background-color: var(--var-BaseGreen);
     color: white;
     cursor: pointer;
     padding: 8px 10px 8px 10px;
