@@ -3,15 +3,14 @@
     padding: 0px;
 }
 :root{
+    --var-BaseGreen: #209F84;
     --var-DarkGreen: #00272B;
     --var-ColorGreen: #E0FF4F;
     --var-BorderColorDark: rgb(182, 182, 182);
     --var-ColorBaseGray: #D9D9D9;
     --var-ColorGreenOliva: #25291C;
-    --var-WhatsappDark: #1F5055;
     --var-ColorGreenWhatsapp: #25D366;
     --var-ColorRedCancel: #ED5E68;
-    --var-BoxShadowContainer: 0px 0px 4px 1px rgba(0, 0, 0, 0.192);
 }
 .ConteinerInfo{
     width: calc(100% - 30px);
