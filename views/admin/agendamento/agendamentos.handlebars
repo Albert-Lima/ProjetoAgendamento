@@ -499,10 +499,6 @@
 
                     <section class="partFormButtons">
                         <button type="submit" class="buttonSaveSubmit">confirmar e salvar</button>
-                        <button type="submit" class="buttonSaveAgendamentoByWhatsapp">
-                            enviar pedido de confirmação 
-                            <img src="/images/icons8-whatsapp-48.png" alt="enviar pedido de confirmação pelo whatsapp">
-                        </button>
                     </section>
 
                 </form>
@@ -514,9 +510,6 @@
 
                     buttonSaveSubmit.addEventListener("click", () => {
                         form.action = "/addagendamentodirect";
-                    });
-                    buttonSaveByWhatsapp.addEventListener("click", () => {
-                        form.action = "/addagendamentobywhatsapp";
                     });
                 </script>
             </section>
