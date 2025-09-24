@@ -4,7 +4,7 @@ const transporter = nodemailer.createTransport({
     service: "gmail", 
     auth: {
         user: "glamisapp@gmail.com",
-        pass: "wxrw uxyo vdzh ojxr"
+        pass: "kjou beqe wvyk kuzk"
     },
     tls: {
         rejectUnauthorized: true, // Rejeita envios com problemas de autenticação ou conexão
